@@ -1,0 +1,706 @@
+{
+  "master": {
+    "tasks": [
+      {
+        "id": 1,
+        "title": "Setup Next.js Project with TypeScript and Core Dependencies",
+        "description": "Initialize Next.js 18+ project with App Router, TypeScript, Tailwind CSS, and essential dependencies for the HHI CRM demo",
+        "details": "Create Next.js project using 'npx create-next-app@latest hhi-crm-demo --typescript --tailwind --app'. Install core dependencies: shadcn/ui, zustand, recharts, lucide-react, react-joyride, MSW (Mock Service Worker), and clsx. Configure TypeScript with strict mode, setup Tailwind with custom HHI theme colors, and create basic folder structure (/components, /lib, /hooks, /types, /data, /app). Configure ESLint and Prettier for code quality.",
+        "testStrategy": "Verify project builds successfully, TypeScript compiles without errors, Tailwind CSS loads correctly, and all dependencies are properly installed. Test dev server startup and basic routing functionality.",
+        "priority": "high",
+        "dependencies": [],
+        "status": "done",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Initialize Next.js Project with TypeScript and App Router",
+            "description": "Create the base Next.js project with TypeScript support and App Router configuration",
+            "dependencies": [],
+            "details": "Run 'npx create-next-app@latest hhi-crm-demo --typescript --tailwind --app' to create the project. Verify App Router is enabled by checking app directory structure. Configure TypeScript with strict mode in tsconfig.json. Remove default pages and components that won't be needed.",
+            "status": "done",
+            "testStrategy": "Verify project builds successfully with 'npm run build', dev server starts with 'npm run dev', and TypeScript compiles without errors"
+          },
+          {
+            "id": 2,
+            "title": "Install and Configure Core Dependencies",
+            "description": "Install all essential dependencies including shadcn/ui, zustand, recharts, lucide-react, react-joyride, MSW, and clsx",
+            "dependencies": [
+              1
+            ],
+            "details": "Install dependencies using npm: shadcn/ui for UI components, zustand for state management, recharts for charts, lucide-react for icons, react-joyride for guided tours, MSW for API mocking, and clsx for conditional styling. Initialize shadcn/ui with 'npx shadcn-ui@latest init' and configure components.json.",
+            "status": "done",
+            "testStrategy": "Verify all dependencies are installed correctly in package.json and can be imported without errors in test components"
+          },
+          {
+            "id": 3,
+            "title": "Configure Tailwind CSS with Custom HHI Theme",
+            "description": "Setup Tailwind CSS with custom HHI brand colors and design system configuration",
+            "dependencies": [
+              2
+            ],
+            "details": "Configure tailwind.config.js with custom HHI theme colors including primary, secondary, and accent colors. Add custom utility classes for HHI-specific styling. Configure dark mode support and custom spacing/typography scales. Integrate with shadcn/ui theme system.",
+            "status": "done",
+            "testStrategy": "Test custom theme colors render correctly, dark mode toggle works, and custom utilities are available throughout the application"
+          },
+          {
+            "id": 4,
+            "title": "Create Project Folder Structure and Basic Configuration",
+            "description": "Establish organized folder structure and configure development tools",
+            "dependencies": [
+              3
+            ],
+            "details": "Create folder structure: /components (ui, forms, layout), /lib (utils, constants), /hooks (custom React hooks), /types (TypeScript definitions), /data (mock data), /app (Next.js app router pages). Create index.ts files for clean exports. Setup basic utility functions in lib/utils.ts.",
+            "status": "done",
+            "testStrategy": "Verify folder structure is created correctly, index files export properly, and basic utility functions work as expected"
+          },
+          {
+            "id": 5,
+            "title": "Configure ESLint, Prettier, and Development Tools",
+            "description": "Setup code quality tools and development environment configuration",
+            "dependencies": [
+              4
+            ],
+            "details": "Configure ESLint with Next.js and TypeScript rules in .eslintrc.json. Setup Prettier with .prettierrc for consistent code formatting. Configure .vscode/settings.json for optimal development experience. Add lint and format scripts to package.json. Setup pre-commit hooks if needed.",
+            "status": "done",
+            "testStrategy": "Verify ESLint catches code issues, Prettier formats code consistently, dev tools work properly, and all scripts run successfully"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "title": "Implement HHI Design System and Theme Configuration",
+        "description": "Create comprehensive design system with HHI branding colors, typography, and custom Tailwind theme",
+        "details": "Configure Tailwind CSS with HHI color palette: Primary Warm Orange (oklch(0.8664 0.0728 12.3312)), Secondary Professional Blue (oklch(0.7973 0.0831 235.0238)), Accent Success Green (oklch(0.9517 0.2169 115.6724)). Set up typography with Poppins (sans), Georgia (serif), and Roboto Mono (mono). Create shadcn/ui components with custom theme. Build reusable UI components library including buttons, cards, forms, tables, and layouts. Implement responsive design system with mobile-first approach.",
+        "testStrategy": "Verify all colors render correctly across different browsers, typography loads properly, responsive breakpoints work as expected, and shadcn/ui components use custom theme. Test component library with Storybook or similar tool.",
+        "priority": "high",
+        "dependencies": [
+          1
+        ],
+        "status": "done",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Configure Tailwind CSS with HHI Color Palette and Theme",
+            "description": "Set up Tailwind CSS configuration with HHI brand colors using OKLCH color space and create custom theme foundation",
+            "dependencies": [],
+            "details": "Configure tailwind.config.js with HHI color palette: Primary Warm Orange (oklch(0.8664 0.0728 12.3312)), Secondary Professional Blue (oklch(0.7973 0.0831 235.0238)), Accent Success Green (oklch(0.9517 0.2169 115.6724)). Add semantic color tokens for backgrounds, text, borders, and interactive states. Configure responsive breakpoints and spacing scale. Set up CSS custom properties for color system.\n<info added on 2025-07-16T12:53:02.359Z>\nImplementation completed successfully. Tailwind CSS configuration has been set up with the HHI color palette using OKLCH color space. All semantic colors including backgrounds, text, borders, interactive states, chart colors, and sidebar colors have been properly configured. The application builds without errors and the color system is ready for use throughout the project.\n</info added on 2025-07-16T12:53:02.359Z>",
+            "status": "done",
+            "testStrategy": "Verify all colors render correctly across different browsers, test color contrast ratios meet accessibility standards, and ensure proper color token usage in components."
+          },
+          {
+            "id": 2,
+            "title": "Implement Typography System with Custom Fonts",
+            "description": "Set up typography configuration with Poppins, Georgia, and Roboto Mono fonts including font loading and responsive scales",
+            "dependencies": [
+              1
+            ],
+            "details": "Configure Google Fonts or local font files for Poppins (sans), Georgia (serif), and Roboto Mono (mono). Set up font-display swap for performance. Create typography scale with heading sizes (h1-h6), body text, and utility classes. Configure line heights, letter spacing, and font weights. Implement responsive typography using clamp() or Tailwind's responsive prefixes.\n<info added on 2025-07-16T12:54:06.758Z>\nImplementation complete. Typography system successfully configured with Google Fonts for Poppins (sans), Georgia (serif), and JetBrains Mono (mono) using font-display swap. Responsive typography scale created with clamp() functions and Tailwind responsive prefixes. All heading sizes (h1-h6), body text, and utility classes properly configured with appropriate line heights, letter spacing, and font weights. Typography system tested and functioning correctly across devices.\n</info added on 2025-07-16T12:54:06.758Z>",
+            "status": "done",
+            "testStrategy": "Test font loading performance, verify typography scales work across devices, check font fallbacks, and ensure proper text rendering in all browsers."
+          },
+          {
+            "id": 3,
+            "title": "Configure shadcn/ui with Custom HHI Theme",
+            "description": "Set up shadcn/ui component library with custom HHI theme variables and install core components",
+            "dependencies": [
+              1,
+              2
+            ],
+            "details": "Initialize shadcn/ui with custom theme configuration. Override default CSS variables in globals.css with HHI color tokens. Configure component variants and default styling. Install essential shadcn/ui components: Button, Card, Input, Select, Dialog, Badge, Avatar, and Table. Customize component themes to match HHI brand guidelines.\n<info added on 2025-07-16T12:57:45.112Z>\n**Configuration Status:** Successfully initialized shadcn/ui with custom HHI theme configuration. Installed essential Radix UI dependencies and created core components: Button, Card, Input, Badge, and Avatar. All components now use the custom HHI color palette with OKLCH colors (Primary Warm Orange, Secondary Professional Blue, Accent Success Green). Components are properly configured with TypeScript interfaces and prop validation. The component library is ready for use throughout the application with consistent HHI branding and responsive design patterns.\n</info added on 2025-07-16T12:57:45.112Z>",
+            "status": "done",
+            "testStrategy": "Test all shadcn/ui components render with custom theme, verify component variants work correctly, and ensure consistent styling across all components."
+          },
+          {
+            "id": 4,
+            "title": "Build Core UI Component Library",
+            "description": "Create reusable UI components including buttons, cards, forms, tables, and layout components with consistent styling",
+            "dependencies": [
+              3
+            ],
+            "details": "Build custom components extending shadcn/ui base: HHI-branded buttons with loading states, project cards with status indicators, form components with validation styling, data tables with sorting and pagination, layout components (headers, sidebars, containers). Create component variants for different use cases. Implement proper TypeScript interfaces and prop validation.\n<info added on 2025-07-16T13:01:25.560Z>\nImplementation completed successfully. HHI-branded UI components have been built including ProjectCard with status indicators, MetricCard for KPIs with trend indicators, DataTable with sorting and pagination functionality, and responsive layout components (Sidebar, Header, DashboardLayout). All components utilize the custom HHI color palette with OKLCH colors and include comprehensive TypeScript interfaces with proper prop validation. Components are fully responsive and follow mobile-first design principles. The component library is production-ready with consistent HHI branding applied throughout.\n</info added on 2025-07-16T13:01:25.560Z>",
+            "status": "done",
+            "testStrategy": "Test all component variants and states, verify proper prop handling, check component composition works correctly, and ensure consistent behavior across the application."
+          },
+          {
+            "id": 5,
+            "title": "Implement Responsive Design System and Mobile-First Approach",
+            "description": "Create responsive design utilities and ensure all components work properly across device sizes with mobile-first methodology",
+            "dependencies": [
+              4
+            ],
+            "details": "Implement responsive grid system using CSS Grid and Flexbox. Create mobile-first breakpoint strategy with proper scaling for tablets and desktops. Build responsive navigation components with mobile menu. Ensure all typography and spacing scales properly across devices. Create responsive component variants and utilities for common responsive patterns.\n<info added on 2025-07-16T13:05:11.060Z>\nStatus update: Responsive design system successfully implemented with mobile-first approach. Responsive grid system, spacing utilities, and typography scaling are now fully functional across all device sizes. Mobile navigation with touch interactions has been tested and works correctly. All UI components and layouts are responsive and optimized for mobile, tablet, and desktop viewports. The system is ready for continued development and component expansion.\n</info added on 2025-07-16T13:05:11.060Z>",
+            "status": "done",
+            "testStrategy": "Test responsive behavior across all major device sizes, verify mobile navigation works properly, check touch interactions on mobile devices, and ensure proper scaling of all design elements."
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "title": "Create Mock Data Structure and API Layer",
+        "description": "Implement comprehensive mock data for 10 customers, 15 projects, users, and analytics with MSW/JSON Server",
+        "details": "Create mock data files with 10 realistic customer profiles (Sarah Connor, John Smith, Mary Johnson, etc.) with Northern Ireland addresses. Generate 15 projects across different statuses (Complete Bathroom Refurbishment, Kitchen Installation, etc.) with realistic pricing. Create user profiles for admin, branch managers, and subcontractors. Build analytics mock data with 127 total projects, 45 active, £245,000 monthly revenue, 28.5% conversion rate. Implement MSW handlers for REST API endpoints (/api/customers, /api/projects, /api/users, /api/analytics) with CRUD operations, filtering, and pagination.",
+        "testStrategy": "Verify all API endpoints return correct mock data structure, test CRUD operations work properly, validate data relationships (customers-projects), and ensure realistic data consistency. Test API response times and error handling.",
+        "priority": "high",
+        "dependencies": [
+          1
+        ],
+        "status": "in-progress",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Create Customer Mock Data Structure",
+            "description": "Generate realistic customer profiles with Northern Ireland addresses and contact information",
+            "dependencies": [],
+            "details": "Create a customers.json file with 10 realistic customer profiles including names like Sarah Connor, John Smith, Mary Johnson. Each customer should have properties: id, name, email, phone, address (Northern Ireland specific), postcode, created_date, status, and customer_type. Include realistic Belfast, Derry, and other NI addresses with proper postcodes (BT format). Add customer preferences and communication history.",
+            "status": "pending",
+            "testStrategy": "Verify all customer data has valid Northern Ireland addresses, proper email formats, and realistic contact information. Test data consistency and uniqueness of IDs."
+          },
+          {
+            "id": 2,
+            "title": "Generate Project Mock Data with Realistic Pricing",
+            "description": "Create 15 projects across different statuses with realistic HHI service pricing",
+            "dependencies": [
+              1
+            ],
+            "details": "Create projects.json with 15 projects including 'Complete Bathroom Refurbishment', 'Kitchen Installation', 'Heating System Upgrade', etc. Each project should have: id, customer_id (linking to customers), title, description, status (quote, approved, in-progress, completed), start_date, end_date, total_cost, service_type, and project_notes. Price ranges: bathrooms £3,000-£8,000, kitchens £5,000-£15,000, heating £2,000-£6,000. Ensure projects are distributed across all statuses.",
+            "status": "pending",
+            "testStrategy": "Validate project-customer relationships are correct, pricing is realistic for each service type, and all project statuses are represented. Test date consistency and project progression logic."
+          },
+          {
+            "id": 3,
+            "title": "Create User Profiles and Authentication Data",
+            "description": "Generate user profiles for admin, branch managers, and subcontractors with role-based permissions",
+            "dependencies": [],
+            "details": "Create users.json with different user types: admin (full access), branch_manager (regional access), subcontractor (limited project access). Include properties: id, name, email, role, permissions, branch_location, specialization (for subcontractors), and status. Create realistic names and email addresses for each role. Define permission levels for each user type to support role-based dashboard views.",
+            "status": "pending",
+            "testStrategy": "Verify user roles have appropriate permission levels, email addresses are unique, and specializations match HHI service types. Test role-based access control logic."
+          },
+          {
+            "id": 4,
+            "title": "Build Analytics Mock Data Structure",
+            "description": "Create comprehensive analytics data with 127 total projects, revenue metrics, and conversion rates",
+            "dependencies": [
+              2
+            ],
+            "details": "Create analytics.json with key metrics: total_projects: 127, active_projects: 45, monthly_revenue: £245,000, conversion_rate: 28.5%. Include historical data for trends: monthly revenue data for last 12 months, project completion rates, customer satisfaction scores, and regional performance metrics. Add project status distribution data and service type performance metrics. Create time-series data for dashboard charts.",
+            "status": "pending",
+            "testStrategy": "Verify analytics calculations are mathematically consistent, historical data shows realistic trends, and all metrics align with project and customer data. Test data aggregation accuracy."
+          },
+          {
+            "id": 5,
+            "title": "Implement MSW API Handlers with CRUD Operations",
+            "description": "Create MSW request handlers for all API endpoints with full CRUD operations, filtering, and pagination",
+            "dependencies": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "details": "Set up MSW handlers for REST endpoints: /api/customers, /api/projects, /api/users, /api/analytics. Implement GET (with filtering and pagination), POST, PUT, DELETE operations. Add query parameter support for filtering by status, date ranges, and customer types. Implement pagination with limit/offset parameters. Include proper HTTP status codes and error handling. Create response delays to simulate real API behavior. Add data validation for POST/PUT operations.",
+            "status": "pending",
+            "testStrategy": "Test all CRUD operations return correct responses, filtering works for all supported parameters, pagination returns proper results, error handling provides meaningful messages, and API response times are consistent. Verify data persistence across requests."
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "title": "Build Core Dashboard with Analytics and Widgets",
+        "description": "Create main dashboard interface with real-time analytics, interactive widgets, and key performance indicators",
+        "details": "Build responsive dashboard layout with sidebar navigation and header. Create analytics widgets showing total projects (127), active projects (45), monthly revenue (£245,000), and conversion rate (28.5%). Implement Recharts components for revenue trends, project status distribution, and performance metrics. Add interactive elements like date range selectors, metric cards with animations, and real-time notification system. Create role-based dashboard views for administrators, branch managers, and workers. Implement responsive grid system for widget arrangement.",
+        "testStrategy": "Test dashboard loads within 2 seconds, all widgets display correct data, charts render properly across devices, real-time updates work correctly, and role-based access shows appropriate content. Verify responsive design on mobile devices.",
+        "priority": "high",
+        "dependencies": [
+          2,
+          3
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Create Dashboard Layout Structure with Navigation",
+            "description": "Build the main dashboard layout with responsive sidebar navigation and header components",
+            "dependencies": [],
+            "details": "Create dashboard layout component with collapsible sidebar containing navigation menu items (Dashboard, Projects, Customers, Analytics, Settings). Implement responsive header with user profile, notifications, and breadcrumbs. Use Tailwind CSS grid system for responsive layout. Include mobile hamburger menu functionality and smooth transitions. Ensure layout works across all screen sizes.",
+            "status": "pending",
+            "testStrategy": "Test layout responsiveness on mobile, tablet, and desktop. Verify sidebar collapse/expand functionality and mobile menu behavior."
+          },
+          {
+            "id": 2,
+            "title": "Build Analytics Metric Cards with Real-time Data",
+            "description": "Create interactive metric cards displaying key performance indicators with animations",
+            "dependencies": [
+              1
+            ],
+            "details": "Build metric cards component showing total projects (127), active projects (45), monthly revenue (£245,000), and conversion rate (28.5%). Implement smooth animations using Framer Motion or CSS transitions. Add trend indicators (up/down arrows) and percentage changes. Include hover effects and loading states. Connect to mock data service for real-time updates.",
+            "status": "pending",
+            "testStrategy": "Test metric cards display correct data, animations work smoothly, and real-time updates reflect data changes. Verify loading states and error handling."
+          },
+          {
+            "id": 3,
+            "title": "Implement Recharts Dashboard Charts and Visualizations",
+            "description": "Create interactive charts for revenue trends, project status distribution, and performance metrics using Recharts",
+            "dependencies": [
+              2
+            ],
+            "details": "Implement revenue trend line chart showing monthly data with tooltips and zoom functionality. Create pie/donut chart for project status distribution (pending, in-progress, completed). Build bar chart for performance metrics by team/region. Add interactive legends, custom colors matching HHI theme, and responsive chart sizing. Include date range filtering capabilities.",
+            "status": "pending",
+            "testStrategy": "Test charts render correctly across devices, interactive elements work properly, and data updates reflect in real-time. Verify tooltips and legends display accurate information."
+          },
+          {
+            "id": 4,
+            "title": "Add Interactive Dashboard Controls and Filters",
+            "description": "Implement date range selectors, filters, and interactive controls for dashboard customization",
+            "dependencies": [
+              3
+            ],
+            "details": "Create date range picker component with presets (Today, This Week, This Month, This Quarter). Implement filter dropdowns for regions, teams, and project types. Add dashboard refresh button and auto-refresh toggle. Include export functionality for charts and data. Create widget arrangement controls allowing users to customize layout.",
+            "status": "pending",
+            "testStrategy": "Test date range selection updates all dashboard components, filters work correctly, auto-refresh functionality operates as expected, and export features generate accurate reports."
+          },
+          {
+            "id": 5,
+            "title": "Implement Role-based Dashboard Views and Real-time Notifications",
+            "description": "Create different dashboard views for user roles and implement real-time notification system",
+            "dependencies": [
+              4
+            ],
+            "details": "Build role-based dashboard configurations for administrators (full access), branch managers (regional data), and workers (personal metrics). Implement notification system with toast messages for real-time updates. Create notification center with unread count and history. Add user preference storage for dashboard layout. Include role-specific widget visibility and permission controls.",
+            "status": "pending",
+            "testStrategy": "Test role-based views show appropriate content for each user type, notifications appear in real-time, notification center functions correctly, and user preferences persist across sessions."
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "title": "Implement Customer Management System",
+        "description": "Build comprehensive customer management interface with CRUD operations, search, filtering, and customer profiles",
+        "details": "Create customer listing page with sortable/filterable table showing all 10 mock customers. Build customer detail view with contact information, project history, and communication logs. Implement customer creation/editing forms with validation. Add search functionality by name, location, or project value. Create customer profile cards with project summaries and total values. Implement customer status tracking (active, inactive, prospect). Add export functionality for customer data and integration placeholders for Microsoft 365 contacts.",
+        "testStrategy": "Test CRUD operations work correctly, search and filtering return accurate results, form validation prevents invalid data entry, customer profiles display complete information, and table sorting/pagination functions properly. Verify mobile responsiveness.",
+        "priority": "medium",
+        "dependencies": [
+          2,
+          3
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Create Customer Data Models and Mock Data Structure",
+            "description": "Implement customer data models with TypeScript interfaces and generate comprehensive mock data for 10 realistic customers with Northern Ireland addresses, contact information, and project history",
+            "dependencies": [],
+            "details": "Create TypeScript interfaces for Customer, Contact, Address, and CustomerStatus types. Generate mock data for 10 customers including Sarah Connor, John Smith, Mary Johnson with realistic NI addresses (Belfast, Derry, Lisburn, etc.). Include contact details, company information, customer status (active/inactive/prospect), and project history references. Create utility functions for customer data manipulation and validation.",
+            "status": "pending",
+            "testStrategy": "Verify all customer data matches TypeScript interfaces, validate realistic NI addresses, test data consistency across customer records, and ensure proper relationship mappings to projects"
+          },
+          {
+            "id": 2,
+            "title": "Build Customer Listing Page with Table and Filtering",
+            "description": "Create customer listing page with sortable/filterable table displaying all customers with search functionality by name, location, and project value",
+            "dependencies": [
+              1
+            ],
+            "details": "Build responsive customer listing page using shadcn/ui Table component with sorting capabilities for name, location, status, and total project value. Implement search functionality with debounced input for real-time filtering by customer name, location, or project value. Add status filter dropdown (active/inactive/prospect) and pagination for large datasets. Include customer count indicators and export functionality.",
+            "status": "pending",
+            "testStrategy": "Test table sorting works correctly for all columns, search filters return accurate results, pagination handles large datasets properly, and mobile responsiveness maintains usability"
+          },
+          {
+            "id": 3,
+            "title": "Implement Customer Detail View and Profile Cards",
+            "description": "Build comprehensive customer detail view with contact information, project history, communication logs, and customer profile cards with project summaries",
+            "dependencies": [
+              1,
+              2
+            ],
+            "details": "Create customer detail page with tabbed interface showing contact information, project history, and communication logs. Build customer profile cards displaying project summaries, total values, and recent activity. Implement project history timeline with status indicators and value summaries. Add communication log section with date-sorted entries and contact interaction tracking.",
+            "status": "pending",
+            "testStrategy": "Verify customer details display correctly, project history shows accurate information, communication logs are properly sorted, and profile cards calculate correct totals"
+          },
+          {
+            "id": 4,
+            "title": "Create Customer Creation and Editing Forms",
+            "description": "Implement customer creation and editing forms with comprehensive validation, address handling, and status management",
+            "dependencies": [
+              1
+            ],
+            "details": "Build customer creation form with fields for name, company, contact details, address (with NI postcode validation), and status selection. Implement customer editing form with pre-populated data and update functionality. Add form validation using React Hook Form with Zod schema validation for required fields, email format, phone numbers, and postcode validation. Include form state management and error handling.",
+            "status": "pending",
+            "testStrategy": "Test form validation prevents invalid data entry, all fields save correctly, editing pre-populates existing data, validation errors display properly, and form submission handles success/error states"
+          },
+          {
+            "id": 5,
+            "title": "Add Customer Status Tracking and Export Functionality",
+            "description": "Implement customer status tracking system with status transitions and export functionality for customer data with Microsoft 365 integration placeholders",
+            "dependencies": [
+              1,
+              2,
+              3
+            ],
+            "details": "Create customer status management system with transitions between active, inactive, and prospect states. Implement status change logging and history tracking. Build export functionality for customer data in CSV/Excel format with customizable field selection. Add integration placeholders for Microsoft 365 contacts sync with mock API endpoints. Include status-based filtering and reporting capabilities.",
+            "status": "pending",
+            "testStrategy": "Test status changes update correctly, status history maintains accurate records, export functionality generates proper file formats, integration placeholders respond appropriately, and status-based filtering works accurately"
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "title": "Develop Project Management Interface",
+        "description": "Create project management system with project tracking, status updates, and project lifecycle management",
+        "details": "Build project listing with status-based filtering (active, completed, pending). Create project detail views showing customer info, project specifications, timeline, and financial details. Implement project creation wizard with multiple steps for customer selection, service type, and pricing. Add project status workflow (quote → approved → in-progress → completed). Create project calendar view with timeline visualization. Implement project assignment to staff and subcontractors. Add project notes and communication history tracking.",
+        "testStrategy": "Verify project CRUD operations work correctly, status transitions function properly, project assignment system works, timeline views are accurate, and project-customer relationships are maintained. Test project workflow from creation to completion.",
+        "priority": "medium",
+        "dependencies": [
+          2,
+          3
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Create Project Data Models and Database Schema",
+            "description": "Define TypeScript interfaces and data structures for the project management system",
+            "dependencies": [],
+            "details": "Create comprehensive TypeScript interfaces for Project, ProjectStatus, ProjectStage, ProjectAssignment, and ProjectNote entities. Define project status enum (quote, approved, in-progress, completed). Set up mock data structure with at least 15 sample projects covering different service types, statuses, and customer assignments. Create utility functions for project data manipulation and status transitions. Implement project filtering and sorting logic.",
+            "status": "pending",
+            "testStrategy": "Verify all TypeScript interfaces compile correctly, mock data covers all project states, and utility functions handle edge cases properly."
+          },
+          {
+            "id": 2,
+            "title": "Build Project Listing and Filtering Interface",
+            "description": "Create the main project listing page with status-based filtering and search functionality",
+            "dependencies": [
+              1
+            ],
+            "details": "Build responsive project listing table with columns for project name, customer, status, start date, and value. Implement status-based filtering (active, completed, pending) with filter buttons and counts. Add search functionality by project name, customer name, or service type. Create project status badges with appropriate colors. Implement table sorting by date, value, and status. Add pagination for large project lists.",
+            "status": "pending",
+            "testStrategy": "Test filtering works correctly for each status, search returns accurate results, table sorting functions properly, and pagination handles large datasets."
+          },
+          {
+            "id": 3,
+            "title": "Implement Project Detail Views and Information Display",
+            "description": "Create comprehensive project detail pages showing all project information and history",
+            "dependencies": [
+              1,
+              2
+            ],
+            "details": "Build project detail view with sections for customer information, project specifications, timeline, and financial details. Create project header with status, priority, and key metrics. Implement project timeline visualization showing key milestones and deadlines. Add project notes section with chronological history. Display assigned staff and subcontractors with contact information. Create project financial summary with costs, payments, and profit margins.",
+            "status": "pending",
+            "testStrategy": "Verify project details load correctly, timeline visualization displays accurately, notes appear chronologically, and financial calculations are correct."
+          },
+          {
+            "id": 4,
+            "title": "Create Project Creation Wizard and Status Workflow",
+            "description": "Build multi-step project creation process and implement status transition workflow",
+            "dependencies": [
+              1,
+              2,
+              3
+            ],
+            "details": "Create multi-step project creation wizard with customer selection, service type configuration, and pricing setup. Implement form validation for each step with progress indicators. Build project status workflow system with automated transitions (quote → approved → in-progress → completed). Add status change confirmation dialogs and audit logging. Create project templates for common service types. Implement project duplication functionality for similar projects.",
+            "status": "pending",
+            "testStrategy": "Test wizard navigation works smoothly, form validation prevents invalid submissions, status transitions follow business rules, and project templates create valid projects."
+          },
+          {
+            "id": 5,
+            "title": "Develop Project Calendar and Assignment Management",
+            "description": "Build calendar view with timeline visualization and staff assignment functionality",
+            "dependencies": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "details": "Create project calendar view with monthly and weekly layouts showing project timelines. Implement drag-and-drop functionality for project scheduling. Build staff assignment interface with availability checking and workload visualization. Create project assignment notifications and reminders. Add project conflict detection for overlapping schedules. Implement project calendar export functionality. Create project dashboard with key metrics and upcoming deadlines.",
+            "status": "pending",
+            "testStrategy": "Verify calendar displays projects correctly, drag-and-drop scheduling works, staff assignments prevent conflicts, and notifications trigger appropriately."
+          }
+        ]
+      },
+      {
+        "id": 7,
+        "title": "Build User Management and Role-Based Access Control",
+        "description": "Implement user authentication system with role-based permissions for admin, branch managers, and subcontractors",
+        "details": "Create user authentication system with mock login (no real auth for demo). Implement role-based access control for Admin, Branch Manager, Branch Worker, and Subcontractor roles. Build user profile management with contact details and role assignments. Create permission system controlling access to customers, projects, and analytics. Implement user listing and management interface for administrators. Add user activity logging and session management. Create different navigation and feature access based on user roles.",
+        "testStrategy": "Test role-based access restrictions work correctly, users can only access permitted features, role switching demonstrates different capabilities, user management functions work for admins, and session handling is secure. Verify permissions are consistently enforced.",
+        "priority": "medium",
+        "dependencies": [
+          2,
+          3
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Implement Authentication System with Mock Login",
+            "description": "Create user authentication system with mock login functionality, session management, and basic security measures for demo purposes",
+            "dependencies": [],
+            "details": "Build login form with username/password fields, implement mock authentication that validates against predefined user credentials (admin@hhi.com/admin123, manager@hhi.com/manager123, etc.). Create session context using React Context API to store current user state. Implement login/logout functionality with session persistence using localStorage. Add protected route wrapper component to guard authenticated pages. Create auth service with login, logout, and getCurrentUser methods. Add basic form validation and error handling for invalid credentials.",
+            "status": "pending",
+            "testStrategy": "Test login with valid/invalid credentials, verify session persistence across page refreshes, test logout functionality clears session, and verify protected routes redirect to login when unauthenticated."
+          },
+          {
+            "id": 2,
+            "title": "Create Role-Based Access Control System",
+            "description": "Implement RBAC system with four user roles (Admin, Branch Manager, Branch Worker, Subcontractor) and permission management",
+            "dependencies": [
+              1
+            ],
+            "details": "Define user roles enum with Admin, Branch Manager, Branch Worker, and Subcontractor. Create permission system with actions (read, write, delete) and resources (customers, projects, analytics, users). Build role-permission mapping defining what each role can access. Implement usePermissions hook to check user permissions in components. Create PermissionGate component to conditionally render UI based on user permissions. Add role-based navigation filtering to show/hide menu items. Implement permission checking in API calls.",
+            "status": "pending",
+            "testStrategy": "Test each role sees only permitted navigation items, verify permission gates hide/show correct components, test API calls respect role permissions, and verify role switching demonstrates different access levels."
+          },
+          {
+            "id": 3,
+            "title": "Build User Profile Management Interface",
+            "description": "Create user profile management system with contact details, role assignments, and profile editing capabilities",
+            "dependencies": [
+              1,
+              2
+            ],
+            "details": "Create user profile page showing current user details (name, email, role, contact info). Build profile editing form with validation for updating personal information. Implement avatar upload functionality (mock file upload for demo). Create user preferences section for theme, notifications, and display settings. Add password change functionality with current/new password validation. Build user profile context to manage profile state across the application. Implement profile update API calls and success/error handling.",
+            "status": "pending",
+            "testStrategy": "Test profile viewing displays correct user information, profile editing updates user details correctly, password change validation works properly, and avatar upload functionality works in demo mode."
+          },
+          {
+            "id": 4,
+            "title": "Create User Management Interface for Administrators",
+            "description": "Build administrative interface for managing users, including user listing, creation, editing, and role assignments",
+            "dependencies": [
+              1,
+              2,
+              3
+            ],
+            "details": "Create user management page accessible only to Admin role. Build user listing table with columns for name, email, role, status, and actions. Implement user creation form with fields for basic info and role assignment. Add user editing functionality to update details and change roles. Create user status management (active/inactive) with toggle functionality. Implement user search and filtering by role or status. Add bulk actions for user management. Create user invitation system (mock email for demo). Add user deletion with confirmation dialog.",
+            "status": "pending",
+            "testStrategy": "Test admin can view all users, create new users with proper role assignment, edit existing users, change user roles, manage user status, and perform bulk operations. Verify non-admin users cannot access user management."
+          },
+          {
+            "id": 5,
+            "title": "Implement User Activity Logging and Role-Based Navigation",
+            "description": "Create activity logging system and implement role-based navigation with different interface layouts for each user role",
+            "dependencies": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "details": "Build activity logging service to track user actions (login, logout, page visits, data changes). Create activity log storage using localStorage for demo purposes. Implement role-based navigation menus with different sidebar layouts for each role. Create dashboard variants showing role-appropriate widgets and data. Add user activity timeline in profile showing recent actions. Implement breadcrumb navigation that adapts to user permissions. Create role-specific landing pages after login. Add activity export functionality for administrators.",
+            "status": "pending",
+            "testStrategy": "Test activity logging captures user actions accurately, role-based navigation shows appropriate menus for each role, dashboard variants display relevant information, activity timeline shows recent actions, and admin can view/export user activity logs."
+          }
+        ]
+      },
+      {
+        "id": 8,
+        "title": "Implement Interactive Demo Features and Guided Tours",
+        "description": "Create demo-specific features including guided tours, demo mode indicators, and interactive walkthroughs",
+        "details": "Integrate React Joyride for guided tours of main features. Create demo mode indicators showing this is a demonstration version. Build interactive walkthrough scenarios for customer journey, quote-to-contract process, and complaint resolution. Implement auto-advance features for timed demonstrations. Create demo reset functionality to restore initial state. Add demo-specific animations and transitions. Build presentation mode with 30-minute structured flow covering introduction, core features, advanced features, and Q&A sections.",
+        "testStrategy": "Test guided tours work smoothly across all features, demo mode indicators are visible, interactive scenarios function correctly, auto-advance timing works properly, and demo reset restores initial state. Verify presentation flow timing and transitions.",
+        "priority": "medium",
+        "dependencies": [
+          4,
+          5,
+          6
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Setup React Joyride and Demo Mode Infrastructure",
+            "description": "Install and configure React Joyride library, create demo mode context, and implement demo mode indicators",
+            "dependencies": [],
+            "details": "Install react-joyride package. Create DemoContext with React Context API to manage demo mode state globally. Build DemoModeIndicator component with animated badge showing 'DEMO MODE' in header. Create demo mode toggle functionality. Setup basic Joyride configuration with custom styling to match HHI theme colors. Create demo mode storage in localStorage to persist state between sessions.",
+            "status": "pending",
+            "testStrategy": "Test demo mode context provides correct state, demo indicator appears when enabled, Joyride library loads without errors, and demo mode persists across page refreshes."
+          },
+          {
+            "id": 2,
+            "title": "Create Guided Tour Steps and Interactive Walkthroughs",
+            "description": "Build comprehensive guided tours for main features and create interactive walkthrough scenarios",
+            "dependencies": [
+              1
+            ],
+            "details": "Create tour step definitions for dashboard, customer management, project tracking, and analytics features. Build interactive walkthrough scenarios: customer journey (prospect to contract), quote-to-contract process, and complaint resolution workflow. Implement tour data structure with step positioning, content, and actions. Create TourManager component to handle tour navigation and state. Design tour tooltips with HHI branding and clear call-to-action buttons.",
+            "status": "pending",
+            "testStrategy": "Test all tour steps display correctly, interactive scenarios guide users through complete workflows, tour navigation works smoothly, and walkthrough scenarios demonstrate key features effectively."
+          },
+          {
+            "id": 3,
+            "title": "Implement Auto-Advance and Timed Demo Features",
+            "description": "Build auto-advance functionality for timed demonstrations and create automated demo progression",
+            "dependencies": [
+              2
+            ],
+            "details": "Create AutoAdvanceManager with configurable timing controls. Implement timed progression through tour steps with pause/resume functionality. Build demo timer component with visual progress indicator. Create auto-advance settings panel for presentation control. Implement smart timing that adjusts based on content complexity. Add keyboard shortcuts for manual control during presentations (space to pause, arrow keys to navigate).",
+            "status": "pending",
+            "testStrategy": "Test auto-advance timing works correctly, pause/resume functionality responds properly, timer component displays accurate progress, and keyboard shortcuts work during presentations."
+          },
+          {
+            "id": 4,
+            "title": "Create Demo Reset Functionality and State Management",
+            "description": "Implement demo reset functionality to restore initial state and manage demo data lifecycle",
+            "dependencies": [
+              1
+            ],
+            "details": "Build DemoResetManager to restore mock data to initial state. Create reset functionality for customer data, project statuses, and user interactions. Implement demo session tracking with unique session IDs. Build reset confirmation modal with options for full or partial reset. Create demo state snapshots for quick restoration. Implement cleanup functions for demo artifacts and temporary data.",
+            "status": "pending",
+            "testStrategy": "Test demo reset restores all data correctly, session tracking works properly, reset confirmation prevents accidental resets, and cleanup functions remove temporary demo data completely."
+          },
+          {
+            "id": 5,
+            "title": "Build Presentation Mode with Structured Demo Flow",
+            "description": "Create presentation mode with 30-minute structured flow including demo-specific animations and transitions",
+            "dependencies": [
+              3,
+              4
+            ],
+            "details": "Build PresentationMode component with structured 30-minute flow: introduction (5 min), core features (10 min), advanced features (10 min), Q&A (5 min). Create smooth transitions between demo sections with custom animations. Implement presentation timer with section indicators. Build presenter notes overlay with talking points and timing cues. Create presentation controls for forward/backward navigation. Add demo-specific animations using Framer Motion for engaging transitions between features.",
+            "status": "pending",
+            "testStrategy": "Test presentation mode follows correct timing structure, transitions work smoothly between sections, presenter notes display accurately, presentation controls function properly, and animations enhance the demo experience without causing performance issues."
+          }
+        ]
+      },
+      {
+        "id": 9,
+        "title": "Develop Integration Previews and Advanced Features",
+        "description": "Create preview interfaces for Microsoft 365 integration, WhatsApp communication, and complaint management system",
+        "details": "Build Microsoft 365 integration preview showing calendar sync, contact management, and email integration mockups. Create WhatsApp integration simulation with message templates and customer communication logs. Implement complaint management system with ticket creation, status tracking, and resolution workflow. Add notification system for real-time updates. Create reporting interface with custom report generation. Build subcontractor portal with job assignments and progress tracking. Implement basic CRM analytics with customer lifetime value and service performance metrics.",
+        "testStrategy": "Verify integration previews display realistic mockups, WhatsApp simulation shows proper message flows, complaint system handles ticket lifecycle correctly, notifications appear appropriately, and reporting generates accurate data. Test subcontractor portal functionality.",
+        "priority": "low",
+        "dependencies": [
+          5,
+          6,
+          7
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Build Microsoft 365 Integration Preview Interface",
+            "description": "Create a comprehensive preview interface that demonstrates Microsoft 365 integration capabilities including calendar sync, contact management, and email integration mockups",
+            "dependencies": [],
+            "details": "Develop a dedicated Microsoft 365 integration page with three main sections: Calendar Sync Preview showing synchronized appointments and scheduling conflicts, Contact Management displaying imported contacts with sync status indicators, and Email Integration mockup with sample email threads and automated responses. Use realistic sample data and create interactive mockups that demonstrate the integration workflow without actual API connections. Include toggle switches and status indicators to show sync states.",
+            "status": "pending",
+            "testStrategy": "Verify all three integration previews display realistic mockups, calendar sync shows proper appointment data, contact management displays sample contacts with sync indicators, and email integration shows realistic email threads. Test responsive design across devices."
+          },
+          {
+            "id": 2,
+            "title": "Implement WhatsApp Communication Simulation",
+            "description": "Create a WhatsApp integration simulation with message templates, customer communication logs, and realistic messaging interface",
+            "dependencies": [
+              1
+            ],
+            "details": "Build a WhatsApp-style messaging interface with customer communication logs showing message history, read receipts, and timestamps. Create message template system with predefined responses for common scenarios (appointment confirmations, follow-ups, service updates). Implement customer communication dashboard showing active conversations, response times, and message analytics. Include chat interface with emoji support and file attachment previews. Add automated response settings and business hours configuration.",
+            "status": "pending",
+            "testStrategy": "Verify WhatsApp simulation shows proper message flows, message templates load correctly, customer communication logs display chronologically, chat interface supports emoji and attachments, and automated response settings function properly."
+          },
+          {
+            "id": 3,
+            "title": "Develop Complaint Management System",
+            "description": "Build a comprehensive complaint management system with ticket creation, status tracking, resolution workflow, and customer communication integration",
+            "dependencies": [
+              2
+            ],
+            "details": "Create complaint ticket system with forms for issue submission, priority levels, and category classification. Implement status tracking workflow (open → investigating → resolved → closed) with automated notifications. Build resolution management interface with response templates, escalation procedures, and customer satisfaction surveys. Include complaint analytics dashboard showing resolution times, complaint categories, and customer satisfaction scores. Add integration with existing customer profiles and project history.",
+            "status": "pending",
+            "testStrategy": "Verify complaint system handles ticket lifecycle correctly, status transitions work properly, resolution workflow functions as expected, notifications trigger appropriately, and complaint analytics display accurate data with proper customer integration."
+          },
+          {
+            "id": 4,
+            "title": "Build Notification System and Reporting Interface",
+            "description": "Implement real-time notification system for updates across all modules and create comprehensive reporting interface with custom report generation",
+            "dependencies": [
+              3
+            ],
+            "details": "Develop notification center with real-time alerts for project updates, customer communications, complaint status changes, and system events. Create notification preferences panel allowing users to customize alert types and delivery methods. Build reporting interface with pre-built reports (financial, project performance, customer analytics) and custom report builder with drag-and-drop functionality. Include report scheduling, export options (PDF, Excel, CSV), and dashboard integration with key metrics visualization.",
+            "status": "pending",
+            "testStrategy": "Verify notifications appear in real-time for relevant events, notification preferences save correctly, reporting interface generates accurate data, custom reports can be created and saved, and export functionality works properly across different formats."
+          },
+          {
+            "id": 5,
+            "title": "Create Subcontractor Portal and CRM Analytics",
+            "description": "Build subcontractor portal with job assignments and progress tracking, plus implement basic CRM analytics with customer lifetime value and service performance metrics",
+            "dependencies": [
+              4
+            ],
+            "details": "Develop subcontractor portal with job assignment dashboard, progress tracking forms, and payment status views. Create subcontractor profile management with skills, availability, and performance ratings. Implement job assignment workflow with approval processes and progress updates. Build CRM analytics dashboard showing customer lifetime value calculations, service performance metrics, revenue trends, and customer retention rates. Include predictive analytics for customer behavior and performance forecasting with interactive charts and KPI widgets.",
+            "status": "pending",
+            "testStrategy": "Verify subcontractor portal displays job assignments correctly, progress tracking functions properly, payment status updates accurately, CRM analytics calculate customer lifetime value correctly, performance metrics display accurate data, and predictive analytics provide meaningful insights."
+          }
+        ]
+      },
+      {
+        "id": 10,
+        "title": "Performance Optimization and Demo Deployment Preparation",
+        "description": "Optimize application performance, implement caching, and prepare for demo deployment with monitoring",
+        "details": "Optimize application performance to achieve <2s page load times through code splitting, lazy loading, and bundle optimization. Implement caching strategies for mock data and API responses. Add loading states and skeleton screens for better UX. Optimize images and assets for web delivery. Implement error boundaries and comprehensive error handling. Add performance monitoring and analytics. Create deployment configuration for demo environment. Build maintenance tools for demo data management and reset functionality. Add SEO optimization and meta tags for professional presentation.",
+        "testStrategy": "Test page load times are under 2 seconds, application responds smoothly under load, error handling works properly, caching improves performance, deployment process is reliable, and demo environment is stable. Verify SEO optimization and professional presentation quality.",
+        "priority": "medium",
+        "dependencies": [
+          8,
+          9
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Implement Code Splitting and Bundle Optimization",
+            "description": "Optimize application bundle size and implement code splitting to achieve sub-2 second page load times",
+            "dependencies": [],
+            "details": "Configure Next.js dynamic imports for route-based code splitting. Implement lazy loading for heavy components using React.lazy() and Suspense. Optimize bundle with webpack-bundle-analyzer to identify large dependencies. Configure tree shaking for unused code elimination. Implement preloading for critical routes. Add bundle size monitoring and performance budgets. Configure compression and minification for production builds.",
+            "status": "pending",
+            "testStrategy": "Measure page load times with Lighthouse, verify bundle sizes are under target thresholds, test lazy loading works properly, and confirm code splitting reduces initial bundle size by at least 30%."
+          },
+          {
+            "id": 2,
+            "title": "Implement Caching Strategies and Loading States",
+            "description": "Add comprehensive caching for API responses and mock data with improved UX through loading states",
+            "dependencies": [
+              1
+            ],
+            "details": "Implement React Query for API response caching with stale-while-revalidate strategy. Add browser localStorage caching for mock data with expiration. Create skeleton screens for dashboard widgets, customer lists, and quote forms. Implement loading spinners and progress indicators. Add optimistic updates for better perceived performance. Configure cache invalidation strategies. Build error boundaries with fallback UI components.",
+            "status": "pending",
+            "testStrategy": "Test caching reduces API calls by 80%, loading states display correctly during data fetching, skeleton screens match final component layout, and error boundaries handle failures gracefully."
+          },
+          {
+            "id": 3,
+            "title": "Optimize Images and Assets for Web Delivery",
+            "description": "Optimize all images, icons, and static assets for fast web delivery and mobile performance",
+            "dependencies": [
+              2
+            ],
+            "details": "Implement Next.js Image component for automatic optimization. Convert images to WebP format with fallbacks. Add responsive images with srcset for different screen sizes. Optimize SVG icons and implement icon sprites. Configure asset compression and CDN delivery. Add lazy loading for images below the fold. Implement progressive image loading with blur-up effect. Optimize fonts with font-display: swap and preloading.",
+            "status": "pending",
+            "testStrategy": "Verify images load 50% faster, WebP format is used when supported, responsive images serve appropriate sizes, and cumulative layout shift is minimized. Test performance on 3G connections."
+          },
+          {
+            "id": 4,
+            "title": "Add Performance Monitoring and Analytics",
+            "description": "Implement comprehensive performance monitoring, analytics, and error tracking for production insights",
+            "dependencies": [
+              3
+            ],
+            "details": "Integrate Vercel Analytics or Google Analytics for user behavior tracking. Add Web Vitals monitoring for Core Web Vitals metrics. Implement error tracking with Sentry or similar service. Create performance dashboard showing page load times, user interactions, and error rates. Add custom performance metrics for key user journeys. Configure alerts for performance degradation. Implement A/B testing infrastructure for optimization experiments.",
+            "status": "pending",
+            "testStrategy": "Verify analytics track user interactions correctly, performance metrics are captured accurately, error tracking reports issues with stack traces, and monitoring dashboard displays real-time data. Test alert notifications work properly."
+          },
+          {
+            "id": 5,
+            "title": "Create Demo Deployment Configuration and Maintenance Tools",
+            "description": "Build deployment configuration for demo environment with data management and SEO optimization",
+            "dependencies": [
+              4
+            ],
+            "details": "Configure Vercel or Netlify deployment with environment variables for demo mode. Create demo data seeding scripts with realistic HHI-specific content. Build admin panel for demo data reset and maintenance. Add SEO optimization with meta tags, Open Graph tags, and JSON-LD structured data. Implement sitemap generation and robots.txt. Create deployment scripts with automated testing. Add demo environment monitoring and uptime checks. Configure custom domain with SSL certificates.",
+            "status": "pending",
+            "testStrategy": "Test deployment process is automated and reliable, demo data resets properly, SEO tags are correctly implemented, site achieves 90+ Lighthouse SEO score, and demo environment has 99% uptime. Verify all meta tags display correctly in social media previews."
+          }
+        ]
+      }
+    ],
+    "metadata": {
+      "created": "2025-07-16T12:23:43.433Z",
+      "updated": "2025-07-16T13:05:53.386Z",
+      "description": "Tasks for master context"
+    }
+  }
+}

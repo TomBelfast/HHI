@@ -1,0 +1,35 @@
+# Example PRD Template
+
+## Project Name
+[Your Project Name]
+
+## Project Description
+[Brief description of what the project does]
+
+## Goals
+- [Goal 1]
+- [Goal 2]
+- [Goal 3]
+
+## Features
+- [Feature 1]
+- [Feature 2]
+- [Feature 3]
+
+## Technical Requirements
+- [Requirement 1]
+- [Requirement 2]
+- [Requirement 3]
+
+## User Stories
+- As a [user type], I want [feature] so that [benefit]
+
+## Acceptance Criteria
+- [Criteria 1]
+- [Criteria 2]
+- [Criteria 3]
+
+## Timeline
+- [Phase 1]: [Description]
+- [Phase 2]: [Description]
+- [Phase 3]: [Description] 

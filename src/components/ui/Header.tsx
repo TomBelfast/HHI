@@ -1,0 +1,88 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+
+export function Header() {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isDark, setIsDark] = useState(false);
+
+  useEffect(() => {
+    // Sprawdź preferencje z localStorage lub systemowe
+    const saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      setIsDark(true);
+      document.documentElement.classList.add('dark');
+    } else {
+      setIsDark(false);
+      document.documentElement.classList.remove('dark');
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    const newTheme = !isDark;
+    setIsDark(newTheme);
+    localStorage.setItem('theme', newTheme ? 'dark' : 'light');
+    
+    if (newTheme) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  };
+
+  return (
+    <header className="bg-white shadow-sm border-b border-gray-200 dark:bg-background dark:border-border">
+      <div className="flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
+        {/* Mobile menu button */}
+        <button className="lg:hidden p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 dark:hover:bg-muted dark:text-muted-foreground">
+          <span className="sr-only">Open sidebar</span>
+          ☰
+        </button>
+
+        {/* Search */}
+        <div className="flex-1 max-w-lg mx-4">
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <span className="text-gray-400 dark:text-muted-foreground">🔍</span>
+            </div>
+            <input
+              type="text"
+              placeholder="Search customers, projects..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-primary focus:border-primary sm:text-sm dark:bg-card dark:text-foreground dark:border-border dark:placeholder-muted-foreground"
+            />
+          </div>
+        </div>
+
+        {/* Right side */}
+        <div className="flex items-center space-x-4">
+          {/* Dark mode toggle */}
+          <button
+            className="p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 dark:hover:bg-muted dark:text-muted-foreground"
+            onClick={toggleTheme}
+            aria-label="Toggle dark mode"
+          >
+            {isDark ? '☀️' : '🌙'}
+          </button>
+
+          {/* Notifications */}
+          <button className="p-2 text-gray-400 hover:text-gray-500 hover:bg-gray-100 rounded-md relative dark:hover:bg-muted dark:text-muted-foreground">
+            <span className="text-lg">🔔</span>
+            <span className="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-400 ring-2 ring-white dark:ring-background"></span>
+          </button>
+
+          {/* Profile dropdown */}
+          <div className="relative">
+            <button className="flex items-center space-x-2 p-2 text-gray-400 hover:text-gray-500 hover:bg-gray-100 rounded-md dark:hover:bg-muted dark:text-muted-foreground">
+              <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center">
+                <span className="text-sm font-medium text-primary-foreground">A</span>
+              </div>
+              <span className="hidden md:block text-sm font-medium text-gray-700 dark:text-foreground">Admin</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+  );
+} 

@@ -1,0 +1,130 @@
+# PRD Demo – HHI CRM System z Mock Data
+
+## 1. Cel wersji demo
+
+Stworzenie **w pełni funkcjonalnej aplikacji demo** HHI CRM System z:
+- **10 mock klientów** z pełnymi projektami
+- **Wszystkie funkcjonalności** działające z realistycznymi danymi
+- **Profesjonalny design system** z kolorystyką HHI
+- **Interaktywne demonstracje** wszystkich procesów biznesowych
+- **Możliwość testowania** przez potencjalnych użytkowników
+
+## 2. Design System & Branding
+
+### 2.1. Kolorystyka (HHI Professional Theme)
+- Primary: Warm Orange (oklch(0.8664 0.0728 12.3312))
+- Secondary: Professional Blue (oklch(0.7973 0.0831 235.0238))
+- Accent: Success Green (oklch(0.9517 0.2169 115.6724))
+- Typography: Poppins (sans), Georgia (serif), Roboto Mono (mono)
+
+## 3. Mock Data Structure
+
+### 3.1. Mock Customers (10 Realistic Profiles)
+- Mrs. Sarah Connor (Belfast) - 2 projects, £15,800
+- Mr. John Smith (Newtownabbey) - 1 project, £8,500
+- Mrs. Mary Johnson (Lisburn) - 1 project, £12,200
+- Mr. David Wilson (Bangor) - 3 projects, £22,400
+- Mrs. Emma Brown (Coleraine) - 1 project, £6,800
+- Mr. Robert Taylor (Belfast) - 2 projects, £18,900
+- Mrs. Lisa Anderson (Newtownabbey) - 1 project, £9,750
+- Mr. Michael O'Brien (Lisburn) - 2 projects, £16,200
+- Mrs. Patricia Clarke (Bangor) - 1 project, £7,400
+- Mr. James Murphy (Coleraine) - 2 projects, £13,600
+
+### 3.2. Mock Projects (15 projektów w różnych statusach)
+- Complete Bathroom Refurbishment (PROJ-001) - £8,500
+- Kitchen Installation (PROJ-002) - £12,200
+- Composite Front Door & Windows (PROJ-003) - £5,800
+- HD Decking Installation (PROJ-004) - £4,200
+- PVC Fascia & Guttering (PROJ-005) - £3,400
+
+### 3.3. Mock Users (Staff & Subcontractors)
+- Admin User (System Administrator)
+- Lindsay Murphy (Branch Manager, Belfast)
+- Alan McKenna (Branch Worker, Newtownabbey)
+- Premier Bathroom Solutions (Subcontractor)
+- Superior Windows Ltd (Subcontractor)
+
+### 3.4. Mock Analytics Data
+- Total Projects: 127
+- Active Projects: 45
+- Monthly Revenue: £245,000
+- Conversion Rate: 28.5%
+- Average Project Value: £8,750
+
+## 4. Demo Features & Scenarios
+
+### 4.1. Customer Journey Demo Scenarios
+- New Customer Contact workflow
+- Quote to Contract Process
+- Complaint Resolution system
+
+### 4.2. Interactive Demo Components
+- Dashboard Widgets (Live Data)
+- Interactive Tables (Sortable, filterable)
+- Demo Animations (Simulated real-time notifications)
+
+### 4.3. Demo User Flows
+- Administrator Dashboard
+- Branch Manager Experience
+- Customer Portal
+- Subcontractor Interface
+
+## 5. Technical Implementation (Demo Version)
+
+### 5.1. Technology Stack
+- Frontend: React 18 + TypeScript, Tailwind CSS, Shadcn/ui
+- Backend: JSON Server / MSW (Mock Service Worker)
+- State: Zustand (local state)
+- Charts: Recharts
+- Icons: Lucide React
+
+### 5.2. Mock Data Architecture
+- Central mock data store
+- Real-time simulation
+- Demo-specific features
+
+### 5.3. Demo-Specific Features
+- Guided Tours (React Joyride)
+- Demo Mode Indicators
+- Auto-Advance Scenarios
+
+## 6. Demo Presentation Structure
+
+### 6.1. Demo Flow (30-minute presentation)
+- Introduction (5 min)
+- Core Features Demo (15 min)
+- Advanced Features (7 min)
+- Q&A & Customization (3 min)
+
+## 7. Success Metrics for Demo
+- Stakeholder Engagement
+- Technical Validation
+- Business Case Strength
+
+## 8. Post-Demo Implementation Plan
+- Immediate Next Steps
+- Demo to Production Migration
+- Training & Rollout
+
+## 9. Demo Deployment Requirements
+- Technical Requirements
+- Demo Environment
+- Demo Maintenance
+
+## 10. Investment & Timeline
+- Demo Development Cost: 2.5 weeks
+- Demo Value Proposition
+- Success Guarantee
+
+## Wymagania techniczne
+- Next.js 18+ z App Router
+- TypeScript
+- Tailwind CSS z custom HHI theme
+- Responsywny design (mobile-first)
+- Mock API z JSON Server/MSW
+- Real-time notifications
+- Interactive demo features
+- Performance optimization (< 2s page loads)
+- Microsoft 365 integration preview
+- WhatsApp integration simulation 
