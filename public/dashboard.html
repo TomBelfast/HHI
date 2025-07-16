@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HHI Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+    <div class="min-h-screen p-6">
+        <div class="max-w-7xl mx-auto">
+            <!-- Header -->
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold text-gray-900 mb-2">HHI Project Dashboard</h1>
+                <p class="text-gray-600">Welcome back! Here's your project overview.</p>
+            </div>
+
+            <!-- KPI Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 mb-8">
+                <div class="bg-white rounded-lg border shadow-sm p-6">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-sm font-medium text-gray-900">Active Projects</h3>
+                        <div class="h-4 w-4 bg-blue-500 rounded"></div>
+                    </div>
+                    <div class="text-2xl font-bold text-gray-900">14</div>
+                    <p class="text-xs text-gray-600">Projects in progress</p>
+                </div>
+
+                <div class="bg-white rounded-lg border shadow-sm p-6">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-sm font-medium text-gray-900">Weekly Installations</h3>
+                        <div class="h-4 w-4 bg-green-500 rounded"></div>
+                    </div>
+                    <div class="text-2xl font-bold text-gray-900">2</div>
+                    <p class="text-xs text-gray-600">This week</p>
+                </div>
+
+                <div class="bg-white rounded-lg border shadow-sm p-6">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-sm font-medium text-gray-900">Pending Measurements</h3>
+                        <div class="h-4 w-4 bg-yellow-500 rounded"></div>
+                    </div>
+                    <div class="text-2xl font-bold text-gray-900">2</div>
+                    <p class="text-xs text-gray-600">Awaiting survey</p>
+                </div>
+
+                <div class="bg-white rounded-lg border shadow-sm p-6">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-sm font-medium text-gray-900">Overdue Actions</h3>
+                        <div class="h-4 w-4 bg-red-500 rounded"></div>
+                    </div>
+                    <div class="text-2xl font-bold text-gray-900">3</div>
+                    <p class="text-xs text-gray-600">Need attention</p>
+                </div>
+
+                <div class="bg-white rounded-lg border shadow-sm p-6">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-sm font-medium text-gray-900">Monthly Revenue</h3>
+                        <div class="h-4 w-4 bg-emerald-500 rounded"></div>
+                    </div>
+                    <div class="text-2xl font-bold text-gray-900">£31,400</div>
+                    <p class="text-xs text-gray-600">This month</p>
+                </div>
+
+                <div class="bg-white rounded-lg border shadow-sm p-6">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-sm font-medium text-gray-900">Completion Rate</h3>
+                        <div class="h-4 w-4 bg-purple-500 rounded"></div>
+                    </div>
+                    <div class="text-2xl font-bold text-gray-900">13%</div>
+                    <p class="text-xs text-gray-600">Overall success</p>
+                </div>
+            </div>
+
+            <!-- Recent Projects -->
+            <div class="bg-white rounded-lg border shadow-sm mb-8">
+                <div class="p-6 border-b">
+                    <h2 class="text-lg font-semibold text-gray-900">Recent Projects</h2>
+                </div>
+                <div class="p-6">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between p-4 border rounded-lg">
+                            <div>
+                                <h3 class="font-semibold text-gray-900">Sarah Johnson</h3>
+                                <p class="text-sm text-gray-600">kitchen - belfast</p>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm font-medium text-gray-900">Stage 7</div>
+                                <div class="text-sm text-gray-600">£8,500</div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between p-4 border rounded-lg">
+                            <div>
+                                <h3 class="font-semibold text-gray-900">David Wilson</h3>
+                                <p class="text-sm text-gray-600">bathroom - belfast</p>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm font-medium text-gray-900">Stage 4</div>
+                                <div class="text-sm text-gray-600">£12,300</div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between p-4 border rounded-lg">
+                            <div>
+                                <h3 class="font-semibold text-gray-900">Lisa Chen</h3>
+                                <p class="text-sm text-gray-600">kitchen - belfast</p>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm font-medium text-gray-900">Stage 2</div>
+                                <div class="text-sm text-gray-600">£15,750</div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between p-4 border rounded-lg">
+                            <div>
+                                <h3 class="font-semibold text-gray-900">James Patterson</h3>
+                                <p class="text-sm text-gray-600">bathroom - belfast</p>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm font-medium text-gray-900">Stage 3</div>
+                                <div class="text-sm text-gray-600">£9,800</div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between p-4 border rounded-lg">
+                            <div>
+                                <h3 class="font-semibold text-gray-900">Emma Thompson</h3>
+                                <p class="text-sm text-gray-600">kitchen - lisburn</p>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm font-medium text-gray-900">Stage 6</div>
+                                <div class="text-sm text-gray-600">£13,200</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Branch Summary -->
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                <div class="bg-white rounded-lg border shadow-sm p-6">
+                    <div class="mb-4">
+                        <h3 class="text-sm font-medium text-gray-900">Belfast</h3>
+                    </div>
+                    <div class="text-2xl font-bold text-gray-900">4</div>
+                    <p class="text-xs text-gray-600">Active projects</p>
+                </div>
+
+                <div class="bg-white rounded-lg border shadow-sm p-6">
+                    <div class="mb-4">
+                        <h3 class="text-sm font-medium text-gray-900">Lisburn</h3>
+                    </div>
+                    <div class="text-2xl font-bold text-gray-900">4</div>
+                    <p class="text-xs text-gray-600">Active projects</p>
+                </div>
+
+                <div class="bg-white rounded-lg border shadow-sm p-6">
+                    <div class="mb-4">
+                        <h3 class="text-sm font-medium text-gray-900">Bangor</h3>
+                    </div>
+                    <div class="text-2xl font-bold text-gray-900">3</div>
+                    <p class="text-xs text-gray-600">Active projects</p>
+                </div>
+
+                <div class="bg-white rounded-lg border shadow-sm p-6">
+                    <div class="mb-4">
+                        <h3 class="text-sm font-medium text-gray-900">Newtownabbey</h3>
+                    </div>
+                    <div class="text-2xl font-bold text-gray-900">2</div>
+                    <p class="text-xs text-gray-600">Active projects</p>
+                </div>
+
+                <div class="bg-white rounded-lg border shadow-sm p-6">
+                    <div class="mb-4">
+                        <h3 class="text-sm font-medium text-gray-900">Coleraine</h3>
+                    </div>
+                    <div class="text-2xl font-bold text-gray-900">2</div>
+                    <p class="text-xs text-gray-600">Active projects</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
