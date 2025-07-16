@@ -338,6 +338,61 @@
             "details": "Create customer status management system with transitions between active, inactive, and prospect states. Implement status change logging and history tracking. Build export functionality for customer data in CSV/Excel format with customizable field selection. Add integration placeholders for Microsoft 365 contacts sync with mock API endpoints. Include status-based filtering and reporting capabilities.",
             "status": "done",
             "testStrategy": "Test status changes update correctly, status history maintains accurate records, export functionality generates proper file formats, integration placeholders respond appropriately, and status-based filtering works accurately"
+          },
+          {
+            "id": 6,
+            "title": "Create Customer Data Models and Mock Data Structure",
+            "description": "Define TypeScript interfaces for customer data and create comprehensive mock customer dataset",
+            "dependencies": [],
+            "details": "Create TypeScript interfaces for Customer, CustomerStatus, ContactInfo, and related types. Generate 10 realistic customer profiles with Northern Ireland addresses, contact information, and business details. Include customer status tracking (active, inactive, prospect) and metadata like creation dates and last contact. Store mock data in /data/customers.ts with proper typing and validation helpers.",
+            "status": "done",
+            "testStrategy": "Verify all customer data conforms to TypeScript interfaces, test data consistency and realistic address/contact formats, validate customer status enum values"
+          },
+          {
+            "id": 7,
+            "title": "Build Customer Listing Page with Table and Filtering",
+            "description": "Create customer listing page with sortable/filterable table displaying all customers",
+            "dependencies": [
+              6
+            ],
+            "details": "Build /app/customers/page.tsx with DataTable component using shadcn/ui Table. Implement column sorting for name, location, status, and project value. Add filtering capabilities by customer status, location, and project value ranges. Include pagination for large datasets and search functionality by customer name. Use zustand for state management of filters and sorting preferences.",
+            "status": "done",
+            "testStrategy": "Test table sorting works correctly for all columns, filtering returns accurate results, pagination functions properly, and search finds customers by name accurately"
+          },
+          {
+            "id": 8,
+            "title": "Implement Customer Detail View and Profile Cards",
+            "description": "Create detailed customer view with contact information, project history, and communication logs",
+            "dependencies": [
+              6,
+              7
+            ],
+            "details": "Build /app/customers/[id]/page.tsx with comprehensive customer profile display. Show contact information, project history timeline, communication logs, and customer status. Create CustomerCard components with project summaries and total values. Implement tabs for different sections (Overview, Projects, Communications, Documents). Add customer status indicators and last contact information.",
+            "status": "done",
+            "testStrategy": "Verify customer details display correctly, project history shows accurate data, communication logs are properly formatted, and profile cards show correct project summaries and totals"
+          },
+          {
+            "id": 9,
+            "title": "Create Customer Forms for Creation and Editing",
+            "description": "Build customer creation and editing forms with comprehensive validation",
+            "dependencies": [
+              6
+            ],
+            "details": "Create CustomerForm component with react-hook-form and zod validation. Include fields for company name, contact person, address, phone, email, status, and notes. Implement form validation for required fields, email format, and phone number format. Add /app/customers/new and /app/customers/[id]/edit routes. Include form submission handlers that integrate with mock API endpoints.",
+            "status": "done",
+            "testStrategy": "Test form validation prevents invalid data entry, required fields are enforced, email and phone validation works correctly, and form submission creates/updates customer data properly"
+          },
+          {
+            "id": 10,
+            "title": "Add Search, Export, and Integration Features",
+            "description": "Implement advanced search functionality, data export capabilities, and Microsoft 365 integration placeholders",
+            "dependencies": [
+              7,
+              8
+            ],
+            "details": "Build advanced search component with filters by name, location, project value, and status. Implement export functionality to CSV/Excel formats using appropriate libraries. Create integration placeholder components for Microsoft 365 contacts sync. Add search results highlighting and saved search functionality. Include bulk operations for customer status updates and data management.",
+            "status": "done",
+            "testStrategy": "Test search returns accurate results across all filter criteria, export generates correct file formats with complete data, integration placeholders display properly, and bulk operations work correctly"
           }
         ]
       },
@@ -616,7 +671,7 @@
           6,
           7
         ],
-        "status": "pending",
+        "status": "in-progress",
         "subtasks": [
           {
             "id": 1,
@@ -624,7 +679,7 @@
             "description": "Create a comprehensive preview interface that demonstrates Microsoft 365 integration capabilities including calendar sync, contact management, and email integration mockups",
             "dependencies": [],
             "details": "Develop a dedicated Microsoft 365 integration page with three main sections: Calendar Sync Preview showing synchronized appointments and scheduling conflicts, Contact Management displaying imported contacts with sync status indicators, and Email Integration mockup with sample email threads and automated responses. Use realistic sample data and create interactive mockups that demonstrate the integration workflow without actual API connections. Include toggle switches and status indicators to show sync states.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Verify all three integration previews display realistic mockups, calendar sync shows proper appointment data, contact management displays sample contacts with sync indicators, and email integration shows realistic email threads. Test responsive design across devices."
           },
           {
@@ -670,6 +725,59 @@
             "details": "Develop subcontractor portal with job assignment dashboard, progress tracking forms, and payment status views. Create subcontractor profile management with skills, availability, and performance ratings. Implement job assignment workflow with approval processes and progress updates. Build CRM analytics dashboard showing customer lifetime value calculations, service performance metrics, revenue trends, and customer retention rates. Include predictive analytics for customer behavior and performance forecasting with interactive charts and KPI widgets.",
             "status": "pending",
             "testStrategy": "Verify subcontractor portal displays job assignments correctly, progress tracking functions properly, payment status updates accurately, CRM analytics calculate customer lifetime value correctly, performance metrics display accurate data, and predictive analytics provide meaningful insights."
+          },
+          {
+            "id": 6,
+            "title": "Build Microsoft 365 Integration Preview Interface",
+            "description": "Create mockup interface showing Microsoft 365 integration features including calendar sync, contact management, and email integration",
+            "dependencies": [],
+            "details": "Build preview components for Office 365 calendar integration showing synchronized appointments and project schedules. Create contact management interface demonstrating how customer contacts sync with Outlook. Design email integration mockup with template management and automated customer communications. Use placeholder data and disabled interactions to simulate real integration. Include visual indicators showing sync status and connection health.",
+            "status": "pending",
+            "testStrategy": "Verify all integration mockups render correctly, placeholder data displays properly, and UI components match Microsoft 365 design patterns. Test responsive layout on different screen sizes."
+          },
+          {
+            "id": 7,
+            "title": "Implement WhatsApp Communication Simulation",
+            "description": "Create WhatsApp integration interface with message templates, customer communication logs, and chat simulation",
+            "dependencies": [
+              6
+            ],
+            "details": "Build WhatsApp-style chat interface with customer conversation history using mock data. Create message template management system for common responses (quotes, updates, confirmations). Implement conversation logging with timestamps and message status indicators. Add customer contact selection and conversation threading. Include file attachment simulation and message scheduling features. Use WhatsApp-style UI components and color scheme.",
+            "status": "pending",
+            "testStrategy": "Test chat interface displays conversations correctly, message templates can be selected and customized, conversation history shows proper threading, and all UI interactions work smoothly."
+          },
+          {
+            "id": 8,
+            "title": "Develop Complaint Management System",
+            "description": "Build comprehensive complaint tracking system with ticket creation, status management, and resolution workflow",
+            "dependencies": [
+              7
+            ],
+            "details": "Create complaint ticket creation form with customer selection, issue categorization, priority levels, and detailed description fields. Implement status tracking workflow (Open → In Progress → Resolved → Closed) with automated notifications. Build complaint listing with filtering by status, priority, and customer. Create resolution tracking with staff assignment, progress notes, and closure documentation. Add complaint analytics dashboard showing resolution times and common issues.",
+            "status": "pending",
+            "testStrategy": "Verify complaint tickets can be created and updated properly, status transitions work correctly, filtering and searching function accurately, and resolution workflow tracks progress appropriately."
+          },
+          {
+            "id": 9,
+            "title": "Create Notification System and Reporting Interface",
+            "description": "Implement real-time notification system and custom report generation interface",
+            "dependencies": [
+              8
+            ],
+            "details": "Build notification center with real-time alerts for project updates, complaint escalations, and system events. Create notification preferences management with email/SMS/in-app options. Implement custom report builder with date ranges, data filters, and export formats (PDF, Excel, CSV). Add pre-built report templates for customer analytics, project performance, and financial summaries. Include notification history and mark-as-read functionality.",
+            "status": "pending",
+            "testStrategy": "Test notifications appear correctly for various events, notification preferences save properly, report generation produces accurate data, and export functionality works across different formats."
+          },
+          {
+            "id": 10,
+            "title": "Build Subcontractor Portal with CRM Analytics",
+            "description": "Create subcontractor management portal with job assignments and implement basic CRM analytics dashboard",
+            "dependencies": [
+              9
+            ],
+            "details": "Build subcontractor portal with job assignment interface, progress tracking, and performance metrics. Create subcontractor profiles with skills, availability, and rating systems. Implement job assignment workflow with automatic notifications and status updates. Add CRM analytics dashboard showing customer lifetime value, service performance metrics, conversion rates, and revenue tracking. Include visual charts and KPI indicators with drill-down capabilities.",
+            "status": "pending",
+            "testStrategy": "Verify subcontractor portal allows proper job assignments, progress tracking functions correctly, analytics dashboard displays accurate metrics, and all charts and KPIs calculate properly with realistic data."
           }
         ]
       },
@@ -744,7 +852,7 @@
     ],
     "metadata": {
       "created": "2025-07-16T12:23:43.433Z",
-      "updated": "2025-07-16T17:32:31.282Z",
+      "updated": "2025-07-16T19:48:55.966Z",
       "description": "Tasks for master context"
     }
   }

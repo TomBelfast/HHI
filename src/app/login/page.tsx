@@ -3,9 +3,9 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
+import { Card } from '@/components/ui/Card';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -47,19 +47,14 @@ export default function LoginPage() {
     <div className="min-h-screen bg-gradient-to-br from-primary-50 to-secondary-50 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <Card className="shadow-xl">
-          <CardHeader className="text-center">
+          <div className="text-center p-6 pb-0">
             <div className="mx-auto w-16 h-16 bg-primary rounded-full flex items-center justify-center mb-4">
               <span className="text-2xl text-white font-bold">HHI</span>
             </div>
-            <CardTitle className="text-2xl font-bold text-gray-900">
-              Welcome to HHI CRM
-            </CardTitle>
-            <CardDescription className="text-gray-600">
-              Sign in to your account to continue
-            </CardDescription>
-          </CardHeader>
-          
-          <CardContent>
+            <div className="text-2xl font-bold text-gray-900 mb-1">Welcome to HHI CRM</div>
+            <div className="text-gray-600 mb-4">Sign in to your account to continue</div>
+          </div>
+          <div className="p-6 pt-0">
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
@@ -75,7 +70,6 @@ export default function LoginPage() {
                   className="w-full"
                 />
               </div>
-              
               <div>
                 <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
                   Password
@@ -90,13 +84,11 @@ export default function LoginPage() {
                   className="w-full"
                 />
               </div>
-
               {error && (
                 <div className="bg-red-50 border border-red-200 rounded-md p-3">
                   <p className="text-sm text-red-600">{error}</p>
                 </div>
               )}
-
               <Button
                 type="submit"
                 className="w-full"
@@ -105,7 +97,6 @@ export default function LoginPage() {
                 {isLoading ? 'Signing in...' : 'Sign In'}
               </Button>
             </form>
-
             {/* Demo Credentials */}
             <div className="mt-6 pt-6 border-t border-gray-200">
               <h3 className="text-sm font-medium text-gray-700 mb-3">
@@ -124,13 +115,12 @@ export default function LoginPage() {
                 ))}
               </div>
             </div>
-
             <div className="mt-6 text-center">
               <p className="text-xs text-gray-500">
                 This is a demo application. Use the credentials above to test different user roles.
               </p>
             </div>
-          </CardContent>
+          </div>
         </Card>
       </div>
     </div>

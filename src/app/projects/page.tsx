@@ -5,9 +5,9 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { PermissionGate } from '@/components/auth/PermissionGate';
 import { DataTable } from '@/components/ui/DataTable';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
+import { Badge } from '@/components/ui/Badge';
 import { apiService, FilterOptions, SortOptions } from '@/lib/api';
 import { Project, Customer } from '@/lib/mock-data';
 import { PERMISSIONS } from '@/lib/auth';
@@ -188,7 +188,7 @@ export default function ProjectsPage() {
             </div>
             <div className="mt-4 sm:mt-0">
               <PermissionGate permissions={[PERMISSIONS.PROJECTS_WRITE]}>
-                <Button variant="default">
+                <Button variant="primary">
                   + New Project
                 </Button>
               </PermissionGate>

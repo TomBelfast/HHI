@@ -3,10 +3,10 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
+import { Card } from '@/components/ui/Card';
+import { Badge } from '@/components/ui/Badge';
 import { apiService } from '@/lib/api';
 import { Project, Customer, User } from '@/lib/mock-data';
 
@@ -199,10 +199,10 @@ export default function NewProjectPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Basic Information */}
             <Card>
-              <CardHeader>
-                <CardTitle>Basic Information</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
+              <div className="p-6 pb-0">
+                <div className="text-lg font-semibold mb-2">Basic Information</div>
+              </div>
+              <div className="p-6 pt-4 space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Customer *
@@ -264,15 +264,15 @@ export default function NewProjectPage() {
                     placeholder="Describe the project requirements..."
                   />
                 </div>
-              </CardContent>
+              </div>
             </Card>
 
             {/* Project Details */}
             <Card>
-              <CardHeader>
-                <CardTitle>Project Details</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
+              <div className="p-6 pb-0">
+                <div className="text-lg font-semibold mb-2">Project Details</div>
+              </div>
+              <div className="p-6 pt-4 space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Status
@@ -368,15 +368,15 @@ export default function NewProjectPage() {
                     step="0.01"
                   />
                 </div>
-              </CardContent>
+              </div>
             </Card>
 
             {/* Location Information */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Location Information</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
+            <Card className="mt-6">
+              <div className="p-6 pb-0">
+                <div className="text-lg font-semibold mb-2">Location Information</div>
+              </div>
+              <div className="p-6 pt-4 space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Project Address
@@ -389,15 +389,15 @@ export default function NewProjectPage() {
                     placeholder="Enter project address..."
                   />
                 </div>
-              </CardContent>
+              </div>
             </Card>
 
             {/* Additional Information */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Additional Information</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
+            <Card className="mt-6">
+              <div className="p-6 pb-0">
+                <div className="text-lg font-semibold mb-2">Additional Information</div>
+              </div>
+              <div className="p-6 pt-4 space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Subcontractor
@@ -409,7 +409,7 @@ export default function NewProjectPage() {
                     placeholder="Enter subcontractor name (optional)"
                   />
                 </div>
-              </CardContent>
+              </div>
             </Card>
           </div>
 

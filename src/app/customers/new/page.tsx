@@ -5,12 +5,12 @@ import { useRouter } from 'next/navigation';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { PermissionGate } from '@/components/auth/PermissionGate';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
 import { Textarea } from '@/components/ui/Textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/Select';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card } from '@/components/ui/Card';
 import { apiService } from '@/lib/api';
 import { Customer } from '@/lib/mock-data';
 import { PERMISSIONS } from '@/lib/auth';
@@ -116,16 +116,16 @@ export default function NewCustomerPage() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Basic Information */}
               <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center space-x-2">
+                <div className="p-6 pb-0">
+                  <div className="flex items-center space-x-2 mb-2">
                     <UserPlus className="h-5 w-5" />
-                    <span>Basic Information</span>
-                  </CardTitle>
-                  <CardDescription>
+                    <span className="text-lg font-semibold">Basic Information</span>
+                  </div>
+                  <p className="text-sm text-gray-600 dark:text-muted-foreground">
                     Essential customer details
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
+                  </p>
+                </div>
+                <div className="p-6 pt-4 space-y-4">
                   <div>
                     <Label htmlFor="name">Full Name *</Label>
                     <Input
@@ -206,18 +206,18 @@ export default function NewCustomerPage() {
                       </SelectContent>
                     </Select>
                   </div>
-                </CardContent>
+                </div>
               </Card>
 
               {/* Customer Type & Status */}
               <Card>
-                <CardHeader>
-                  <CardTitle>Customer Classification</CardTitle>
-                  <CardDescription>
+                <div className="p-6 pb-0">
+                  <div className="text-lg font-semibold mb-2">Customer Classification</div>
+                  <p className="text-sm text-gray-600 dark:text-muted-foreground">
                     Customer type and status information
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
+                  </p>
+                </div>
+                <div className="p-6 pt-4 space-y-4">
                   <div>
                     <Label htmlFor="customerType">Customer Type *</Label>
                     <Select value={formData.customerType} onValueChange={(value: 'residential' | 'commercial' | 'prospect') => handleInputChange('customerType', value)}>
@@ -285,20 +285,20 @@ export default function NewCustomerPage() {
                       placeholder="Any special requirements or notes..."
                     />
                   </div>
-                </CardContent>
+                </div>
               </Card>
             </div>
 
             {/* Company Information (for commercial customers) */}
             {formData.customerType === 'commercial' && (
               <Card>
-                <CardHeader>
-                  <CardTitle>Company Information</CardTitle>
-                  <CardDescription>
+                <div className="p-6 pb-0">
+                  <div className="text-lg font-semibold mb-2">Company Information</div>
+                  <p className="text-sm text-gray-600 dark:text-muted-foreground">
                     Business details for commercial customers
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
+                  </p>
+                </div>
+                <div className="p-6 pt-4 space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="companyName">Company Name</Label>
@@ -330,7 +330,7 @@ export default function NewCustomerPage() {
                       />
                     </div>
                   </div>
-                </CardContent>
+                </div>
               </Card>
             )}
 

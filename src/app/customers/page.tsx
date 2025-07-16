@@ -6,9 +6,9 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { PermissionGate } from '@/components/auth/PermissionGate';
 import { DataTable } from '@/components/ui/DataTable';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
+import { Badge } from '@/components/ui/Badge';
 import { apiService, FilterOptions, SortOptions } from '@/lib/api';
 import { Customer } from '@/lib/mock-data';
 import { PERMISSIONS } from '@/lib/auth';
@@ -161,7 +161,7 @@ export default function CustomersPage() {
             </div>
             <div className="mt-4 sm:mt-0">
               <PermissionGate permissions={[PERMISSIONS.CUSTOMERS_WRITE]}>
-                <Button variant="default" onClick={() => router.push('/customers/new')}>
+                <Button variant="primary" onClick={() => router.push('/customers/new')}>
                   + Add Customer
                 </Button>
               </PermissionGate>

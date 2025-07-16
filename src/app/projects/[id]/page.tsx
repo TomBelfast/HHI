@@ -3,9 +3,10 @@
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
+import { Badge } from '@/components/ui/Badge';
+import { Card } from '@/components/ui/Card';
 import { apiService } from '@/lib/api';
 import { Project, Customer, User, TimelineEvent } from '@/lib/mock-data';
 
@@ -185,7 +186,7 @@ export default function ProjectDetailPage() {
             <Button variant="outline" onClick={() => setEditing(!editing)}>
               {editing ? 'Cancel Edit' : 'Edit Project'}
             </Button>
-            <Button variant="default">
+            <Button variant="primary">
               Export Details
             </Button>
           </div>
@@ -196,10 +197,8 @@ export default function ProjectDetailPage() {
           <div className="lg:col-span-2 space-y-6">
             {/* Project Overview */}
             <Card>
-              <CardHeader>
-                <CardTitle>Project Overview</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
+              <div className="p-6">
+                <h2 className="text-xl font-bold text-gray-900 mb-4">Project Overview</h2>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="text-sm font-medium text-gray-500">Status</label>
@@ -225,24 +224,22 @@ export default function ProjectDetailPage() {
                   </div>
                 </div>
                 
-                <div>
+                <div className="mt-6">
                   <label className="text-sm font-medium text-gray-500">Description</label>
                   <div className="mt-1 text-gray-900">{project.description}</div>
                 </div>
                 
-                <div>
+                <div className="mt-6">
                   <label className="text-sm font-medium text-gray-500">Address</label>
                   <div className="mt-1 text-gray-900">{project.address}</div>
                 </div>
-              </CardContent>
+              </div>
             </Card>
 
             {/* Timeline */}
             <Card>
-              <CardHeader>
-                <CardTitle>Project Timeline</CardTitle>
-              </CardHeader>
-              <CardContent>
+              <div className="p-6">
+                <h2 className="text-xl font-bold text-gray-900 mb-4">Project Timeline</h2>
                 <div className="space-y-4">
                   {project.timeline && project.timeline.length > 0 ? (
                     project.timeline.map((event, index) => (
@@ -261,52 +258,52 @@ export default function ProjectDetailPage() {
                     <p className="text-gray-500">No timeline events yet.</p>
                   )}
                 </div>
-              </CardContent>
+              </div>
             </Card>
 
             {/* Status Update */}
             <Card>
-              <CardHeader>
-                <CardTitle>Update Status</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    New Status
-                  </label>
-                  <select
-                    value={newStatus}
-                    onChange={(e) => setNewStatus(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
+              <div className="p-6">
+                <h2 className="text-xl font-bold text-gray-900 mb-4">Update Status</h2>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      New Status
+                    </label>
+                    <select
+                      value={newStatus}
+                      onChange={(e) => setNewStatus(e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
+                    >
+                      <option value="">Select status</option>
+                      {statuses.map(status => (
+                        <option key={status} value={status}>{status}</option>
+                      ))}
+                    </select>
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Note (optional)
+                    </label>
+                    <textarea
+                      value={newNote}
+                      onChange={(e) => setNewNote(e.target.value)}
+                      rows={3}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
+                      placeholder="Add a note about this status update..."
+                    />
+                  </div>
+                  
+                  <Button 
+                    onClick={updateProjectStatus}
+                    disabled={!newStatus}
+                    className="w-full"
                   >
-                    <option value="">Select status</option>
-                    {statuses.map(status => (
-                      <option key={status} value={status}>{status}</option>
-                    ))}
-                  </select>
+                    Update Status
+                  </Button>
                 </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Note (optional)
-                  </label>
-                  <textarea
-                    value={newNote}
-                    onChange={(e) => setNewNote(e.target.value)}
-                    rows={3}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
-                    placeholder="Add a note about this status update..."
-                  />
-                </div>
-                
-                <Button 
-                  onClick={updateProjectStatus}
-                  disabled={!newStatus}
-                  className="w-full"
-                >
-                  Update Status
-                </Button>
-              </CardContent>
+              </div>
             </Card>
           </div>
 
@@ -314,109 +311,109 @@ export default function ProjectDetailPage() {
           <div className="space-y-6">
             {/* Customer Info */}
             <Card>
-              <CardHeader>
-                <CardTitle>Customer Information</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                {customer ? (
-                  <>
-                    <div>
-                      <label className="text-sm font-medium text-gray-500">Name</label>
-                      <div className="mt-1 font-medium">{customer.name}</div>
-                    </div>
-                    <div>
-                      <label className="text-sm font-medium text-gray-500">Email</label>
-                      <div className="mt-1">{customer.email}</div>
-                    </div>
-                    <div>
-                      <label className="text-sm font-medium text-gray-500">Phone</label>
-                      <div className="mt-1">{customer.phone}</div>
-                    </div>
-                    <div>
-                      <label className="text-sm font-medium text-gray-500">Total Projects</label>
-                      <div className="mt-1">{customer.totalProjects}</div>
-                    </div>
-                    <Button variant="outline" className="w-full">
-                      View Customer Profile
-                    </Button>
-                  </>
-                ) : (
-                  <p className="text-gray-500">Customer information not available</p>
-                )}
-              </CardContent>
+              <div className="p-6">
+                <h2 className="text-xl font-bold text-gray-900 mb-4">Customer Information</h2>
+                <div className="space-y-3">
+                  {customer ? (
+                    <>
+                      <div>
+                        <label className="text-sm font-medium text-gray-500">Name</label>
+                        <div className="mt-1 font-medium">{customer.name}</div>
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium text-gray-500">Email</label>
+                        <div className="mt-1">{customer.email}</div>
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium text-gray-500">Phone</label>
+                        <div className="mt-1">{customer.phone}</div>
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium text-gray-500">Total Projects</label>
+                        <div className="mt-1">{customer.totalProjects}</div>
+                      </div>
+                      <Button variant="outline" className="w-full">
+                        View Customer Profile
+                      </Button>
+                    </>
+                  ) : (
+                    <p className="text-gray-500">Customer information not available</p>
+                  )}
+                </div>
+              </div>
             </Card>
 
             {/* Assigned Worker */}
             <Card>
-              <CardHeader>
-                <CardTitle>Assigned Worker</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                {assignedWorker ? (
-                  <>
-                    <div>
-                      <label className="text-sm font-medium text-gray-500">Name</label>
-                      <div className="mt-1 font-medium">{assignedWorker.name}</div>
-                    </div>
-                    <div>
-                      <label className="text-sm font-medium text-gray-500">Role</label>
-                      <div className="mt-1">{assignedWorker.role}</div>
-                    </div>
-                    <div>
-                      <label className="text-sm font-medium text-gray-500">Email</label>
-                      <div className="mt-1">{assignedWorker.email}</div>
-                    </div>
-                    <div>
-                      <label className="text-sm font-medium text-gray-500">Phone</label>
-                      <div className="mt-1">{assignedWorker.phone}</div>
-                    </div>
-                    <Button variant="outline" className="w-full">
-                      Contact Worker
-                    </Button>
-                  </>
-                ) : (
-                  <p className="text-gray-500">Worker information not available</p>
-                )}
-              </CardContent>
+              <div className="p-6">
+                <h2 className="text-xl font-bold text-gray-900 mb-4">Assigned Worker</h2>
+                <div className="space-y-3">
+                  {assignedWorker ? (
+                    <>
+                      <div>
+                        <label className="text-sm font-medium text-gray-500">Name</label>
+                        <div className="mt-1 font-medium">{assignedWorker.name}</div>
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium text-gray-500">Role</label>
+                        <div className="mt-1">{assignedWorker.role}</div>
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium text-gray-500">Email</label>
+                        <div className="mt-1">{assignedWorker.email}</div>
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium text-gray-500">Phone</label>
+                        <div className="mt-1">{assignedWorker.phone}</div>
+                      </div>
+                      <Button variant="outline" className="w-full">
+                        Contact Worker
+                      </Button>
+                    </>
+                  ) : (
+                    <p className="text-gray-500">Worker information not available</p>
+                  )}
+                </div>
+              </div>
             </Card>
 
             {/* Key Dates */}
             <Card>
-              <CardHeader>
-                <CardTitle>Key Dates</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                {project.measurementDate && (
-                  <div>
-                    <label className="text-sm font-medium text-gray-500">Measurement Date</label>
-                    <div className="mt-1">{formatDate(project.measurementDate)}</div>
-                  </div>
-                )}
-                {project.quoteSentDate && (
-                  <div>
-                    <label className="text-sm font-medium text-gray-500">Quote Sent</label>
-                    <div className="mt-1">{formatDate(project.quoteSentDate)}</div>
-                  </div>
-                )}
-                {project.contractSignedDate && (
-                  <div>
-                    <label className="text-sm font-medium text-gray-500">Contract Signed</label>
-                    <div className="mt-1">{formatDate(project.contractSignedDate)}</div>
-                  </div>
-                )}
-                {project.installationDate && (
-                  <div>
-                    <label className="text-sm font-medium text-gray-500">Installation Date</label>
-                    <div className="mt-1">{formatDate(project.installationDate)}</div>
-                  </div>
-                )}
-                {project.completionDate && (
-                  <div>
-                    <label className="text-sm font-medium text-gray-500">Completion Date</label>
-                    <div className="mt-1">{formatDate(project.completionDate)}</div>
-                  </div>
-                )}
-              </CardContent>
+              <div className="p-6">
+                <h2 className="text-xl font-bold text-gray-900 mb-4">Key Dates</h2>
+                <div className="space-y-3">
+                  {project.measurementDate && (
+                    <div>
+                      <label className="text-sm font-medium text-gray-500">Measurement Date</label>
+                      <div className="mt-1">{formatDate(project.measurementDate)}</div>
+                    </div>
+                  )}
+                  {project.quoteSentDate && (
+                    <div>
+                      <label className="text-sm font-medium text-gray-500">Quote Sent</label>
+                      <div className="mt-1">{formatDate(project.quoteSentDate)}</div>
+                    </div>
+                  )}
+                  {project.contractSignedDate && (
+                    <div>
+                      <label className="text-sm font-medium text-gray-500">Contract Signed</label>
+                      <div className="mt-1">{formatDate(project.contractSignedDate)}</div>
+                    </div>
+                  )}
+                  {project.installationDate && (
+                    <div>
+                      <label className="text-sm font-medium text-gray-500">Installation Date</label>
+                      <div className="mt-1">{formatDate(project.installationDate)}</div>
+                    </div>
+                  )}
+                  {project.completionDate && (
+                    <div>
+                      <label className="text-sm font-medium text-gray-500">Completion Date</label>
+                      <div className="mt-1">{formatDate(project.completionDate)}</div>
+                    </div>
+                  )}
+                </div>
+              </div>
             </Card>
           </div>
         </div>

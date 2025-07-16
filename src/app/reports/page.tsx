@@ -4,9 +4,9 @@ import { useState } from 'react';
 import React from 'react';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/Button';
+import { Card } from '@/components/ui/Card';
+import { Badge } from '@/components/ui/Badge';
 import { PERMISSIONS } from '@/lib/auth';
 import { mockCustomers, mockProjects, mockUsers, mockAnalytics } from '@/lib/mock-data';
 import * as Dialog from '@radix-ui/react-dialog';
@@ -953,46 +953,42 @@ export default function ReportsPage() {
           {/* Selected Report View - Show first if selected */}
           {selectedReport && (
             <Card>
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle className="flex items-center">
-                    <span className="text-lg mr-3">
-                      {selectedReport.type === 'financial' && '💰'}
-                      {selectedReport.type === 'project' && '🔨'}
-                      {selectedReport.type === 'customer' && '👥'}
-                      {selectedReport.type === 'employee' && '👤'}
-                      {selectedReport.type === 'branch' && '🏢'}
-                      {selectedReport.type === 'custom' && '⚙️'}
-                    </span>
-                    {selectedReport.title}
-                  </CardTitle>
-                  <div className="flex gap-2">
-                    <Button 
-                      variant="outline" 
-                      size="sm"
-                      onClick={() => downloadReport(selectedReport)}
-                    >
-                      Download
-                    </Button>
-                    <Button 
-                      variant="outline" 
-                      size="sm"
-                      onClick={() => setSelectedReport(null)}
-                    >
-                      <X size={16} className="mr-2" />
-                      Close
-                    </Button>
-                  </div>
+              <div className="flex items-center justify-between">
+                <h3 className="flex items-center text-lg font-semibold">
+                  <span className="text-lg mr-3">
+                    {selectedReport.type === 'financial' && '💰'}
+                    {selectedReport.type === 'project' && '🔨'}
+                    {selectedReport.type === 'customer' && '👥'}
+                    {selectedReport.type === 'employee' && '👤'}
+                    {selectedReport.type === 'branch' && '🏢'}
+                    {selectedReport.type === 'custom' && '⚙️'}
+                  </span>
+                  {selectedReport.title}
+                </h3>
+                <div className="flex gap-2">
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => downloadReport(selectedReport)}
+                  >
+                    Download
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => setSelectedReport(null)}
+                  >
+                    <X size={16} className="mr-2" />
+                    Close
+                  </Button>
                 </div>
-                <p className="text-sm text-gray-500 dark:text-muted-foreground">
-                  Generated {new Date(selectedReport.generatedAt).toLocaleString()}
-                </p>
-              </CardHeader>
-              <CardContent>
-                <div className="max-w-7xl mx-auto">
-                  {renderReportContent(selectedReport)}
-                </div>
-              </CardContent>
+              </div>
+              <p className="text-sm text-gray-500 dark:text-muted-foreground">
+                Generated {new Date(selectedReport.generatedAt).toLocaleString()}
+              </p>
+              <div className="max-w-7xl mx-auto">
+                {renderReportContent(selectedReport)}
+              </div>
             </Card>
           )}
 
@@ -1001,13 +997,11 @@ export default function ReportsPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Financial Reports */}
             <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center">
-                  <span className="text-green-600 dark:text-green-400 text-lg mr-2">💰</span>
-                  Financial Reports
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
+              <div className="flex items-center">
+                <span className="text-green-600 dark:text-green-400 text-lg mr-2">💰</span>
+                <h3 className="text-lg font-semibold">Financial Reports</h3>
+              </div>
+              <div className="space-y-3">
                 <Button 
                   variant="outline" 
                   className="w-full justify-start"
@@ -1032,18 +1026,16 @@ export default function ReportsPage() {
                 >
                   {isGenerating === 'project-profitability' ? 'Generating...' : '💳 Project Profitability'}
                 </Button>
-              </CardContent>
+              </div>
             </Card>
 
             {/* Project Reports */}
             <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center">
-                  <span className="text-blue-600 dark:text-blue-400 text-lg mr-2">🔨</span>
-                  Project Reports
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
+              <div className="flex items-center">
+                <span className="text-blue-600 dark:text-blue-400 text-lg mr-2">🔨</span>
+                <h3 className="text-lg font-semibold">Project Reports</h3>
+              </div>
+              <div className="space-y-3">
                 <Button 
                   variant="outline" 
                   className="w-full justify-start"
@@ -1068,18 +1060,16 @@ export default function ReportsPage() {
                 >
                   {isGenerating === 'project-profitability' ? 'Generating...' : '🎯 Performance Metrics'}
                 </Button>
-              </CardContent>
+              </div>
             </Card>
 
             {/* Customer Reports */}
             <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center">
-                  <span className="text-purple-600 dark:text-purple-400 text-lg mr-2">👥</span>
-                  Customer Reports
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
+              <div className="flex items-center">
+                <span className="text-purple-600 dark:text-purple-400 text-lg mr-2">👥</span>
+                <h3 className="text-lg font-semibold">Customer Reports</h3>
+              </div>
+              <div className="space-y-3">
                 <Button 
                   variant="outline" 
                   className="w-full justify-start"
@@ -1104,18 +1094,16 @@ export default function ReportsPage() {
                 >
                   {isGenerating === 'customer-analytics' ? 'Generating...' : '📈 Customer Lifetime Value'}
                 </Button>
-              </CardContent>
+              </div>
             </Card>
 
             {/* Employee Reports */}
             <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center">
-                  <span className="text-orange-600 dark:text-orange-400 text-lg mr-2">👤</span>
-                  Employee Reports
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
+              <div className="flex items-center">
+                <span className="text-orange-600 dark:text-orange-400 text-lg mr-2">👤</span>
+                <h3 className="text-lg font-semibold">Employee Reports</h3>
+              </div>
+              <div className="space-y-3">
                 <Button 
                   variant="outline" 
                   className="w-full justify-start"
@@ -1140,18 +1128,16 @@ export default function ReportsPage() {
                 >
                   {isGenerating === 'employee-performance' ? 'Generating...' : '📊 Productivity Analysis'}
                 </Button>
-              </CardContent>
+              </div>
             </Card>
 
             {/* Branch Reports */}
             <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center">
-                  <span className="text-yellow-600 dark:text-yellow-400 text-lg mr-2">🏢</span>
-                  Branch Reports
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
+              <div className="flex items-center">
+                <span className="text-yellow-600 dark:text-yellow-400 text-lg mr-2">🏢</span>
+                <h3 className="text-lg font-semibold">Branch Reports</h3>
+              </div>
+              <div className="space-y-3">
                 <Button 
                   variant="outline" 
                   className="w-full justify-start"
@@ -1176,18 +1162,16 @@ export default function ReportsPage() {
                 >
                   {isGenerating === 'branch-kpis' ? 'Generating...' : '🎯 Branch KPIs'}
                 </Button>
-              </CardContent>
+              </div>
             </Card>
 
             {/* Custom Reports */}
             <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center">
-                  <span className="text-gray-600 dark:text-gray-400 text-lg mr-2">⚙️</span>
-                  Custom Reports
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
+              <div className="flex items-center">
+                <span className="text-gray-600 dark:text-gray-400 text-lg mr-2">⚙️</span>
+                <h3 className="text-lg font-semibold">Custom Reports</h3>
+              </div>
+              <div className="space-y-3">
                 <Button variant="outline" className="w-full justify-start">
                   📝 Report Builder
                 </Button>
@@ -1197,7 +1181,7 @@ export default function ReportsPage() {
                 <Button variant="outline" className="w-full justify-start">
                   💾 Saved Templates
                 </Button>
-              </CardContent>
+              </div>
             </Card>
           </div>
           )}
@@ -1205,52 +1189,50 @@ export default function ReportsPage() {
           {/* Generated Reports - Show only if no report is selected */}
           {!selectedReport && generatedReports.length > 0 && (
             <Card>
-              <CardHeader>
-                <CardTitle>Generated Reports</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {generatedReports.map((report) => (
-                    <div key={report.id} className="flex items-center justify-between p-4 bg-gray-50 dark:bg-muted rounded-lg">
-                      <div className="flex items-center">
-                        <span className="text-lg mr-3">
-                          {report.type === 'financial' && '💰'}
-                          {report.type === 'project' && '🔨'}
-                          {report.type === 'customer' && '👥'}
-                          {report.type === 'employee' && '👤'}
-                          {report.type === 'branch' && '🏢'}
-                          {report.type === 'custom' && '⚙️'}
-                        </span>
-                        <div>
-                          <p className="font-medium text-gray-900 dark:text-foreground">{report.title}</p>
-                          <p className="text-sm text-gray-500 dark:text-muted-foreground">
-                            Generated {new Date(report.generatedAt).toLocaleString()}
-                          </p>
-                          <Badge variant="outline" className="mt-1">
-                            {report.type.charAt(0).toUpperCase() + report.type.slice(1)}
-                          </Badge>
-                        </div>
-                      </div>
-                      <div className="flex gap-2">
-                        <Button 
-                          variant="outline" 
-                          size="sm"
-                          onClick={() => downloadReport(report)}
-                        >
-                          Download
-                        </Button>
-                        <Button 
-                          variant="secondary" 
-                          size="sm"
-                          onClick={() => setSelectedReport(report)}
-                        >
-                          Preview
-                        </Button>
+              <div className="flex items-center">
+                <h3 className="text-lg font-semibold">Generated Reports</h3>
+              </div>
+              <div className="space-y-4">
+                {generatedReports.map((report) => (
+                  <div key={report.id} className="flex items-center justify-between p-4 bg-gray-50 dark:bg-muted rounded-lg">
+                    <div className="flex items-center">
+                      <span className="text-lg mr-3">
+                        {report.type === 'financial' && '💰'}
+                        {report.type === 'project' && '🔨'}
+                        {report.type === 'customer' && '👥'}
+                        {report.type === 'employee' && '👤'}
+                        {report.type === 'branch' && '🏢'}
+                        {report.type === 'custom' && '⚙️'}
+                      </span>
+                      <div>
+                        <p className="font-medium text-gray-900 dark:text-foreground">{report.title}</p>
+                        <p className="text-sm text-gray-500 dark:text-muted-foreground">
+                          Generated {new Date(report.generatedAt).toLocaleString()}
+                        </p>
+                        <Badge variant="outline" className="mt-1">
+                          {report.type.charAt(0).toUpperCase() + report.type.slice(1)}
+                        </Badge>
                       </div>
                     </div>
-                  ))}
-                </div>
-              </CardContent>
+                    <div className="flex gap-2">
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => downloadReport(report)}
+                      >
+                        Download
+                      </Button>
+                      <Button 
+                        variant="secondary" 
+                        size="sm"
+                        onClick={() => setSelectedReport(report)}
+                      >
+                        Preview
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </Card>
           )}
         </div>

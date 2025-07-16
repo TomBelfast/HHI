@@ -5,9 +5,9 @@ import { useRouter } from 'next/navigation';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { PermissionGate } from '@/components/auth/PermissionGate';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
+import { Badge } from '@/components/ui/Badge';
 import { DataTable } from '@/components/ui/DataTable';
 import { apiService } from '@/lib/api';
 import { PERMISSIONS } from '@/lib/auth';
@@ -233,7 +233,7 @@ export default function UsersPage() {
                 </Button>
               </PermissionGate>
               <PermissionGate permissions={[PERMISSIONS.USERS_WRITE]}>
-                <Button variant="default" onClick={() => router.push('/users/new')}>
+                <Button variant="primary" onClick={() => router.push('/users/new')}>
                   + Add User
                 </Button>
               </PermissionGate>

@@ -2,9 +2,9 @@
 
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
+import { Card } from '@/components/ui/Card';
 import { PERMISSIONS } from '@/lib/auth';
 
 export default function SettingsPage() {
@@ -26,16 +26,16 @@ export default function SettingsPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* General Settings */}
             <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center">
+              <div className="p-6 pb-0">
+                <div className="flex items-center">
                   <span className="mr-2">⚙️</span>
-                  General Settings
-                </CardTitle>
-                <CardDescription>
+                  <div className="text-xl font-semibold">General Settings</div>
+                </div>
+                <div className="text-sm text-gray-600 dark:text-muted-foreground mt-1">
                   Basic system configuration and preferences
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
+                </div>
+              </div>
+              <div className="p-6 pt-4 space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-foreground mb-2">
                     Company Name
@@ -63,21 +63,21 @@ export default function SettingsPage() {
                   </select>
                 </div>
                 <Button className="w-full">Save General Settings</Button>
-              </CardContent>
+              </div>
             </Card>
 
             {/* User Management */}
             <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center">
+              <div className="p-6 pb-0">
+                <div className="flex items-center">
                   <span className="mr-2">👤</span>
-                  User Management
-                </CardTitle>
-                <CardDescription>
+                  <div className="text-xl font-semibold">User Management</div>
+                </div>
+                <div className="text-sm text-gray-600 dark:text-muted-foreground mt-1">
                   Manage user accounts and permissions
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
+                </div>
+              </div>
+              <div className="p-6 pt-4 space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-foreground mb-2">
                     Default User Role
@@ -105,21 +105,21 @@ export default function SettingsPage() {
                   </select>
                 </div>
                 <Button className="w-full">Save User Settings</Button>
-              </CardContent>
+              </div>
             </Card>
 
             {/* Email Settings */}
             <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center">
+              <div className="p-6 pb-0">
+                <div className="flex items-center">
                   <span className="mr-2">📧</span>
-                  Email Settings
-                </CardTitle>
-                <CardDescription>
+                  <div className="text-xl font-semibold">Email Settings</div>
+                </div>
+                <div className="text-sm text-gray-600 dark:text-muted-foreground mt-1">
                   Configure email notifications and SMTP settings
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
+                </div>
+              </div>
+              <div className="p-6 pt-4 space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-foreground mb-2">
                     SMTP Server
@@ -158,21 +158,21 @@ export default function SettingsPage() {
                   </div>
                 </div>
                 <Button className="w-full">Save Email Settings</Button>
-              </CardContent>
+              </div>
             </Card>
 
             {/* Security Settings */}
             <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center">
+              <div className="p-6 pb-0">
+                <div className="flex items-center">
                   <span className="mr-2">🔒</span>
-                  Security Settings
-                </CardTitle>
-                <CardDescription>
+                  <div className="text-xl font-semibold">Security Settings</div>
+                </div>
+                <div className="text-sm text-gray-600 dark:text-muted-foreground mt-1">
                   Configure security and authentication settings
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
+                </div>
+              </div>
+              <div className="p-6 pt-4 space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-foreground mb-2">
                     Two-Factor Authentication
@@ -215,21 +215,21 @@ export default function SettingsPage() {
                   </div>
                 </div>
                 <Button className="w-full">Save Security Settings</Button>
-              </CardContent>
+              </div>
             </Card>
 
             {/* Backup & Maintenance */}
             <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center">
+              <div className="p-6 pb-0">
+                <div className="flex items-center">
                   <span className="mr-2">💾</span>
-                  Backup & Maintenance
-                </CardTitle>
-                <CardDescription>
+                  <div className="text-xl font-semibold">Backup & Maintenance</div>
+                </div>
+                <div className="text-sm text-gray-600 dark:text-muted-foreground mt-1">
                   Configure backup schedules and system maintenance
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
+                </div>
+              </div>
+              <div className="p-6 pt-4 space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-foreground mb-2">
                     Auto Backup Schedule
@@ -261,21 +261,21 @@ export default function SettingsPage() {
                   <Button variant="outline" className="flex-1">Create Backup</Button>
                   <Button variant="outline" className="flex-1">Restore</Button>
                 </div>
-              </CardContent>
+              </div>
             </Card>
 
             {/* Integration Settings */}
             <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center">
+              <div className="p-6 pb-0">
+                <div className="flex items-center">
                   <span className="mr-2">🔗</span>
-                  Integrations
-                </CardTitle>
-                <CardDescription>
+                  <div className="text-xl font-semibold">Integrations</div>
+                </div>
+                <div className="text-sm text-gray-600 dark:text-muted-foreground mt-1">
                   Configure third-party integrations and APIs
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
+                </div>
+              </div>
+              <div className="p-6 pt-4 space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-foreground mb-2">
                     Payment Gateway
@@ -308,7 +308,7 @@ export default function SettingsPage() {
                   </select>
                 </div>
                 <Button className="w-full">Save Integration Settings</Button>
-              </CardContent>
+              </div>
             </Card>
           </div>
         </div>

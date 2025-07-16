@@ -8,7 +8,8 @@ import {
   BarChart3, 
   Settings,
   Menu,
-  X
+  X,
+  Mail
 } from "lucide-react"
 
 interface SidebarProps {
@@ -22,6 +23,7 @@ const navigationItems = [
   { icon: Users, label: "Customers", href: "/customers" },
   { icon: FolderOpen, label: "Projects", href: "/projects" },
   { icon: BarChart3, label: "Analytics", href: "/analytics" },
+  { icon: Mail, label: "Microsoft 365", href: "/integrations/microsoft365" },
   { icon: Settings, label: "Settings", href: "/settings" },
 ]
 
