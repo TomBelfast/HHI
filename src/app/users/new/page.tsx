@@ -78,9 +78,9 @@ export default function NewUserPage() {
     // Update role when userType changes
     if (field === 'userType') {
       const roleOptions = getRoleOptions(value);
-      setFormData(prev => ({ 
-        ...prev, 
-        [field]: value,
+      setFormData(prev => ({
+        ...prev,
+        userType: value as 'admin' | 'branch_manager' | 'branch_worker' | 'subcontractor',
         role: roleOptions[0] || ''
       }));
     }

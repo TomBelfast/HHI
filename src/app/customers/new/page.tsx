@@ -28,7 +28,7 @@ export default function NewCustomerPage() {
     postcode: '',
     branch: '',
     customerType: 'residential' as 'residential' | 'commercial' | 'prospect',
-    status: 'active' as 'active' | 'inactive' | 'prospect',
+    status: 'active' as 'active' | 'prospect' | 'not accepted' | 'completed' | 'suspended',
     preferredContact: 'email' as 'email' | 'phone' | 'sms',
     communicationFrequency: 'monthly' as 'weekly' | 'monthly' | 'quarterly',
     specialRequirements: '',
@@ -234,14 +234,16 @@ export default function NewCustomerPage() {
 
                   <div>
                     <Label htmlFor="status">Status *</Label>
-                    <Select value={formData.status} onValueChange={(value: 'active' | 'inactive' | 'prospect') => handleInputChange('status', value)}>
+                    <Select value={formData.status} onValueChange={(value: 'active' | 'prospect' | 'not accepted' | 'completed' | 'suspended') => handleInputChange('status', value)}>
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="active">Active</SelectItem>
-                        <SelectItem value="inactive">Inactive</SelectItem>
                         <SelectItem value="prospect">Prospect</SelectItem>
+                        <SelectItem value="not accepted">Not Accepted</SelectItem>
+                        <SelectItem value="completed">Completed</SelectItem>
+                        <SelectItem value="suspended">Suspended</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
