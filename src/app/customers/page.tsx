@@ -1,15 +1,20 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
+import { PermissionGate } from '@/components/auth/PermissionGate';
 import { DataTable } from '@/components/ui/DataTable';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { apiService, FilterOptions, SortOptions } from '@/lib/api';
 import { Customer } from '@/lib/mock-data';
+import { PERMISSIONS } from '@/lib/auth';
 
 export default function CustomersPage() {
+  const router = useRouter();
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -18,6 +23,37 @@ export default function CustomersPage() {
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
 
   const branches = ['Belfast', 'Newtownabbey', 'Lisburn', 'Bangor', 'Coleraine'];
+
+  // Branch color mapping - same as in reports
+  const getBranchColor = (branchName: string) => {
+    const branchColors: Record<string, { bg: string; text: string; border: string }> = {
+      'Belfast': { bg: 'bg-red-100', text: 'text-red-800', border: 'border-red-200' },
+      'Newtownabbey': { bg: 'bg-blue-100', text: 'text-blue-800', border: 'border-blue-200' },
+      'Lisburn': { bg: 'bg-green-100', text: 'text-green-800', border: 'border-green-200' },
+      'Bangor': { bg: 'bg-purple-100', text: 'text-purple-800', border: 'border-purple-200' },
+      'Coleraine': { bg: 'bg-orange-100', text: 'text-orange-800', border: 'border-orange-200' }
+    };
+    
+    return branchColors[branchName] || { bg: 'bg-gray-100', text: 'text-gray-800', border: 'border-gray-200' };
+  };
+
+  // Customer status color mapping
+  const getStatusColor = (status: string) => {
+    switch (status.toLowerCase()) {
+      case 'active':
+        return 'bg-green-100 text-green-800 border-green-200';
+      case 'not accepted':
+        return 'bg-red-100 text-red-800 border-red-200';
+      case 'prospect':
+        return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+      case 'suspended':
+        return 'bg-gray-100 text-gray-800 border-gray-200';
+      case 'completed':
+        return 'bg-blue-100 text-blue-800 border-blue-200';
+      default:
+        return 'bg-gray-100 text-gray-800 border-gray-200';
+    }
+  };
 
   useEffect(() => {
     loadCustomers();
@@ -46,10 +82,45 @@ export default function CustomersPage() {
   };
 
   const columns = [
-    { key: 'name', label: 'Name' },
+    { 
+      key: 'name', 
+      label: 'Name',
+      render: (value: string, row: any) => (
+        <button
+          onClick={() => router.push(`/customers/${row.id}`)}
+          className="text-left text-blue-600 hover:text-blue-800 hover:underline font-medium"
+        >
+          {value}
+        </button>
+      )
+    },
     { key: 'email', label: 'Email' },
     { key: 'phone', label: 'Phone' },
-    { key: 'branch', label: 'Branch' },
+    { 
+      key: 'branch', 
+      label: 'Branch',
+      render: (value: string) => {
+        const branchColor = getBranchColor(value);
+        return (
+          <span className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${branchColor.bg} ${branchColor.text} ${branchColor.border} border`}>
+            {value}
+          </span>
+        );
+      }
+    },
+    { key: 'customerType', label: 'Type' },
+    { 
+      key: 'status', 
+      label: 'Status',
+      render: (value: string) => {
+        const statusColor = getStatusColor(value);
+        return (
+          <span className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${statusColor} border`}>
+            {value.charAt(0).toUpperCase() + value.slice(1)}
+          </span>
+        );
+      }
+    },
     { key: 'totalProjects', label: 'Projects' },
     { key: 'totalValue', label: 'Value' },
     { key: 'rating', label: 'Rating' },
@@ -71,164 +142,170 @@ export default function CustomersPage() {
 
   const enhancedData = customers.map(customer => ({
     ...customer,
+    customerType: customer.customerType.charAt(0).toUpperCase() + customer.customerType.slice(1),
+    status: customer.status, // Keep original status for color mapping
     registrationDate: formatDate(customer.registrationDate)
   }));
 
   return (
-    <DashboardLayout>
-      <div className="space-y-6">
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-foreground dark:bg-[#404040] px-4 py-2 rounded">Customers</h1>
-            <p className="mt-2 text-sm text-gray-600 dark:text-muted-foreground">
-              Manage HHI customer database - {customers.length} customers
-            </p>
-          </div>
-          <div className="mt-4 sm:mt-0">
-            <Button variant="default">
-              + Add Customer
-            </Button>
-          </div>
-        </div>
-
-        {/* Filters */}
-        <div className="bg-white dark:bg-card rounded-lg shadow-sm border border-gray-200 dark:border-border p-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <ProtectedRoute permissions={[PERMISSIONS.CUSTOMERS_READ]}>
+      <DashboardLayout>
+        <div className="space-y-6">
+          {/* Header */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-foreground mb-2">
-                Search
-              </label>
-              <Input
-                type="text"
-                placeholder="Name, email, phone..."
-                value={searchQuery}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
-              />
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-foreground dark:bg-[#404040] px-4 py-2 rounded">Customers</h1>
+              <p className="mt-2 text-sm text-gray-600 dark:text-muted-foreground">
+                Manage HHI customer database - {customers.length} customers
+              </p>
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-foreground mb-2">
-                Branch
-              </label>
-              <select
-                value={branchFilter}
-                onChange={(e) => setBranchFilter(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-border rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary dark:bg-card dark:text-foreground"
-              >
-                <option value="">All branches</option>
-                {branches.map(branch => (
-                  <option key={branch} value={branch}>{branch}</option>
-                ))}
-              </select>
+            <div className="mt-4 sm:mt-0">
+              <PermissionGate permissions={[PERMISSIONS.CUSTOMERS_WRITE]}>
+                <Button variant="default" onClick={() => router.push('/customers/new')}>
+                  + Add Customer
+                </Button>
+              </PermissionGate>
             </div>
-            <div className="flex items-end">
-              <Button 
-                variant="secondary" 
-                onClick={() => {
-                  setSearchQuery('');
-                  setBranchFilter('');
-                  setSortField('');
-                  setSortDirection('asc');
-                }}
-              >
-                Clear Filters
-              </Button>
+          </div>
+
+          {/* Filters */}
+          <div className="bg-white dark:bg-card rounded-lg shadow-sm border border-gray-200 dark:border-border p-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-foreground mb-2">
+                  Search
+                </label>
+                <Input
+                  type="text"
+                  placeholder="Name, email, phone..."
+                  value={searchQuery}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-foreground mb-2">
+                  Branch
+                </label>
+                <select
+                  value={branchFilter}
+                  onChange={(e) => setBranchFilter(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-border rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary dark:bg-card dark:text-foreground"
+                >
+                  <option value="">All branches</option>
+                  {branches.map(branch => (
+                    <option key={branch} value={branch}>{branch}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="flex items-end">
+                <Button 
+                  variant="secondary" 
+                  onClick={() => {
+                    setSearchQuery('');
+                    setBranchFilter('');
+                    setSortField('');
+                    setSortDirection('asc');
+                  }}
+                >
+                  Clear Filters
+                </Button>
+              </div>
+            </div>
+          </div>
+
+          {/* Customers Table */}
+          <div className="bg-white dark:bg-card rounded-lg shadow-sm border border-gray-200 dark:border-border">
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-foreground">
+                  Customer List
+                </h3>
+                <div className="text-sm text-gray-500 dark:text-muted-foreground">
+                  {customers.length} customers
+                </div>
+              </div>
+
+              {loading ? (
+                <div className="flex items-center justify-center h-32">
+                  <div className="text-lg">Loading customers...</div>
+                </div>
+              ) : (
+                <DataTable
+                  data={enhancedData}
+                  columns={columns}
+                  itemsPerPage={15}
+                  showPagination={true}
+                />
+              )}
+            </div>
+          </div>
+
+          {/* Quick Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="bg-white dark:bg-card rounded-lg shadow-sm border border-gray-200 dark:border-border p-6">
+              <div className="flex items-center">
+                <div className="flex-shrink-0">
+                  <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center">
+                    <span className="text-blue-600 dark:text-blue-400 text-sm font-medium">👥</span>
+                  </div>
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-500 dark:text-muted-foreground">Total Customers</p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-foreground">{customers.length}</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-card rounded-lg shadow-sm border border-gray-200 dark:border-border p-6">
+              <div className="flex items-center">
+                <div className="flex-shrink-0">
+                  <div className="w-8 h-8 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center">
+                    <span className="text-green-600 dark:text-green-400 text-sm font-medium">💰</span>
+                  </div>
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-500 dark:text-muted-foreground">Total Value</p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-foreground">
+                    £{customers.reduce((sum, c) => sum + c.totalValue, 0).toLocaleString()}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-card rounded-lg shadow-sm border border-gray-200 dark:border-border p-6">
+              <div className="flex items-center">
+                <div className="flex-shrink-0">
+                  <div className="w-8 h-8 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center">
+                    <span className="text-purple-600 dark:text-purple-400 text-sm font-medium">📋</span>
+                  </div>
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-500 dark:text-muted-foreground">Total Projects</p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-foreground">
+                    {customers.reduce((sum, c) => sum + c.totalProjects, 0)}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-card rounded-lg shadow-sm border border-gray-200 dark:border-border p-6">
+              <div className="flex items-center">
+                <div className="flex-shrink-0">
+                  <div className="w-8 h-8 bg-yellow-100 dark:bg-yellow-900 rounded-full flex items-center justify-center">
+                    <span className="text-yellow-600 dark:text-yellow-400 text-sm font-medium">⭐</span>
+                  </div>
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-500 dark:text-muted-foreground">Avg Rating</p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-foreground">
+                    {(customers.reduce((sum, c) => sum + c.rating, 0) / customers.length).toFixed(1)}
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-
-        {/* Customers Table */}
-        <div className="bg-white dark:bg-card rounded-lg shadow-sm border border-gray-200 dark:border-border">
-          <div className="p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-foreground">
-                Customer List
-              </h3>
-              <div className="text-sm text-gray-500 dark:text-muted-foreground">
-                {customers.length} customers
-              </div>
-            </div>
-
-            {loading ? (
-              <div className="flex items-center justify-center h-32">
-                <div className="text-lg">Loading customers...</div>
-              </div>
-            ) : (
-              <DataTable
-                data={enhancedData}
-                columns={columns}
-                itemsPerPage={15}
-                showPagination={true}
-              />
-            )}
-          </div>
-        </div>
-
-        {/* Quick Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <div className="bg-white dark:bg-card rounded-lg shadow-sm border border-gray-200 dark:border-border p-6">
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center">
-                  <span className="text-blue-600 dark:text-blue-400 text-sm font-medium">👥</span>
-                </div>
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-500 dark:text-muted-foreground">Total Customers</p>
-                <p className="text-2xl font-bold text-gray-900 dark:text-foreground">{customers.length}</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white dark:bg-card rounded-lg shadow-sm border border-gray-200 dark:border-border p-6">
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <div className="w-8 h-8 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center">
-                  <span className="text-green-600 dark:text-green-400 text-sm font-medium">💰</span>
-                </div>
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-500 dark:text-muted-foreground">Total Value</p>
-                <p className="text-2xl font-bold text-gray-900 dark:text-foreground">
-                  £{customers.reduce((sum, c) => sum + c.totalValue, 0).toLocaleString()}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white dark:bg-card rounded-lg shadow-sm border border-gray-200 dark:border-border p-6">
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <div className="w-8 h-8 bg-yellow-100 dark:bg-yellow-900 rounded-full flex items-center justify-center">
-                  <span className="text-yellow-600 dark:text-yellow-400 text-sm font-medium">⭐</span>
-                </div>
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-500 dark:text-muted-foreground">Average Rating</p>
-                <p className="text-2xl font-bold text-gray-900 dark:text-foreground">
-                  {(customers.reduce((sum, c) => sum + c.rating, 0) / customers.length).toFixed(1)}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white dark:bg-card rounded-lg shadow-sm border border-gray-200 dark:border-border p-6">
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <div className="w-8 h-8 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center">
-                  <span className="text-purple-600 dark:text-purple-400 text-sm font-medium">🔨</span>
-                </div>
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-500 dark:text-muted-foreground">Total Projects</p>
-                <p className="text-2xl font-bold text-gray-900 dark:text-foreground">
-                  {customers.reduce((sum, c) => sum + c.totalProjects, 0)}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </DashboardLayout>
+      </DashboardLayout>
+    </ProtectedRoute>
   );
 } 

@@ -11,6 +11,25 @@ export interface Customer {
   totalProjects: number;
   totalValue: number;
   rating: number;
+  // Additional fields for comprehensive customer management
+  customerType: 'residential' | 'commercial' | 'prospect';
+  status: 'active' | 'inactive' | 'prospect';
+  preferences?: {
+    preferredContact: 'email' | 'phone' | 'sms';
+    communicationFrequency: 'weekly' | 'monthly' | 'quarterly';
+    specialRequirements?: string;
+  };
+  communicationHistory?: {
+    date: string;
+    type: 'email' | 'phone' | 'site_visit' | 'quote_sent';
+    summary: string;
+    outcome?: string;
+  }[];
+  companyInfo?: {
+    companyName?: string;
+    vatNumber?: string;
+    businessType?: string;
+  };
 }
 
 // Project types
@@ -66,6 +85,34 @@ export interface User {
   rating?: number;
   projectsCompleted?: number;
   permissions?: string[];
+  // Additional fields for comprehensive user management
+  status: 'active' | 'inactive' | 'suspended';
+  userType: 'admin' | 'branch_manager' | 'branch_worker' | 'subcontractor';
+  createdAt: string;
+  lastLogin?: string;
+  avatar?: string;
+  preferences?: {
+    theme: 'light' | 'dark' | 'auto';
+    notifications: {
+      email: boolean;
+      sms: boolean;
+      push: boolean;
+    };
+    language: 'en' | 'pl';
+  };
+  security?: {
+    twoFactorEnabled: boolean;
+    lastPasswordChange: string;
+    failedLoginAttempts: number;
+  };
+  activity?: {
+    lastActivity: string;
+    totalLogins: number;
+    averageSessionTime: string;
+  };
+  completedJobs?: number;
+  averageTime?: string;
+  branches?: string[];
 }
 
 // Analytics types

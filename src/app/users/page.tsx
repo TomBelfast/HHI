@@ -1,28 +1,58 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
+import { PermissionGate } from '@/components/auth/PermissionGate';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { DataTable } from '@/components/ui/DataTable';
 import { apiService } from '@/lib/api';
+import { PERMISSIONS } from '@/lib/auth';
 
 interface User {
   id: string;
   name: string;
   email: string;
   role: string;
-  branch: string;
+  branch?: string;
   phone: string;
   specialization?: string;
   rating?: number;
   projectsCompleted?: number;
   completedJobs?: number;
   averageTime?: string;
+  // Additional fields from task #3.3
+  status: 'active' | 'inactive' | 'suspended';
+  userType: 'admin' | 'branch_manager' | 'branch_worker' | 'subcontractor';
+  createdAt: string;
+  lastLogin?: string;
+  avatar?: string;
+  preferences?: {
+    theme: 'light' | 'dark' | 'auto';
+    notifications: {
+      email: boolean;
+      sms: boolean;
+      push: boolean;
+    };
+    language: 'en' | 'pl';
+  };
+  security?: {
+    twoFactorEnabled: boolean;
+    lastPasswordChange: string;
+    failedLoginAttempts: number;
+  };
+  activity?: {
+    lastActivity: string;
+    totalLogins: number;
+    averageSessionTime: string;
+  };
 }
 
 export default function UsersPage() {
+  const router = useRouter();
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -113,15 +143,29 @@ export default function UsersPage() {
     { key: 'name', label: 'Name' },
     { key: 'email', label: 'Email' },
     { key: 'role', label: 'Role' },
+    { key: 'userType', label: 'User Type' },
+    { key: 'status', label: 'Status' },
     { key: 'branch', label: 'Branch' },
     { key: 'phone', label: 'Phone' },
     { key: 'specialization', label: 'Specialization' },
     { key: 'rating', label: 'Rating' },
-    { key: 'projectsCompleted', label: 'Projects' }
+    { key: 'projectsCompleted', label: 'Projects' },
+    { key: 'lastLogin', label: 'Last Login' },
+    { key: 'actions', label: 'Actions' }
   ];
 
   const enhancedData = sortedUsers.map(user => ({
     ...user,
+    userType: user.userType ? user.userType.replace('_', ' ').charAt(0).toUpperCase() + user.userType.replace('_', ' ').slice(1) : '-',
+    status: user.status ? (
+      <Badge className={
+        user.status === 'active' ? 'bg-green-100 text-green-800' :
+        user.status === 'inactive' ? 'bg-gray-100 text-gray-800' :
+        'bg-red-100 text-red-800'
+      }>
+        {user.status.charAt(0).toUpperCase() + user.status.slice(1)}
+      </Badge>
+    ) : '-',
     role: (
       <div className="flex items-center">
         <span className="mr-2">{getRoleIcon(user.role)}</span>
@@ -137,7 +181,30 @@ export default function UsersPage() {
       </div>
     ) : '-',
     specialization: user.specialization || '-',
-    projectsCompleted: user.projectsCompleted || user.completedJobs || '-'
+    projectsCompleted: user.projectsCompleted || user.completedJobs || '-',
+    lastLogin: user.lastLogin ? new Date(user.lastLogin).toLocaleDateString('pl-PL') : '-',
+    actions: (
+      <div className="flex space-x-2">
+        <PermissionGate permissions={[PERMISSIONS.USERS_WRITE]}>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => router.push(`/users/${user.id}/edit`)}
+          >
+            Edit
+          </Button>
+        </PermissionGate>
+        <PermissionGate permissions={[PERMISSIONS.PERMISSIONS_READ]}>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => router.push(`/users/${user.id}/permissions`)}
+          >
+            Permissions
+          </Button>
+        </PermissionGate>
+      </div>
+    )
   }));
 
   const totalUsers = users.length;
@@ -148,170 +215,179 @@ export default function UsersPage() {
     : '0.0';
 
   return (
-    <DashboardLayout>
-      <div className="space-y-6">
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">Users</h1>
-            <p className="mt-2 text-sm text-gray-600">
-              Manage HHI staff and contractors - {totalUsers} users
-            </p>
-          </div>
-          <div className="mt-4 sm:mt-0">
-            <Button variant="default">
-              + Add User
-            </Button>
-          </div>
-        </div>
-
-        {/* Quick Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                  <span className="text-blue-600 text-sm font-medium">👥</span>
-                </div>
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-500">Total Users</p>
-                <p className="text-2xl font-bold text-gray-900">{totalUsers}</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                  <span className="text-green-600 text-sm font-medium">👷</span>
-                </div>
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-500">Active Workers</p>
-                <p className="text-2xl font-bold text-gray-900">{activeWorkers}</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
-                  <span className="text-purple-600 text-sm font-medium">🔧</span>
-                </div>
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-500">Contractors</p>
-                <p className="text-2xl font-bold text-gray-900">{contractors}</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <div className="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center">
-                  <span className="text-yellow-600 text-sm font-medium">⭐</span>
-                </div>
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-500">Average Rating</p>
-                <p className="text-2xl font-bold text-gray-900">{averageRating}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Filters */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <ProtectedRoute permissions={[PERMISSIONS.USERS_READ]}>
+      <DashboardLayout>
+        <div className="space-y-6">
+          {/* Header */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Search
-              </label>
-              <Input
-                type="text"
-                placeholder="Name, email, role..."
-                value={searchQuery}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
-              />
+              <h1 className="text-3xl font-bold text-gray-900">Users</h1>
+              <p className="mt-2 text-sm text-gray-600">
+                Manage HHI staff and contractors - {totalUsers} users
+              </p>
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Role
-              </label>
-              <select
-                value={roleFilter}
-                onChange={(e) => setRoleFilter(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
+            <div className="mt-4 sm:mt-0 flex space-x-2">
+              <PermissionGate permissions={[PERMISSIONS.PERMISSIONS_READ]}>
+                <Button variant="outline" onClick={() => router.push('/users/permissions')}>
+                  Manage Permissions
+                </Button>
+              </PermissionGate>
+              <PermissionGate permissions={[PERMISSIONS.USERS_WRITE]}>
+                <Button variant="default" onClick={() => router.push('/users/new')}>
+                  + Add User
+                </Button>
+              </PermissionGate>
+            </div>
+          </div>
+
+          {/* Quick Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+              <div className="flex items-center">
+                <div className="flex-shrink-0">
+                  <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                    <span className="text-blue-600 text-sm font-medium">👥</span>
+                  </div>
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-500">Total Users</p>
+                  <p className="text-2xl font-bold text-gray-900">{totalUsers}</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+              <div className="flex items-center">
+                <div className="flex-shrink-0">
+                  <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                    <span className="text-green-600 text-sm font-medium">👷</span>
+                  </div>
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-500">Active Workers</p>
+                  <p className="text-2xl font-bold text-gray-900">{activeWorkers}</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+              <div className="flex items-center">
+                <div className="flex-shrink-0">
+                  <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
+                    <span className="text-purple-600 text-sm font-medium">🔧</span>
+                  </div>
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-500">Contractors</p>
+                  <p className="text-2xl font-bold text-gray-900">{contractors}</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+              <div className="flex items-center">
+                <div className="flex-shrink-0">
+                  <div className="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center">
+                    <span className="text-yellow-600 text-sm font-medium">⭐</span>
+                  </div>
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-500">Average Rating</p>
+                  <p className="text-2xl font-bold text-gray-900">{averageRating}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Filters */}
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Search
+                </label>
+                <Input
+                  type="text"
+                  placeholder="Name, email, role..."
+                  value={searchQuery}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Role
+                </label>
+                <select
+                  value={roleFilter}
+                  onChange={(e) => setRoleFilter(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
+                >
+                  <option value="">All roles</option>
+                  {roles.map(role => (
+                    <option key={role} value={role}>{role}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Branch
+                </label>
+                <select
+                  value={branchFilter}
+                  onChange={(e) => setBranchFilter(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
+                >
+                  <option value="">All branches</option>
+                  {branches.map(branch => (
+                    <option key={branch} value={branch}>{branch}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            <div className="mt-4">
+              <Button 
+                variant="secondary" 
+                onClick={() => {
+                  setSearchQuery('');
+                  setRoleFilter('');
+                  setBranchFilter('');
+                  setSortField('');
+                  setSortDirection('asc');
+                }}
               >
-                <option value="">All roles</option>
-                {roles.map(role => (
-                  <option key={role} value={role}>{role}</option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Branch
-              </label>
-              <select
-                value={branchFilter}
-                onChange={(e) => setBranchFilter(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
-              >
-                <option value="">All branches</option>
-                {branches.map(branch => (
-                  <option key={branch} value={branch}>{branch}</option>
-                ))}
-              </select>
+                Clear Filters
+              </Button>
             </div>
           </div>
-          <div className="mt-4">
-            <Button 
-              variant="secondary" 
-              onClick={() => {
-                setSearchQuery('');
-                setRoleFilter('');
-                setBranchFilter('');
-                setSortField('');
-                setSortDirection('asc');
-              }}
-            >
-              Clear Filters
-            </Button>
+
+          {/* Users Table */}
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold text-gray-900">
+                  User List
+                </h3>
+                <div className="text-sm text-gray-500">
+                  {sortedUsers.length} users
+                </div>
+              </div>
+
+              {loading ? (
+                <div className="flex items-center justify-center h-32">
+                  <div className="text-lg">Loading users...</div>
+                </div>
+              ) : (
+                <DataTable
+                  data={enhancedData}
+                  columns={columns}
+                  itemsPerPage={15}
+                  showPagination={true}
+                />
+              )}
+            </div>
           </div>
         </div>
-
-        {/* Users Table */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-          <div className="p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">
-                User List
-              </h3>
-              <div className="text-sm text-gray-500">
-                {sortedUsers.length} users
-              </div>
-            </div>
-
-            {loading ? (
-              <div className="flex items-center justify-center h-32">
-                <div className="text-lg">Loading users...</div>
-              </div>
-            ) : (
-              <DataTable
-                data={enhancedData}
-                columns={columns}
-                itemsPerPage={15}
-                showPagination={true}
-              />
-            )}
-          </div>
-        </div>
-      </div>
-    </DashboardLayout>
+      </DashboardLayout>
+    </ProtectedRoute>
   );
 } 

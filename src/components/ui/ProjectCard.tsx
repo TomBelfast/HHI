@@ -10,17 +10,30 @@ interface ProjectCardProps {
 export function ProjectCard({ project, customer }: ProjectCardProps) {
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'Installation Completed':
-      case 'Repair Completed':
-        return 'bg-green-100 text-green-800';
       case 'Quote Sent':
-        return 'bg-yellow-100 text-yellow-800';
+        return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+      case 'Approved':
+        return 'bg-blue-100 text-blue-800 border-blue-200';
+      case 'In Progress':
+        return 'bg-orange-100 text-orange-800 border-orange-200';
+      case 'Installation Completed':
+        return 'bg-green-100 text-green-800 border-green-200';
       case 'Materials Received':
-        return 'bg-blue-100 text-blue-800';
+        return 'bg-purple-100 text-purple-800 border-purple-200';
       case 'Installation Scheduled':
-        return 'bg-purple-100 text-purple-800';
+        return 'bg-indigo-100 text-indigo-800 border-indigo-200';
+      case 'Repair Completed':
+        return 'bg-green-100 text-green-800 border-green-200';
+      case 'Invoice Sent':
+        return 'bg-cyan-100 text-cyan-800 border-cyan-200';
+      case 'Awaiting Payment':
+        return 'bg-amber-100 text-amber-800 border-amber-200';
+      case 'Paid':
+        return 'bg-emerald-100 text-emerald-800 border-emerald-200';
+      case 'Awaiting Review':
+        return 'bg-rose-100 text-rose-800 border-rose-200';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-gray-100 text-gray-800 border-gray-200';
     }
   };
 
@@ -72,7 +85,7 @@ export function ProjectCard({ project, customer }: ProjectCardProps) {
               </span>
             </div>
             
-            <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(project.status)}`}>
+            <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(project.status)} border`}>
               {project.status}
             </span>
           </div>

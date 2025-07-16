@@ -5,6 +5,7 @@ import { useState } from 'react';
 interface Column {
   key: string;
   label: string;
+  render?: (value: any, row?: any) => React.ReactNode;
 }
 
 interface DataTableProps {
@@ -63,7 +64,7 @@ export function DataTable({ data, columns, itemsPerPage = 10, showPagination = t
                   key={column.key}
                   className="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
                 >
-                  {formatValue(item[column.key], column.key)}
+                  {column.render ? column.render(item[column.key], item) : formatValue(item[column.key], column.key)}
                 </td>
               ))}
             </tr>

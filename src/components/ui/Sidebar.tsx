@@ -3,20 +3,99 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useAuth } from '@/contexts/AuthContext';
+import { PermissionGate } from '@/components/auth/PermissionGate';
+import { PERMISSIONS } from '@/lib/auth';
 
 const navigation = [
-  { name: 'Dashboard', href: '/', icon: '📊' },
-  { name: 'Customers', href: '/customers', icon: '👥' },
-  { name: 'Projects', href: '/projects', icon: '🔨' },
-  { name: 'Users', href: '/users', icon: '👤' },
-  { name: 'Analytics', href: '/analytics', icon: '📈' },
-  { name: 'Reports', href: '/reports', icon: '📋' },
-  { name: 'Settings', href: '/settings', icon: '⚙️' },
+  { 
+    name: 'Dashboard', 
+    href: '/', 
+    icon: '📊',
+    permissions: [] // Available to all authenticated users
+  },
+  { 
+    name: 'Customers', 
+    href: '/customers', 
+    icon: '👥',
+    permissions: [PERMISSIONS.CUSTOMERS_READ]
+  },
+  { 
+    name: 'Projects', 
+    href: '/projects', 
+    icon: '🔨',
+    permissions: [PERMISSIONS.PROJECTS_READ]
+  },
+  { 
+    name: 'Users', 
+    href: '/users', 
+    icon: '👤',
+    permissions: [PERMISSIONS.USERS_READ],
+    userTypes: ['admin', 'branch_manager']
+  },
+  { 
+    name: 'Add User', 
+    href: '/users/new', 
+    icon: '➕',
+    permissions: [PERMISSIONS.USERS_WRITE],
+    userTypes: ['admin', 'branch_manager']
+  },
+  { 
+    name: 'Permissions', 
+    href: '/users/permissions', 
+    icon: '🔐',
+    permissions: [PERMISSIONS.PERMISSIONS_READ],
+    userTypes: ['admin', 'branch_manager']
+  },
+  { 
+    name: 'Analytics', 
+    href: '/analytics', 
+    icon: '📈',
+    permissions: [PERMISSIONS.ANALYTICS_READ]
+  },
+  { 
+    name: 'Reports', 
+    href: '/reports', 
+    icon: '📋',
+    permissions: [PERMISSIONS.ANALYTICS_READ]
+  },
+  { 
+    name: 'Settings', 
+    href: '/settings', 
+    icon: '⚙️',
+    permissions: [PERMISSIONS.SETTINGS_READ],
+    userTypes: ['admin']
+  },
 ];
 
 export function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const pathname = usePathname();
+  const { user } = useAuth();
+
+  const getInitials = (name: string) => {
+    return name
+      .split(' ')
+      .map(word => word.charAt(0))
+      .join('')
+      .toUpperCase()
+      .slice(0, 2);
+  };
+
+  const getRoleDisplayName = (userType: string) => {
+    switch (userType) {
+      case 'admin':
+        return 'Administrator';
+      case 'branch_manager':
+        return 'Branch Manager';
+      case 'branch_worker':
+        return 'Branch Worker';
+      case 'subcontractor':
+        return 'Subcontractor';
+      default:
+        return userType;
+    }
+  };
 
   return (
     <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-sidebar shadow-lg transform transition-transform duration-300 ease-in-out lg:translate-x-0 ${collapsed ? '-translate-x-full' : 'translate-x-0'}`}>
@@ -41,19 +120,25 @@ export function Sidebar() {
         <nav className="flex-1 space-y-1 px-4 py-4">
           {navigation.map((item) => {
             const isActive = pathname === item.href;
+            
             return (
-              <Link
+              <PermissionGate
                 key={item.name}
-                href={item.href}
-                className={`group flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors ${
-                  isActive
-                    ? 'bg-primary text-primary-foreground'
-                    : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-sidebar-foreground dark:hover:bg-sidebar-accent dark:hover:text-sidebar-accent-foreground'
-                }`}
+                permissions={item.permissions}
+                userType={item.userTypes as any}
               >
-                <span className="mr-3 text-lg">{item.icon}</span>
-                {item.name}
-              </Link>
+                <Link
+                  href={item.href}
+                  className={`group flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors ${
+                    isActive
+                      ? 'bg-primary text-primary-foreground'
+                      : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-sidebar-foreground dark:hover:bg-sidebar-accent dark:hover:text-sidebar-accent-foreground'
+                  }`}
+                >
+                  <span className="mr-3 text-lg">{item.icon}</span>
+                  {item.name}
+                </Link>
+              </PermissionGate>
             );
           })}
         </nav>
@@ -63,12 +148,18 @@ export function Sidebar() {
           <div className="flex items-center">
             <div className="flex-shrink-0">
               <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center">
-                <span className="text-sm font-medium text-primary-foreground">A</span>
+                <span className="text-sm font-medium text-primary-foreground">
+                  {user ? getInitials(user.name) : 'U'}
+                </span>
               </div>
             </div>
             <div className="ml-3">
-              <p className="text-sm font-medium text-gray-700 dark:text-sidebar-foreground">Admin User</p>
-              <p className="text-xs text-gray-500 dark:text-muted-foreground">admin@hhi-ni.com</p>
+              <p className="text-sm font-medium text-gray-700 dark:text-sidebar-foreground">
+                {user?.name || 'User'}
+              </p>
+              <p className="text-xs text-gray-500 dark:text-muted-foreground">
+                {user ? getRoleDisplayName(user.userType) : 'Unknown Role'}
+              </p>
             </div>
           </div>
         </div>

@@ -1,0 +1,44 @@
+{
+  "total_projects": 127,
+  "active_projects": 45,
+  "monthly_revenue": 245000,
+  "conversion_rate": 28.5,
+  "history": [
+    { "month": "2023-07", "revenue": 180000, "completed_projects": 8, "conversion_rate": 22.1 },
+    { "month": "2023-08", "revenue": 192000, "completed_projects": 10, "conversion_rate": 23.4 },
+    { "month": "2023-09", "revenue": 205000, "completed_projects": 11, "conversion_rate": 24.0 },
+    { "month": "2023-10", "revenue": 210000, "completed_projects": 12, "conversion_rate": 25.2 },
+    { "month": "2023-11", "revenue": 220000, "completed_projects": 13, "conversion_rate": 26.0 },
+    { "month": "2023-12", "revenue": 230000, "completed_projects": 14, "conversion_rate": 26.8 },
+    { "month": "2024-01", "revenue": 235000, "completed_projects": 13, "conversion_rate": 27.0 },
+    { "month": "2024-02", "revenue": 240000, "completed_projects": 12, "conversion_rate": 27.5 },
+    { "month": "2024-03", "revenue": 242000, "completed_projects": 11, "conversion_rate": 27.8 },
+    { "month": "2024-04", "revenue": 243000, "completed_projects": 10, "conversion_rate": 28.0 },
+    { "month": "2024-05", "revenue": 244000, "completed_projects": 9, "conversion_rate": 28.2 },
+    { "month": "2024-06", "revenue": 245000, "completed_projects": 9, "conversion_rate": 28.5 }
+  ],
+  "project_status_distribution": {
+    "quote": 18,
+    "approved": 22,
+    "in_progress": 45,
+    "completed": 42
+  },
+  "service_type_performance": [
+    { "service_type": "Bathroom Refurbishment", "projects": 32, "revenue": 110000 },
+    { "service_type": "Kitchen Installation", "projects": 28, "revenue": 95000 },
+    { "service_type": "Heating System Upgrade", "projects": 21, "revenue": 70000 },
+    { "service_type": "Windows & Doors", "projects": 18, "revenue": 42000 },
+    { "service_type": "Other", "projects": 28, "revenue": 28000 }
+  ],
+  "customer_satisfaction": {
+    "average": 4.6,
+    "distribution": { "5": 68, "4": 41, "3": 12, "2": 4, "1": 2 }
+  },
+  "regional_performance": [
+    { "region": "Belfast", "projects": 38, "revenue": 90000 },
+    { "region": "Derry", "projects": 21, "revenue": 48000 },
+    { "region": "Lisburn", "projects": 17, "revenue": 35000 },
+    { "region": "Newry", "projects": 13, "revenue": 25000 },
+    { "region": "Other", "projects": 38, "revenue": 47000 }
+  ]
+} 

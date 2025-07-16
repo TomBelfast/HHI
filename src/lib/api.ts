@@ -329,14 +329,105 @@ export class ApiService {
     };
   }
 
-  // Analytics API
-  async getAnalytics(): Promise<ApiResponse<Analytics>> {
-    await new Promise(resolve => setTimeout(resolve, 200));
+  async createUser(userData: Omit<User, 'id' | 'createdAt' | 'lastLogin' | 'rating' | 'projectsCompleted' | 'completedJobs' | 'averageTime'>): Promise<ApiResponse<User>> {
+    await new Promise(resolve => setTimeout(resolve, 500));
+
+    const newUser: User = {
+      ...userData,
+      id: `USER-${String(mockUsers.length + 1).padStart(3, '0')}`,
+      createdAt: new Date().toISOString(),
+      lastLogin: undefined,
+      rating: 0,
+      projectsCompleted: 0,
+      completedJobs: 0,
+      averageTime: '0h',
+      status: userData.status || 'active',
+      userType: userData.userType,
+      preferences: {
+        theme: 'light',
+        notifications: {
+          email: true,
+          sms: false,
+          push: true
+        },
+        language: 'en'
+      },
+      security: {
+        twoFactorEnabled: false,
+        lastPasswordChange: new Date().toISOString(),
+        failedLoginAttempts: 0
+      },
+      activity: {
+        lastActivity: new Date().toISOString(),
+        totalLogins: 0,
+        averageSessionTime: '0h'
+      }
+    };
+
+    // In a real app, this would save to database
+    mockUsers.push(newUser);
 
     return {
-      data: mockAnalytics,
-      success: true
+      data: newUser,
+      success: true,
+      message: 'User created successfully'
     };
+  }
+
+  async updateUser(id: string, updates: Partial<User>): Promise<ApiResponse<User>> {
+    await new Promise(resolve => setTimeout(resolve, 400));
+
+    const index = mockUsers.findIndex(u => u.id === id);
+    if (index === -1) {
+      throw new Error('User not found');
+    }
+
+    mockUsers[index] = { ...mockUsers[index], ...updates };
+
+    return {
+      data: mockUsers[index],
+      success: true,
+      message: 'User updated successfully'
+    };
+  }
+
+  async deleteUser(id: string): Promise<ApiResponse<void>> {
+    await new Promise(resolve => setTimeout(resolve, 300));
+
+    const index = mockUsers.findIndex(u => u.id === id);
+    if (index === -1) {
+      throw new Error('User not found');
+    }
+
+    mockUsers.splice(index, 1);
+
+    return {
+      data: undefined,
+      success: true,
+      message: 'User deleted successfully'
+    };
+  }
+
+  // Analytics API
+  async getAnalytics(): Promise<ApiResponse<Analytics>> {
+    try {
+      const response = await fetch('/api/analytics');
+      if (!response.ok) {
+        throw new Error('Failed to fetch analytics data');
+      }
+      const data = await response.json();
+      return {
+        data,
+        success: true
+      };
+    } catch (error) {
+      console.error('Error fetching analytics:', error);
+      // Fallback to mock data if API fails
+      return {
+        data: mockAnalytics,
+        success: true
+      };
+    }
   }
 
   // Dashboard summary

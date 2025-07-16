@@ -11,6 +11,25 @@ export interface Customer {
   totalProjects: number;
   totalValue: number;
   rating: number;
+  // Additional fields required by task #3.1
+  customerType: 'residential' | 'commercial' | 'prospect';
+  status: 'active' | 'not accepted' | 'prospect' | 'completed' | 'suspended';
+  preferences?: {
+    preferredContact: 'email' | 'phone' | 'sms';
+    communicationFrequency: 'weekly' | 'monthly' | 'quarterly';
+    specialRequirements?: string;
+  };
+  communicationHistory?: {
+    date: string;
+    type: 'email' | 'phone' | 'site_visit' | 'quote_sent';
+    summary: string;
+    outcome?: string;
+  }[];
+  companyInfo?: {
+    companyName?: string;
+    vatNumber?: string;
+    businessType?: string;
+  };
 }
 
 export interface Project {
@@ -39,6 +58,7 @@ export interface TimelineEvent {
   date: string;
   status: string;
   note: string;
+  type?: 'phone_call' | 'measurement' | 'quote_sent' | 'contract_signed' | 'installation_started' | 'installation_completed' | 'complaint_submitted' | 'complaint_resolved' | 'other';
 }
 
 export interface Complaint {
@@ -65,19 +85,129 @@ export interface User {
   completedJobs?: number;
   averageTime?: string;
   branches?: string[];
+  // Additional fields required by task #3.3
+  status: 'active' | 'inactive' | 'suspended';
+  userType: 'admin' | 'branch_manager' | 'branch_worker' | 'subcontractor';
+  createdAt: string;
+  lastLogin?: string;
+  avatar?: string;
+  preferences?: {
+    theme: 'light' | 'dark' | 'auto';
+    notifications: {
+      email: boolean;
+      sms: boolean;
+      push: boolean;
+    };
+    language: 'en' | 'pl';
+  };
+  security?: {
+    twoFactorEnabled: boolean;
+    lastPasswordChange: string;
+    failedLoginAttempts: number;
+  };
+  activity?: {
+    lastActivity: string;
+    totalLogins: number;
+    averageSessionTime: string;
+  };
 }
 
 export interface Analytics {
-  companyOverview: {
-    totalProjects: number;
-    activeProjects: number;
-    completedThisMonth: number;
-    monthlyRevenue: number;
-    conversionRate: number;
-    averageProjectValue: number;
+  total_projects: number;
+  active_projects: number;
+  monthly_revenue: number;
+  conversion_rate: number;
+  history: {
+    month: string;
+    revenue: number;
+    completed_projects: number;
+    conversion_rate: number;
+  }[];
+  project_status_distribution: {
+    quote: number;
+    approved: number;
+    in_progress: number;
+    completed: number;
   };
-  branchPerformance: BranchPerformance[];
-  categoryBreakdown: CategoryBreakdown[];
+  service_type_performance: {
+    service_type: string;
+    projects: number;
+    revenue: number;
+  }[];
+  customer_satisfaction: {
+    average: number;
+    distribution: {
+      [key: string]: number;
+    };
+  };
+  regional_performance: {
+    region: string;
+    projects: number;
+    revenue: number;
+  }[];
+  avg_days_phone_to_measurement?: number;
+  avg_days_complaint_wait?: number;
+  avg_days_contact_to_contract?: number;
+  branch_performance_metrics?: {
+    branch: string;
+    projects_count: number;
+    avg_days_phone_to_measurement: number | null;
+    avg_days_complaint_wait: number | null;
+    avg_days_contact_to_contract: number | null;
+    avg_project_duration: number | null;
+  }[];
+  employee_performance?: {
+    top_by_projects: {
+      name: string;
+      total_projects: number;
+      total_value: number;
+      completed_projects: number;
+      conversion_rate: number;
+      avg_project_value: number;
+      avg_project_duration: number | null;
+      branch: string;
+    }[];
+    top_by_value: {
+      name: string;
+      total_projects: number;
+      total_value: number;
+      completed_projects: number;
+      conversion_rate: number;
+      avg_project_value: number;
+      avg_project_duration: number | null;
+      branch: string;
+    }[];
+    top_by_conversion: {
+      name: string;
+      total_projects: number;
+      total_value: number;
+      completed_projects: number;
+      conversion_rate: number;
+      avg_project_value: number;
+      avg_project_duration: number | null;
+      branch: string;
+    }[];
+    top_by_efficiency: {
+      name: string;
+      total_projects: number;
+      total_value: number;
+      completed_projects: number;
+      conversion_rate: number;
+      avg_project_value: number;
+      avg_project_duration: number | null;
+      branch: string;
+    }[];
+    all_employees: {
+      name: string;
+      total_projects: number;
+      total_value: number;
+      completed_projects: number;
+      conversion_rate: number;
+      avg_project_value: number;
+      avg_project_duration: number | null;
+      branch: string;
+    }[];
+  };
 }
 
 export interface BranchPerformance {
@@ -109,7 +239,24 @@ export const mockCustomers: Customer[] = [
     registrationDate: "2024-11-15",
     totalProjects: 2,
     totalValue: 15800,
-    rating: 4.8
+    rating: 4.8,
+    customerType: 'residential',
+    status: 'active',
+    preferences: {
+      preferredContact: 'email',
+      communicationFrequency: 'monthly',
+      specialRequirements: 'No specific requirements'
+    },
+    communicationHistory: [
+      {date: "2024-11-15", type: "email", summary: "Initial contact via email"},
+      {date: "2024-11-20", type: "phone", summary: "Customer called to discuss bathroom renovation"},
+      {date: "2024-11-25", type: "email", summary: "Detailed quote sent via email"}
+    ],
+    companyInfo: {
+      companyName: "Sarah Connor Ltd",
+      vatNumber: "GB123456789",
+      businessType: "Private"
+    }
   },
   {
     id: "CUST-002", 
@@ -122,7 +269,23 @@ export const mockCustomers: Customer[] = [
     registrationDate: "2024-10-22",
     totalProjects: 1,
     totalValue: 8500,
-    rating: 4.6
+    rating: 4.6,
+    customerType: 'residential',
+    status: 'active',
+    preferences: {
+      preferredContact: 'phone',
+      communicationFrequency: 'quarterly',
+      specialRequirements: 'No specific requirements'
+    },
+    communicationHistory: [
+      {date: "2024-10-22", type: "email", summary: "Initial enquiry via website"},
+      {date: "2024-10-25", type: "phone", summary: "Customer called to discuss kitchen installation"}
+    ],
+    companyInfo: {
+      companyName: "John Smith & Sons",
+      vatNumber: "GB987654321",
+      businessType: "Private"
+    }
   },
   {
     id: "CUST-003",
@@ -135,7 +298,23 @@ export const mockCustomers: Customer[] = [
     registrationDate: "2024-12-01",
     totalProjects: 1,
     totalValue: 12200,
-    rating: 4.9
+    rating: 4.9,
+    customerType: 'commercial',
+    status: 'active',
+    preferences: {
+      preferredContact: 'email',
+      communicationFrequency: 'monthly',
+      specialRequirements: 'Fast turnaround'
+    },
+    communicationHistory: [
+      {date: "2024-12-01", type: "email", summary: "Initial enquiry via email"},
+      {date: "2024-12-05", type: "phone", summary: "Customer called to discuss composite door & windows"}
+    ],
+    companyInfo: {
+      companyName: "Mary Johnson Ltd",
+      vatNumber: "GB112233445",
+      businessType: "Limited Company"
+    }
   },
   {
     id: "CUST-004",
@@ -148,7 +327,24 @@ export const mockCustomers: Customer[] = [
     registrationDate: "2024-09-18",
     totalProjects: 3,
     totalValue: 22400,
-    rating: 4.7
+    rating: 4.7,
+    customerType: 'residential',
+    status: 'not accepted',
+    preferences: {
+      preferredContact: 'sms',
+      communicationFrequency: 'weekly',
+      specialRequirements: 'Strict budget'
+    },
+    communicationHistory: [
+      {date: "2024-09-18", type: "email", summary: "Initial enquiry via email"},
+      {date: "2024-09-20", type: "phone", summary: "Customer called to discuss HD decking"},
+      {date: "2024-09-25", type: "email", summary: "Detailed quote sent via email"}
+    ],
+    companyInfo: {
+      companyName: "David Wilson & Co",
+      vatNumber: "GB556677889",
+      businessType: "Private"
+    }
   },
   {
     id: "CUST-005",
@@ -161,7 +357,23 @@ export const mockCustomers: Customer[] = [
     registrationDate: "2024-11-30",
     totalProjects: 1,
     totalValue: 6800,
-    rating: 4.4
+    rating: 4.4,
+    customerType: 'commercial',
+    status: 'active',
+    preferences: {
+      preferredContact: 'email',
+      communicationFrequency: 'monthly',
+      specialRequirements: 'Quick installation'
+    },
+    communicationHistory: [
+      {date: "2024-11-30", type: "email", summary: "Initial enquiry via email"},
+      {date: "2024-12-02", type: "phone", summary: "Customer called to discuss PVC fascia & guttering"}
+    ],
+    companyInfo: {
+      companyName: "Emma Brown Enterprises",
+      vatNumber: "GB990011223",
+      businessType: "Limited Liability Partnership"
+    }
   },
   {
     id: "CUST-006",
@@ -174,7 +386,23 @@ export const mockCustomers: Customer[] = [
     registrationDate: "2024-10-05",
     totalProjects: 2,
     totalValue: 18900,
-    rating: 4.5
+    rating: 4.5,
+    customerType: 'residential',
+    status: 'active',
+    preferences: {
+      preferredContact: 'phone',
+      communicationFrequency: 'quarterly',
+      specialRequirements: 'No specific requirements'
+    },
+    communicationHistory: [
+      {date: "2024-10-05", type: "email", summary: "Initial enquiry via email"},
+      {date: "2024-10-10", type: "phone", summary: "Customer called to discuss bathroom refurbishment"}
+    ],
+    companyInfo: {
+      companyName: "Robert Taylor & Sons",
+      vatNumber: "GB123456789",
+      businessType: "Private"
+    }
   },
   {
     id: "CUST-007",
@@ -187,7 +415,23 @@ export const mockCustomers: Customer[] = [
     registrationDate: "2024-08-12",
     totalProjects: 1,
     totalValue: 9750,
-    rating: 4.8
+    rating: 4.8,
+    customerType: 'commercial',
+    status: 'active',
+    preferences: {
+      preferredContact: 'email',
+      communicationFrequency: 'monthly',
+      specialRequirements: 'Fast installation'
+    },
+    communicationHistory: [
+      {date: "2024-08-12", type: "email", summary: "Initial enquiry via email"},
+      {date: "2024-08-15", type: "phone", summary: "Customer called to discuss kitchen installation"}
+    ],
+    companyInfo: {
+      companyName: "Lisa Anderson Ltd",
+      vatNumber: "GB987654321",
+      businessType: "Limited Company"
+    }
   },
   {
     id: "CUST-008",
@@ -200,7 +444,23 @@ export const mockCustomers: Customer[] = [
     registrationDate: "2024-07-25",
     totalProjects: 2,
     totalValue: 16200,
-    rating: 4.6
+    rating: 4.6,
+    customerType: 'residential',
+    status: 'not accepted',
+    preferences: {
+      preferredContact: 'sms',
+      communicationFrequency: 'weekly',
+      specialRequirements: 'Strict budget'
+    },
+    communicationHistory: [
+      {date: "2024-07-25", type: "email", summary: "Initial enquiry via email"},
+      {date: "2024-07-28", type: "phone", summary: "Customer called to discuss bathroom refurbishment"}
+    ],
+    companyInfo: {
+      companyName: "Michael O'Brien & Co",
+      vatNumber: "GB112233445",
+      businessType: "Private"
+    }
   },
   {
     id: "CUST-009", 
@@ -213,7 +473,23 @@ export const mockCustomers: Customer[] = [
     registrationDate: "2024-06-14",
     totalProjects: 1,
     totalValue: 7400,
-    rating: 4.3
+    rating: 4.3,
+    customerType: 'commercial',
+    status: 'active',
+    preferences: {
+      preferredContact: 'email',
+      communicationFrequency: 'monthly',
+      specialRequirements: 'No specific requirements'
+    },
+    communicationHistory: [
+      {date: "2024-06-14", type: "email", summary: "Initial enquiry via email"},
+      {date: "2024-06-17", type: "phone", summary: "Customer called to discuss composite door & windows"}
+    ],
+    companyInfo: {
+      companyName: "Patricia Clarke Ltd",
+      vatNumber: "GB556677889",
+      businessType: "Limited Liability Partnership"
+    }
   },
   {
     id: "CUST-010",
@@ -226,7 +502,23 @@ export const mockCustomers: Customer[] = [
     registrationDate: "2024-05-08",
     totalProjects: 2,
     totalValue: 13600,
-    rating: 4.7
+    rating: 4.7,
+    customerType: 'residential',
+    status: 'completed',
+    preferences: {
+      preferredContact: 'phone',
+      communicationFrequency: 'quarterly',
+      specialRequirements: 'No specific requirements'
+    },
+    communicationHistory: [
+      {date: "2024-05-08", type: "email", summary: "Initial enquiry via email"},
+      {date: "2024-05-10", type: "phone", summary: "Customer called to discuss PVC fascia & guttering"}
+    ],
+    companyInfo: {
+      companyName: "James Murphy & Sons",
+      vatNumber: "GB990011223",
+      businessType: "Private"
+    }
   }
 ];
 
@@ -251,12 +543,12 @@ export const mockProjects: Project[] = [
     description: "Full ensuite renovation including walk-in shower, vanity unit, and tiling",
     address: "15 Stranmillis Road, Belfast",
     timeline: [
-      {"date": "2024-11-20", "status": "Contact Received", "note": "Customer called about bathroom renovation"},
-      {"date": "2024-11-22", "status": "Measurement Completed", "note": "Site survey completed by surveyor"},
-      {"date": "2024-11-25", "status": "Quote Sent", "note": "Detailed quote emailed to customer"},
-      {"date": "2024-11-28", "status": "Contract Signed", "note": "Contract signed digitally"},
-      {"date": "2024-12-15", "status": "Installation Started", "note": "Premier Bathroom Solutions began work"},
-      {"date": "2024-12-18", "status": "Installation Completed", "note": "Work completed, photos uploaded"}
+      {"date": "2024-11-20", "status": "Contact Received", "note": "Customer called about bathroom renovation", "type": "phone_call"},
+      {"date": "2024-11-22", "status": "Measurement Completed", "note": "Site survey completed by surveyor", "type": "measurement"},
+      {"date": "2024-11-25", "status": "Quote Sent", "note": "Detailed quote emailed to customer", "type": "quote_sent"},
+      {"date": "2024-11-28", "status": "Contract Signed", "note": "Contract signed digitally", "type": "contract_signed"},
+      {"date": "2024-12-15", "status": "Installation Started", "note": "Premier Bathroom Solutions began work", "type": "installation_started"},
+      {"date": "2024-12-18", "status": "Installation Completed", "note": "Work completed, photos uploaded", "type": "installation_completed"}
     ]
   },
   {
@@ -274,9 +566,9 @@ export const mockProjects: Project[] = [
     description: "Full kitchen refit with granite worktops and integrated appliances",
     address: "42 Ormonde Avenue, Newtownabbey",
     timeline: [
-      {"date": "2024-12-01", "status": "Contact Received", "note": "Customer enquiry via website"},
-      {"date": "2024-12-03", "status": "Measurement Completed", "note": "Kitchen measured and designed"},
-      {"date": "2024-12-06", "status": "Quote Sent", "note": "Comprehensive quote sent - awaiting response"}
+      {"date": "2024-12-01", "status": "Contact Received", "note": "Customer enquiry via website", "type": "phone_call"},
+      {"date": "2024-12-03", "status": "Measurement Completed", "note": "Kitchen measured and designed", "type": "measurement"},
+      {"date": "2024-12-06", "status": "Quote Sent", "note": "Comprehensive quote sent - awaiting response", "type": "quote_sent"}
     ]
   },
   {
@@ -321,6 +613,12 @@ export const mockProjects: Project[] = [
         resolution: "Board re-secured with additional fixings",
         customerRating: 4.5
       }
+    ],
+    timeline: [
+      {"date": "2024-10-10", "status": "Project Created", "note": "Project created in system", "type": "other"},
+      {"date": "2024-11-15", "status": "Repair Completed", "note": "Decking repair completed", "type": "installation_completed"},
+      {"date": "2024-11-20", "status": "Complaint Submitted", "note": "Loose decking board reported by customer", "type": "complaint_submitted"},
+      {"date": "2024-11-22", "status": "Complaint Resolved", "note": "Board re-secured with additional fixings", "type": "complaint_resolved"}
     ]
   },
   {
@@ -337,6 +635,355 @@ export const mockProjects: Project[] = [
     installationDate: "2024-12-22",
     description: "Full roofline replacement in white UPVC",
     address: "56 Loughanhill Estate, Coleraine"
+  },
+  {
+    id: "PROJ-006",
+    customerId: "CUST-006",
+    title: "Luxury Bathroom Suite",
+    category: "Bathrooms",
+    status: "In Progress",
+    branch: "Belfast",
+    assignedWorker: "Lindsay Murphy",
+    subcontractor: "Premier Bathroom Solutions",
+    value: 7200,
+    createdDate: "2024-11-25",
+    measurementDate: "2024-11-27",
+    quoteSentDate: "2024-11-30",
+    contractSignedDate: "2024-12-02",
+    installationDate: "2024-12-10",
+    description: "Premium bathroom with freestanding bath, walk-in shower, and heated towel rail",
+    address: "89 Malone Road, Belfast",
+    timeline: [
+      {"date": "2024-11-25", "status": "Contact Received", "note": "Customer enquiry for luxury bathroom", "type": "phone_call"},
+      {"date": "2024-11-27", "status": "Measurement Completed", "note": "Detailed site survey completed", "type": "measurement"},
+      {"date": "2024-11-30", "status": "Quote Sent", "note": "Premium quote with luxury options", "type": "quote_sent"},
+      {"date": "2024-12-02", "status": "Contract Signed", "note": "Contract signed with 50% deposit", "type": "contract_signed"},
+      {"date": "2024-12-10", "status": "Installation Started", "note": "Work commenced on schedule", "type": "installation_started"}
+    ]
+  },
+  {
+    id: "PROJ-007",
+    customerId: "CUST-007",
+    title: "Modern Kitchen Extension",
+    category: "Kitchens",
+    status: "Approved",
+    branch: "Newtownabbey",
+    assignedWorker: "Alan McKenna",
+    value: 15800,
+    createdDate: "2024-11-18",
+    measurementDate: "2024-11-20",
+    quoteSentDate: "2024-11-23",
+    contractSignedDate: "2024-11-26",
+    description: "Kitchen extension with bi-fold doors, island unit, and premium appliances",
+    address: "12 Shore Road, Newtownabbey",
+    timeline: [
+      {"date": "2024-11-18", "status": "Contact Received", "note": "Customer planning kitchen extension", "type": "phone_call"},
+      {"date": "2024-11-20", "status": "Measurement Completed", "note": "Full site survey and planning", "type": "measurement"},
+      {"date": "2024-11-23", "status": "Quote Sent", "note": "Comprehensive quote for extension project", "type": "quote_sent"},
+      {"date": "2024-11-26", "status": "Contract Signed", "note": "Project approved and scheduled", "type": "contract_signed"}
+    ]
+  },
+  {
+    id: "PROJ-008",
+    customerId: "CUST-008",
+    title: "UPVC Window Replacement",
+    category: "Windows & Doors",
+    status: "Quote Sent",
+    branch: "Lisburn",
+    assignedWorker: "Donna McCartney",
+    subcontractor: "Superior Windows Ltd",
+    value: 4800,
+    createdDate: "2024-12-05",
+    measurementDate: "2024-12-07",
+    quoteSentDate: "2024-12-10",
+    description: "Replace 6 windows with A-rated UPVC double glazing",
+    address: "34 Bow Street, Lisburn",
+    timeline: [
+      {"date": "2024-12-05", "status": "Contact Received", "note": "Customer enquired about window replacement"},
+      {"date": "2024-12-07", "status": "Measurement Completed", "note": "All windows measured and assessed"},
+      {"date": "2024-12-10", "status": "Quote Sent", "note": "Detailed quote with energy efficiency options"}
+    ]
+  },
+  {
+    id: "PROJ-009",
+    customerId: "CUST-009",
+    title: "Composite Decking & Patio",
+    category: "HD Decking",
+    status: "Installation Completed",
+    branch: "Bangor",
+    assignedWorker: "Stephen Hamilton",
+    subcontractor: "Coastal Decking Co",
+    value: 5600,
+    createdDate: "2024-10-15",
+    measurementDate: "2024-10-17",
+    quoteSentDate: "2024-10-20",
+    contractSignedDate: "2024-10-22",
+    installationDate: "2024-11-05",
+    completionDate: "2024-11-08",
+    description: "35m² composite decking with stone patio area and outdoor lighting",
+    address: "7 Marine Parade, Bangor",
+    timeline: [
+      {"date": "2024-10-15", "status": "Contact Received", "note": "Customer wanted garden transformation", "type": "phone_call"},
+      {"date": "2024-10-17", "status": "Measurement Completed", "note": "Garden surveyed and design created", "type": "measurement"},
+      {"date": "2024-10-20", "status": "Quote Sent", "note": "Comprehensive garden design quote", "type": "quote_sent"},
+      {"date": "2024-10-22", "status": "Contract Signed", "note": "Project approved with deposit", "type": "contract_signed"},
+      {"date": "2024-11-05", "status": "Installation Started", "note": "Work commenced on decking and patio", "type": "installation_started"},
+      {"date": "2024-11-08", "status": "Installation Completed", "note": "Project completed successfully", "type": "installation_completed"}
+    ]
+  },
+  {
+    id: "PROJ-010",
+    customerId: "CUST-010",
+    title: "Full Roofline Replacement",
+    category: "PVC Fascia Soffit & Guttering",
+    status: "In Progress",
+    branch: "Coleraine",
+    assignedWorker: "David McKay",
+    subcontractor: "Roofline Specialists NI",
+    value: 4200,
+    createdDate: "2024-11-30",
+    measurementDate: "2024-12-02",
+    quoteSentDate: "2024-12-05",
+    contractSignedDate: "2024-12-07",
+    installationDate: "2024-12-18",
+    description: "Complete roofline replacement including fascia, soffit, and guttering",
+    address: "23 Portstewart Road, Coleraine",
+    timeline: [
+      {"date": "2024-11-30", "status": "Contact Received", "note": "Customer reported roofline damage"},
+      {"date": "2024-12-02", "status": "Measurement Completed", "note": "Full roofline assessment completed"},
+      {"date": "2024-12-05", "status": "Quote Sent", "note": "Detailed quote for full replacement"},
+      {"date": "2024-12-07", "status": "Contract Signed", "note": "Project approved and scheduled"},
+      {"date": "2024-12-18", "status": "Installation Started", "note": "Work commenced on roofline"}
+    ]
+  },
+  {
+    id: "PROJ-011",
+    customerId: "CUST-001",
+    title: "Ensuite Bathroom Installation",
+    category: "Bathrooms",
+    status: "Quote Sent",
+    branch: "Belfast",
+    assignedWorker: "Lindsay Murphy",
+    value: 6800,
+    createdDate: "2024-12-08",
+    measurementDate: "2024-12-10",
+    quoteSentDate: "2024-12-12",
+    description: "New ensuite bathroom with walk-in shower and modern fixtures",
+    address: "15 Stranmillis Road, Belfast",
+    timeline: [
+      {"date": "2024-12-08", "status": "Contact Received", "note": "Customer wants additional ensuite"},
+      {"date": "2024-12-10", "status": "Measurement Completed", "note": "Space assessed for ensuite"},
+      {"date": "2024-12-12", "status": "Quote Sent", "note": "Detailed quote for ensuite installation"}
+    ]
+  },
+  {
+    id: "PROJ-012",
+    customerId: "CUST-003",
+    title: "Back Door & French Windows",
+    category: "Windows & Doors",
+    status: "Approved",
+    branch: "Lisburn",
+    assignedWorker: "Donna McCartney",
+    subcontractor: "Superior Windows Ltd",
+    value: 5200,
+    createdDate: "2024-11-28",
+    measurementDate: "2024-11-30",
+    quoteSentDate: "2024-12-03",
+    contractSignedDate: "2024-12-05",
+    description: "Composite back door with matching French windows to garden",
+    address: "78 Enterprise Crescent, Lisburn",
+    timeline: [
+      {"date": "2024-11-28", "status": "Contact Received", "note": "Customer wants garden access improvement"},
+      {"date": "2024-11-30", "status": "Measurement Completed", "note": "Back entrance measured and designed"},
+      {"date": "2024-12-03", "status": "Quote Sent", "note": "Quote for door and French windows"},
+      {"date": "2024-12-05", "status": "Contract Signed", "note": "Project approved and scheduled"}
+    ]
+  },
+  {
+    id: "PROJ-013",
+    customerId: "CUST-004",
+    title: "Kitchen Island & Worktop",
+    category: "Kitchens",
+    status: "Installation Completed",
+    branch: "Bangor",
+    assignedWorker: "Stephen Hamilton",
+    value: 3800,
+    createdDate: "2024-10-20",
+    measurementDate: "2024-10-22",
+    quoteSentDate: "2024-10-25",
+    contractSignedDate: "2024-10-27",
+    installationDate: "2024-11-10",
+    completionDate: "2024-11-12",
+    description: "Kitchen island with granite worktop and breakfast bar",
+    address: "23 Balloo Drive, Bangor",
+    timeline: [
+      {"date": "2024-10-20", "status": "Contact Received", "note": "Customer wanted kitchen island addition"},
+      {"date": "2024-10-22", "status": "Measurement Completed", "note": "Kitchen space assessed for island"},
+      {"date": "2024-10-25", "status": "Quote Sent", "note": "Quote for island and worktop"},
+      {"date": "2024-10-27", "status": "Contract Signed", "note": "Project approved"},
+      {"date": "2024-11-10", "status": "Installation Started", "note": "Island installation commenced"},
+      {"date": "2024-11-12", "status": "Installation Completed", "note": "Island completed successfully"}
+    ]
+  },
+  {
+    id: "PROJ-014",
+    customerId: "CUST-005",
+    title: "Heating System Upgrade",
+    category: "Heating",
+    status: "In Progress",
+    branch: "Coleraine",
+    assignedWorker: "David McKay",
+    value: 4500,
+    createdDate: "2024-11-25",
+    measurementDate: "2024-11-27",
+    quoteSentDate: "2024-11-30",
+    contractSignedDate: "2024-12-02",
+    installationDate: "2024-12-15",
+    description: "Upgrade to energy-efficient heating system with smart controls",
+    address: "56 Loughanhill Estate, Coleraine",
+    timeline: [
+      {"date": "2024-11-25", "status": "Contact Received", "note": "Customer enquired about heating upgrade"},
+      {"date": "2024-11-27", "status": "Measurement Completed", "note": "Current system assessed"},
+      {"date": "2024-11-30", "status": "Quote Sent", "note": "Quote for heating system upgrade"},
+      {"date": "2024-12-02", "status": "Contract Signed", "note": "Project approved and scheduled"},
+      {"date": "2024-12-15", "status": "Installation Started", "note": "Heating upgrade commenced"}
+    ]
+  },
+  {
+    id: "PROJ-015",
+    customerId: "CUST-006",
+    title: "Garden Room & Decking",
+    category: "HD Decking",
+    status: "Quote Sent",
+    branch: "Belfast",
+    assignedWorker: "Lindsay Murphy",
+    subcontractor: "Coastal Decking Co",
+    value: 8900,
+    createdDate: "2024-12-10",
+    measurementDate: "2024-12-12",
+    quoteSentDate: "2024-12-14",
+    description: "Garden room with composite decking and outdoor kitchen area",
+    address: "89 Malone Road, Belfast",
+    timeline: [
+      {"date": "2024-12-10", "status": "Contact Received", "note": "Customer wants garden room and decking"},
+      {"date": "2024-12-12", "status": "Measurement Completed", "note": "Garden space assessed for room and decking"},
+      {"date": "2024-12-14", "status": "Quote Sent", "note": "Comprehensive quote for garden transformation"}
+    ]
+  },
+  {
+    id: "PROJ-016",
+    customerId: "CUST-001",
+    title: "Bathroom Renovation",
+    category: "Bathrooms",
+    status: "Invoice Sent",
+    branch: "Belfast",
+    assignedWorker: "Lindsay Murphy",
+    subcontractor: "Premier Bathroom Solutions",
+    value: 6500,
+    createdDate: "2024-11-15",
+    measurementDate: "2024-11-18",
+    quoteSentDate: "2024-11-20",
+    contractSignedDate: "2024-11-25",
+    installationDate: "2024-12-05",
+    completionDate: "2024-12-08",
+    description: "Complete bathroom renovation with walk-in shower",
+    address: "15 Stranmillis Road, Belfast",
+    timeline: [
+      {"date": "2024-11-15", "status": "Contact Received", "note": "Customer enquiry for bathroom renovation"},
+      {"date": "2024-11-18", "status": "Measurement Completed", "note": "Bathroom space measured"},
+      {"date": "2024-11-20", "status": "Quote Sent", "note": "Detailed quote sent"},
+      {"date": "2024-11-25", "status": "Contract Signed", "note": "Project approved"},
+      {"date": "2024-12-05", "status": "Installation Started", "note": "Work commenced"},
+      {"date": "2024-12-08", "status": "Installation Completed", "note": "Project completed"},
+      {"date": "2024-12-10", "status": "Invoice Sent", "note": "Final invoice sent to customer"}
+    ]
+  },
+  {
+    id: "PROJ-017",
+    customerId: "CUST-002",
+    title: "Kitchen Extension",
+    category: "Kitchens",
+    status: "Awaiting Payment",
+    branch: "Newtownabbey",
+    assignedWorker: "Alan McKenna",
+    value: 18500,
+    createdDate: "2024-10-20",
+    measurementDate: "2024-10-22",
+    quoteSentDate: "2024-10-25",
+    contractSignedDate: "2024-10-28",
+    installationDate: "2024-11-15",
+    completionDate: "2024-11-20",
+    description: "Kitchen extension with bi-fold doors and island unit",
+    address: "42 Ormonde Avenue, Newtownabbey",
+    timeline: [
+      {"date": "2024-10-20", "status": "Contact Received", "note": "Customer planning kitchen extension"},
+      {"date": "2024-10-22", "status": "Measurement Completed", "note": "Site survey completed"},
+      {"date": "2024-10-25", "status": "Quote Sent", "note": "Comprehensive quote sent"},
+      {"date": "2024-10-28", "status": "Contract Signed", "note": "Project approved"},
+      {"date": "2024-11-15", "status": "Installation Started", "note": "Extension work began"},
+      {"date": "2024-11-20", "status": "Installation Completed", "note": "Project completed"},
+      {"date": "2024-11-22", "status": "Invoice Sent", "note": "Final invoice sent"},
+      {"date": "2024-11-25", "status": "Awaiting Payment", "note": "Payment reminder sent"}
+    ]
+  },
+  {
+    id: "PROJ-018",
+    customerId: "CUST-003",
+    title: "Window Replacement",
+    category: "Windows & Doors",
+    status: "Paid",
+    branch: "Lisburn",
+    assignedWorker: "Donna McCartney",
+    subcontractor: "Superior Windows Ltd",
+    value: 4200,
+    createdDate: "2024-09-10",
+    measurementDate: "2024-09-12",
+    quoteSentDate: "2024-09-15",
+    contractSignedDate: "2024-09-18",
+    installationDate: "2024-10-05",
+    completionDate: "2024-10-08",
+    description: "Replace 4 windows with A-rated UPVC double glazing",
+    address: "78 Enterprise Crescent, Lisburn",
+    timeline: [
+      {"date": "2024-09-10", "status": "Contact Received", "note": "Customer enquiry for window replacement"},
+      {"date": "2024-09-12", "status": "Measurement Completed", "note": "Windows measured"},
+      {"date": "2024-09-15", "status": "Quote Sent", "note": "Quote sent"},
+      {"date": "2024-09-18", "status": "Contract Signed", "note": "Project approved"},
+      {"date": "2024-10-05", "status": "Installation Started", "note": "Window replacement began"},
+      {"date": "2024-10-08", "status": "Installation Completed", "note": "All windows installed"},
+      {"date": "2024-10-10", "status": "Invoice Sent", "note": "Final invoice sent"},
+      {"date": "2024-10-15", "status": "Paid", "note": "Payment received"}
+    ]
+  },
+  {
+    id: "PROJ-019",
+    customerId: "CUST-004",
+    title: "Decking Installation",
+    category: "HD Decking",
+    status: "Awaiting Review",
+    branch: "Bangor",
+    assignedWorker: "Stephen Hamilton",
+    subcontractor: "Coastal Decking Co",
+    value: 3200,
+    createdDate: "2024-08-15",
+    measurementDate: "2024-08-17",
+    quoteSentDate: "2024-08-20",
+    contractSignedDate: "2024-08-23",
+    installationDate: "2024-09-10",
+    completionDate: "2024-09-12",
+    description: "20m² composite decking with built-in lighting",
+    address: "23 Balloo Drive, Bangor",
+    timeline: [
+      {"date": "2024-08-15", "status": "Contact Received", "note": "Customer wants decking installation"},
+      {"date": "2024-08-17", "status": "Measurement Completed", "note": "Garden space measured"},
+      {"date": "2024-08-20", "status": "Quote Sent", "note": "Quote sent"},
+      {"date": "2024-08-23", "status": "Contract Signed", "note": "Project approved"},
+      {"date": "2024-09-10", "status": "Installation Started", "note": "Decking installation began"},
+      {"date": "2024-09-12", "status": "Installation Completed", "note": "Decking completed"},
+      {"date": "2024-09-14", "status": "Invoice Sent", "note": "Final invoice sent"},
+      {"date": "2024-09-20", "status": "Paid", "note": "Payment received"},
+      {"date": "2024-09-25", "status": "Awaiting Review", "note": "Follow-up email sent for review"}
+    ]
   }
 ];
 
@@ -349,7 +996,31 @@ export const mockUsers: User[] = [
     role: "System Administrator",
     branch: "Belfast",
     phone: "02890 402204",
-    permissions: ["all"]
+    permissions: ["all"],
+    status: 'active',
+    userType: 'admin',
+    createdAt: "2024-01-01",
+    lastLogin: "2024-11-28",
+    avatar: "https://via.placeholder.com/50",
+    preferences: {
+      theme: "light",
+      notifications: {
+        email: true,
+        sms: false,
+        push: true
+      },
+      language: "en"
+    },
+    security: {
+      twoFactorEnabled: false,
+      lastPasswordChange: "2024-01-01",
+      failedLoginAttempts: 0
+    },
+    activity: {
+      lastActivity: "2024-11-28",
+      totalLogins: 100,
+      averageSessionTime: "1.5h"
+    }
   },
   {
     id: "USER-002", 
@@ -360,7 +1031,33 @@ export const mockUsers: User[] = [
     phone: "02890 402204",
     specialization: "Bathrooms",
     rating: 4.8,
-    projectsCompleted: 156
+    projectsCompleted: 156,
+    completedJobs: 234,
+    averageTime: "3.2 days",
+    status: 'active',
+    userType: 'branch_manager',
+    createdAt: "2024-02-15",
+    lastLogin: "2024-11-27",
+    avatar: "https://via.placeholder.com/50",
+    preferences: {
+      theme: "dark",
+      notifications: {
+        email: true,
+        sms: true,
+        push: false
+      },
+      language: "pl"
+    },
+    security: {
+      twoFactorEnabled: true,
+      lastPasswordChange: "2024-11-27",
+      failedLoginAttempts: 1
+    },
+    activity: {
+      lastActivity: "2024-11-27",
+      totalLogins: 50,
+      averageSessionTime: "1.2h"
+    }
   },
   {
     id: "USER-003",
@@ -371,7 +1068,33 @@ export const mockUsers: User[] = [
     phone: "02890 838343",
     specialization: "Kitchens",
     rating: 4.6,
-    projectsCompleted: 89
+    projectsCompleted: 89,
+    completedJobs: 187,
+    averageTime: "1.8 days",
+    status: 'active',
+    userType: 'branch_worker',
+    createdAt: "2024-03-01",
+    lastLogin: "2024-11-26",
+    avatar: "https://via.placeholder.com/50",
+    preferences: {
+      theme: "auto",
+      notifications: {
+        email: true,
+        sms: false,
+        push: true
+      },
+      language: "en"
+    },
+    security: {
+      twoFactorEnabled: false,
+      lastPasswordChange: "2024-11-26",
+      failedLoginAttempts: 0
+    },
+    activity: {
+      lastActivity: "2024-11-26",
+      totalLogins: 40,
+      averageSessionTime: "1.5h"
+    }
   },
   {
     id: "SUB-001",
@@ -383,7 +1106,31 @@ export const mockUsers: User[] = [
     branches: ["Belfast", "Newtownabbey"],
     rating: 4.7,
     completedJobs: 234,
-    averageTime: "3.2 days"
+    averageTime: "3.2 days",
+    status: 'active',
+    userType: 'subcontractor',
+    createdAt: "2024-04-10",
+    lastLogin: "2024-11-25",
+    avatar: "https://via.placeholder.com/50",
+    preferences: {
+      theme: "light",
+      notifications: {
+        email: true,
+        sms: true,
+        push: false
+      },
+      language: "en"
+    },
+    security: {
+      twoFactorEnabled: true,
+      lastPasswordChange: "2024-11-25",
+      failedLoginAttempts: 0
+    },
+    activity: {
+      lastActivity: "2024-11-25",
+      totalLogins: 20,
+      averageSessionTime: "1.2h"
+    }
   },
   {
     id: "SUB-002",
@@ -395,67 +1142,341 @@ export const mockUsers: User[] = [
     branches: ["Lisburn", "Belfast"],
     rating: 4.5,
     completedJobs: 187,
-    averageTime: "1.8 days"
+    averageTime: "1.8 days",
+    status: 'active',
+    userType: 'subcontractor',
+    createdAt: "2024-05-20",
+    lastLogin: "2024-11-24",
+    avatar: "https://via.placeholder.com/50",
+    preferences: {
+      theme: "dark",
+      notifications: {
+        email: true,
+        sms: false,
+        push: true
+      },
+      language: "pl"
+    },
+    security: {
+      twoFactorEnabled: false,
+      lastPasswordChange: "2024-11-24",
+      failedLoginAttempts: 0
+    },
+    activity: {
+      lastActivity: "2024-11-24",
+      totalLogins: 15,
+      averageSessionTime: "1.5h"
+    }
+  },
+  {
+    id: "USER-004",
+    name: "Donna McCartney",
+    email: "donna.mccartney@hhi-ni.com",
+    role: "Branch Manager",
+    branch: "Lisburn",
+    phone: "02892 123456",
+    specialization: "Windows & Doors",
+    rating: 4.7,
+    projectsCompleted: 134,
+    completedJobs: 201,
+    averageTime: "2.1 days",
+    status: 'active',
+    userType: 'branch_manager',
+    createdAt: "2024-02-20",
+    lastLogin: "2024-11-28",
+    avatar: "https://via.placeholder.com/50",
+    preferences: {
+      theme: "light",
+      notifications: {
+        email: true,
+        sms: true,
+        push: true
+      },
+      language: "en"
+    },
+    security: {
+      twoFactorEnabled: true,
+      lastPasswordChange: "2024-11-28",
+      failedLoginAttempts: 0
+    },
+    activity: {
+      lastActivity: "2024-11-28",
+      totalLogins: 75,
+      averageSessionTime: "1.8h"
+    }
+  },
+  {
+    id: "USER-005",
+    name: "Stephen Hamilton",
+    email: "stephen.hamilton@hhi-ni.com",
+    role: "Branch Worker",
+    branch: "Bangor",
+    phone: "02891 234567",
+    specialization: "HD Decking",
+    rating: 4.4,
+    projectsCompleted: 67,
+    completedJobs: 98,
+    averageTime: "2.5 days",
+    status: 'active',
+    userType: 'branch_worker',
+    createdAt: "2024-03-15",
+    lastLogin: "2024-11-27",
+    avatar: "https://via.placeholder.com/50",
+    preferences: {
+      theme: "auto",
+      notifications: {
+        email: true,
+        sms: false,
+        push: false
+      },
+      language: "en"
+    },
+    security: {
+      twoFactorEnabled: false,
+      lastPasswordChange: "2024-11-27",
+      failedLoginAttempts: 2
+    },
+    activity: {
+      lastActivity: "2024-11-27",
+      totalLogins: 35,
+      averageSessionTime: "1.3h"
+    }
+  },
+  {
+    id: "USER-006",
+    name: "David McKay",
+    email: "david.mckay@hhi-ni.com",
+    role: "Branch Worker",
+    branch: "Coleraine",
+    phone: "02870 345678",
+    specialization: "PVC Fascia Soffit & Guttering",
+    rating: 4.3,
+    projectsCompleted: 45,
+    completedJobs: 67,
+    averageTime: "2.8 days",
+    status: 'active',
+    userType: 'branch_worker',
+    createdAt: "2024-04-01",
+    lastLogin: "2024-11-26",
+    avatar: "https://via.placeholder.com/50",
+    preferences: {
+      theme: "dark",
+      notifications: {
+        email: false,
+        sms: true,
+        push: true
+      },
+      language: "pl"
+    },
+    security: {
+      twoFactorEnabled: false,
+      lastPasswordChange: "2024-11-26",
+      failedLoginAttempts: 1
+    },
+    activity: {
+      lastActivity: "2024-11-26",
+      totalLogins: 28,
+      averageSessionTime: "1.1h"
+    }
+  },
+  {
+    id: "SUB-003",
+    name: "Coastal Decking Co",
+    email: "info@coastaldecking.co.uk",
+    role: "Subcontractor",
+    phone: "07700 345678",
+    specialization: "HD Decking, Composite Materials",
+    branches: ["Bangor", "Coleraine"],
+    rating: 4.6,
+    completedJobs: 156,
+    averageTime: "2.3 days",
+    status: 'active',
+    userType: 'subcontractor',
+    createdAt: "2024-06-01",
+    lastLogin: "2024-11-25",
+    avatar: "https://via.placeholder.com/50",
+    preferences: {
+      theme: "light",
+      notifications: {
+        email: true,
+        sms: true,
+        push: false
+      },
+      language: "en"
+    },
+    security: {
+      twoFactorEnabled: true,
+      lastPasswordChange: "2024-11-25",
+      failedLoginAttempts: 0
+    },
+    activity: {
+      lastActivity: "2024-11-25",
+      totalLogins: 12,
+      averageSessionTime: "1.4h"
+    }
+  },
+  {
+    id: "SUB-004",
+    name: "Roofline Specialists NI",
+    email: "jobs@rooflinespecialists.co.uk",
+    role: "Subcontractor",
+    phone: "07700 456789",
+    specialization: "PVC Fascia, Soffit, Guttering",
+    branches: ["Coleraine", "Belfast"],
+    rating: 4.4,
+    completedJobs: 123,
+    averageTime: "1.9 days",
+    status: 'active',
+    userType: 'subcontractor',
+    createdAt: "2024-07-01",
+    lastLogin: "2024-11-24",
+    avatar: "https://via.placeholder.com/50",
+    preferences: {
+      theme: "dark",
+      notifications: {
+        email: true,
+        sms: false,
+        push: true
+      },
+      language: "en"
+    },
+    security: {
+      twoFactorEnabled: false,
+      lastPasswordChange: "2024-11-24",
+      failedLoginAttempts: 0
+    },
+    activity: {
+      lastActivity: "2024-11-24",
+      totalLogins: 8,
+      averageSessionTime: "1.6h"
+    }
   }
 ];
 
 // Mock Analytics (from PRD)
 export const mockAnalytics: Analytics = {
-  companyOverview: {
-    totalProjects: 127,
-    activeProjects: 45,
-    completedThisMonth: 23,
-    monthlyRevenue: 245000,
-    conversionRate: 28.5,
-    averageProjectValue: 8750
+  total_projects: 127,
+  active_projects: 45,
+  monthly_revenue: 245000,
+  conversion_rate: 28.5,
+  history: [
+    { month: "2023-07", revenue: 180000, completed_projects: 8, conversion_rate: 22.1 },
+    { month: "2023-08", revenue: 192000, completed_projects: 10, conversion_rate: 23.4 },
+    { month: "2023-09", revenue: 205000, completed_projects: 11, conversion_rate: 24.0 },
+    { month: "2023-10", revenue: 210000, completed_projects: 12, conversion_rate: 25.2 },
+    { month: "2023-11", revenue: 220000, completed_projects: 13, conversion_rate: 26.0 },
+    { month: "2023-12", revenue: 230000, completed_projects: 14, conversion_rate: 26.8 },
+    { month: "2024-01", revenue: 235000, completed_projects: 13, conversion_rate: 27.0 },
+    { month: "2024-02", revenue: 240000, completed_projects: 12, conversion_rate: 27.5 },
+    { month: "2024-03", revenue: 242000, completed_projects: 11, conversion_rate: 27.8 },
+    { month: "2024-04", revenue: 243000, completed_projects: 10, conversion_rate: 28.0 },
+    { month: "2024-05", revenue: 244000, completed_projects: 9, conversion_rate: 28.2 },
+    { month: "2024-06", revenue: 245000, completed_projects: 9, conversion_rate: 28.5 }
+  ],
+  project_status_distribution: {
+    quote: 18,
+    approved: 22,
+    in_progress: 45,
+    completed: 42
   },
-  branchPerformance: [
+  service_type_performance: [
+    { service_type: "Bathroom Refurbishment", projects: 32, revenue: 110000 },
+    { service_type: "Kitchen Installation", projects: 28, revenue: 95000 },
+    { service_type: "Heating System Upgrade", projects: 21, revenue: 70000 },
+    { service_type: "Windows & Doors", projects: 18, revenue: 42000 },
+    { service_type: "Other", projects: 28, revenue: 28000 }
+  ],
+  customer_satisfaction: {
+    average: 4.6,
+    distribution: { "1": 2, "2": 4, "3": 12, "4": 41, "5": 68 }
+  },
+  regional_performance: [
+    { region: "Belfast", projects: 38, revenue: 90000 },
+    { region: "Derry", projects: 21, revenue: 48000 },
+    { region: "Lisburn", projects: 17, revenue: 35000 },
+    { region: "Newry", projects: 13, revenue: 25000 },
+    { region: "Other", projects: 38, revenue: 47000 }
+  ],
+  avg_days_phone_to_measurement: 5,
+  avg_days_complaint_wait: 10,
+  avg_days_contact_to_contract: 15,
+  branch_performance_metrics: [
     {
       branch: "Belfast",
-      projects: 45,
-      revenue: 128000,
-      conversion: 31.2,
-      averageResponseTime: "1.2h",
-      customerSatisfaction: 4.6
+      projects_count: 38,
+      avg_days_phone_to_measurement: 5,
+      avg_days_complaint_wait: 10,
+      avg_days_contact_to_contract: 15,
+      avg_project_duration: 20
     },
     {
-      branch: "Newtownabbey", 
-      projects: 28,
-      revenue: 52000,
-      conversion: 27.8,
-      averageResponseTime: "1.8h",
-      customerSatisfaction: 4.4
+      branch: "Newtownabbey",
+      projects_count: 21,
+      avg_days_phone_to_measurement: 7,
+      avg_days_complaint_wait: 12,
+      avg_days_contact_to_contract: 18,
+      avg_project_duration: 25
     },
     {
       branch: "Lisburn",
-      projects: 24,
-      revenue: 48000, 
-      conversion: 29.1,
-      averageResponseTime: "1.5h",
-      customerSatisfaction: 4.5
+      projects_count: 17,
+      avg_days_phone_to_measurement: 6,
+      avg_days_complaint_wait: 11,
+      avg_days_contact_to_contract: 16,
+      avg_project_duration: 22
     },
     {
       branch: "Bangor",
-      projects: 18,
-      revenue: 34000,
-      conversion: 25.4,
-      averageResponseTime: "2.1h", 
-      customerSatisfaction: 4.3
+      projects_count: 13,
+      avg_days_phone_to_measurement: 8,
+      avg_days_complaint_wait: 13,
+      avg_days_contact_to_contract: 20,
+      avg_project_duration: 28
     },
     {
       branch: "Coleraine",
-      projects: 12,
-      revenue: 22000,
-      conversion: 26.7,
-      averageResponseTime: "1.9h",
-      customerSatisfaction: 4.2
+      projects_count: 30,
+      avg_days_phone_to_measurement: 4,
+      avg_days_complaint_wait: 8,
+      avg_days_contact_to_contract: 12,
+      avg_project_duration: 18
     }
   ],
-  categoryBreakdown: [
-    {category: "Bathrooms", projects: 67, percentage: 35, avgValue: 8500},
-    {category: "Kitchens", projects: 43, percentage: 28, avgValue: 12200},
-    {category: "Windows & Doors", projects: 28, percentage: 22, avgValue: 5800},
-    {category: "HD Decking", projects: 18, percentage: 10, avgValue: 4200},
-    {category: "PVC Fascia Soffit & Guttering", projects: 8, percentage: 5, avgValue: 3400}
-  ]
+  employee_performance: {
+    top_by_projects: [
+      { name: "Lindsay Murphy", total_projects: 156, total_value: 15800, completed_projects: 156, conversion_rate: 100, avg_project_value: 100, avg_project_duration: 20, branch: "Belfast" },
+      { name: "Alan McKenna", total_projects: 89, total_value: 8500, completed_projects: 89, conversion_rate: 100, avg_project_value: 95, avg_project_duration: 18, branch: "Newtownabbey" },
+      { name: "Donna McCartney", total_projects: 134, total_value: 12200, completed_projects: 134, conversion_rate: 100, avg_project_value: 90, avg_project_duration: 21, branch: "Lisburn" },
+      { name: "Stephen Hamilton", total_projects: 67, total_value: 4200, completed_projects: 67, conversion_rate: 100, avg_project_value: 62, avg_project_duration: 25, branch: "Bangor" },
+      { name: "David McKay", total_projects: 45, total_value: 3400, completed_projects: 45, conversion_rate: 100, avg_project_value: 75, avg_project_duration: 28, branch: "Coleraine" }
+    ],
+    top_by_value: [
+      { name: "Lindsay Murphy", total_projects: 156, total_value: 15800, completed_projects: 156, conversion_rate: 100, avg_project_value: 100, avg_project_duration: 20, branch: "Belfast" },
+      { name: "Alan McKenna", total_projects: 89, total_value: 8500, completed_projects: 89, conversion_rate: 100, avg_project_value: 95, avg_project_duration: 18, branch: "Newtownabbey" },
+      { name: "Donna McCartney", total_projects: 134, total_value: 12200, completed_projects: 134, conversion_rate: 100, avg_project_value: 90, avg_project_duration: 21, branch: "Lisburn" },
+      { name: "Stephen Hamilton", total_projects: 67, total_value: 4200, completed_projects: 67, conversion_rate: 100, avg_project_value: 62, avg_project_duration: 25, branch: "Bangor" },
+      { name: "David McKay", total_projects: 45, total_value: 3400, completed_projects: 45, conversion_rate: 100, avg_project_value: 75, avg_project_duration: 28, branch: "Coleraine" }
+    ],
+    top_by_conversion: [
+      { name: "Lindsay Murphy", total_projects: 156, total_value: 15800, completed_projects: 156, conversion_rate: 100, avg_project_value: 100, avg_project_duration: 20, branch: "Belfast" },
+      { name: "Alan McKenna", total_projects: 89, total_value: 8500, completed_projects: 89, conversion_rate: 100, avg_project_value: 95, avg_project_duration: 18, branch: "Newtownabbey" },
+      { name: "Donna McCartney", total_projects: 134, total_value: 12200, completed_projects: 134, conversion_rate: 100, avg_project_value: 90, avg_project_duration: 21, branch: "Lisburn" },
+      { name: "Stephen Hamilton", total_projects: 67, total_value: 4200, completed_projects: 67, conversion_rate: 100, avg_project_value: 62, avg_project_duration: 25, branch: "Bangor" },
+      { name: "David McKay", total_projects: 45, total_value: 3400, completed_projects: 45, conversion_rate: 100, avg_project_value: 75, avg_project_duration: 28, branch: "Coleraine" }
+    ],
+    top_by_efficiency: [
+      { name: "Lindsay Murphy", total_projects: 156, total_value: 15800, completed_projects: 156, conversion_rate: 100, avg_project_value: 100, avg_project_duration: 20, branch: "Belfast" },
+      { name: "Alan McKenna", total_projects: 89, total_value: 8500, completed_projects: 89, conversion_rate: 100, avg_project_value: 95, avg_project_duration: 18, branch: "Newtownabbey" },
+      { name: "Donna McCartney", total_projects: 134, total_value: 12200, completed_projects: 134, conversion_rate: 100, avg_project_value: 90, avg_project_duration: 21, branch: "Lisburn" },
+      { name: "Stephen Hamilton", total_projects: 67, total_value: 4200, completed_projects: 67, conversion_rate: 100, avg_project_value: 62, avg_project_duration: 25, branch: "Bangor" },
+      { name: "David McKay", total_projects: 45, total_value: 3400, completed_projects: 45, conversion_rate: 100, avg_project_value: 75, avg_project_duration: 28, branch: "Coleraine" }
+    ],
+    all_employees: [
+      { name: "Lindsay Murphy", total_projects: 156, total_value: 15800, completed_projects: 156, conversion_rate: 100, avg_project_value: 100, avg_project_duration: 20, branch: "Belfast" },
+      { name: "Alan McKenna", total_projects: 89, total_value: 8500, completed_projects: 89, conversion_rate: 100, avg_project_value: 95, avg_project_duration: 18, branch: "Newtownabbey" },
+      { name: "Donna McCartney", total_projects: 134, total_value: 12200, completed_projects: 134, conversion_rate: 100, avg_project_value: 90, avg_project_duration: 21, branch: "Lisburn" },
+      { name: "Stephen Hamilton", total_projects: 67, total_value: 4200, completed_projects: 67, conversion_rate: 100, avg_project_value: 62, avg_project_duration: 25, branch: "Bangor" },
+      { name: "David McKay", total_projects: 45, total_value: 3400, completed_projects: 45, conversion_rate: 100, avg_project_value: 75, avg_project_duration: 28, branch: "Coleraine" }
+    ]
+  }
 }; 
