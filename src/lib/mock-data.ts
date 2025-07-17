@@ -254,6 +254,29 @@ export interface Analytics {
   };
 }
 
+export interface Department {
+  id: string;
+  name: string;
+  description: string;
+  manager?: string;
+  employeeCount: number;
+  categories: string[];
+  activeProjects: number;
+  monthlyRevenue: number;
+}
+
+export interface Branch {
+  name: string;
+  address: string;
+  phone: string;
+  email: string;
+  manager: string;
+  departments: Department[];
+  totalEmployees: number;
+  totalProjects: number;
+  totalRevenue: number;
+}
+
 export interface BranchPerformance {
   branch: string;
   projects: number;
@@ -269,6 +292,270 @@ export interface CategoryBreakdown {
   percentage: number;
   avgValue: number;
 }
+
+// Branch departments data
+export const branchDepartments: Branch[] = [
+  {
+    name: 'Belfast',
+    address: '123 Belfast Street, Belfast, BT1 1AA',
+    phone: '+44 28 9023 4567',
+    email: 'belfast@hhi.co.uk',
+    manager: 'Sarah O\'Connor',
+    totalEmployees: 45,
+    totalProjects: 156,
+    totalRevenue: 2850000,
+    departments: [
+      {
+        id: 'belfast-bathrooms',
+        name: 'Bathrooms Department',
+        description: 'Specialized in bathroom installations and renovations',
+        manager: 'Michael Thompson',
+        employeeCount: 12,
+        categories: ['Bathrooms'],
+        activeProjects: 23,
+        monthlyRevenue: 450000
+      },
+      {
+        id: 'belfast-kitchens',
+        name: 'Kitchens Department',
+        description: 'Kitchen design and installation services',
+        manager: 'Emma Wilson',
+        employeeCount: 10,
+        categories: ['Kitchens'],
+        activeProjects: 18,
+        monthlyRevenue: 380000
+      },
+      {
+        id: 'belfast-windows-doors',
+        name: 'Windows & Doors Department',
+        description: 'PVC windows, doors and composite door installations',
+        manager: 'David Clarke',
+        employeeCount: 8,
+        categories: ['PVC Windows & Doors', 'Composite Doors'],
+        activeProjects: 15,
+        monthlyRevenue: 320000
+      },
+      {
+        id: 'belfast-exterior',
+        name: 'Exterior Solutions Department',
+        description: 'Fascia, soffit, guttering and decking installations',
+        manager: 'James Anderson',
+        employeeCount: 7,
+        categories: ['PVC Fascia Soffit & Guttering', 'HD Decking', 'PVC Cover Sills'],
+        activeProjects: 12,
+        monthlyRevenue: 280000
+      }
+    ]
+  },
+  {
+    name: 'Newtownabbey',
+    address: '456 Newtownabbey Road, Newtownabbey, BT36 5AB',
+    phone: '+44 28 9085 1234',
+    email: 'newtownabbey@hhi.co.uk',
+    manager: 'Robert Mitchell',
+    totalEmployees: 38,
+    totalProjects: 134,
+    totalRevenue: 2420000,
+    departments: [
+      {
+        id: 'newtownabbey-bathrooms',
+        name: 'Bathrooms Department',
+        description: 'Bathroom installations and renovations',
+        manager: 'Lisa Campbell',
+        employeeCount: 10,
+        categories: ['Bathrooms'],
+        activeProjects: 19,
+        monthlyRevenue: 380000
+      },
+      {
+        id: 'newtownabbey-kitchens',
+        name: 'Kitchens Department',
+        description: 'Kitchen design and installation',
+        manager: 'Andrew Brown',
+        employeeCount: 8,
+        categories: ['Kitchens'],
+        activeProjects: 14,
+        monthlyRevenue: 310000
+      },
+      {
+        id: 'newtownabbey-windows-doors',
+        name: 'Windows & Doors Department',
+        description: 'PVC windows and composite doors',
+        manager: 'Rachel Green',
+        employeeCount: 7,
+        categories: ['PVC Windows & Doors', 'Composite Doors'],
+        activeProjects: 12,
+        monthlyRevenue: 260000
+      },
+      {
+        id: 'newtownabbey-exterior',
+        name: 'Exterior Solutions Department',
+        description: 'Fascia, soffit, guttering and decking',
+        manager: 'Paul Murphy',
+        employeeCount: 6,
+        categories: ['PVC Fascia Soffit & Guttering', 'HD Decking', 'PVC Cover Sills'],
+        activeProjects: 10,
+        monthlyRevenue: 220000
+      }
+    ]
+  },
+  {
+    name: 'Lisburn',
+    address: '789 Lisburn Street, Lisburn, BT27 4CD',
+    phone: '+44 28 9266 7890',
+    email: 'lisburn@hhi.co.uk',
+    manager: 'Jennifer White',
+    totalEmployees: 32,
+    totalProjects: 118,
+    totalRevenue: 1980000,
+    departments: [
+      {
+        id: 'lisburn-bathrooms',
+        name: 'Bathrooms Department',
+        description: 'Bathroom installations and renovations',
+        manager: 'Kevin O\'Neill',
+        employeeCount: 8,
+        categories: ['Bathrooms'],
+        activeProjects: 16,
+        monthlyRevenue: 320000
+      },
+      {
+        id: 'lisburn-kitchens',
+        name: 'Kitchens Department',
+        description: 'Kitchen design and installation',
+        manager: 'Amanda Scott',
+        employeeCount: 7,
+        categories: ['Kitchens'],
+        activeProjects: 13,
+        monthlyRevenue: 280000
+      },
+      {
+        id: 'lisburn-windows-doors',
+        name: 'Windows & Doors Department',
+        description: 'PVC windows and composite doors',
+        manager: 'Steven Kelly',
+        employeeCount: 6,
+        categories: ['PVC Windows & Doors', 'Composite Doors'],
+        activeProjects: 11,
+        monthlyRevenue: 240000
+      },
+      {
+        id: 'lisburn-exterior',
+        name: 'Exterior Solutions Department',
+        description: 'Fascia, soffit, guttering and decking',
+        manager: 'Nicola Hughes',
+        employeeCount: 5,
+        categories: ['PVC Fascia Soffit & Guttering', 'HD Decking', 'PVC Cover Sills'],
+        activeProjects: 9,
+        monthlyRevenue: 200000
+      }
+    ]
+  },
+  {
+    name: 'Bangor',
+    address: '321 Bangor Avenue, Bangor, BT20 4EF',
+    phone: '+44 28 9127 3456',
+    email: 'bangor@hhi.co.uk',
+    manager: 'Christopher Davis',
+    totalEmployees: 28,
+    totalProjects: 98,
+    totalRevenue: 1650000,
+    departments: [
+      {
+        id: 'bangor-bathrooms',
+        name: 'Bathrooms Department',
+        description: 'Bathroom installations and renovations',
+        manager: 'Fiona Martin',
+        employeeCount: 7,
+        categories: ['Bathrooms'],
+        activeProjects: 12,
+        monthlyRevenue: 240000
+      },
+      {
+        id: 'bangor-kitchens',
+        name: 'Kitchens Department',
+        description: 'Kitchen design and installation',
+        manager: 'Gary Taylor',
+        employeeCount: 6,
+        categories: ['Kitchens'],
+        activeProjects: 10,
+        monthlyRevenue: 210000
+      },
+      {
+        id: 'bangor-windows-doors',
+        name: 'Windows & Doors Department',
+        description: 'PVC windows and composite doors',
+        manager: 'Helen Walsh',
+        employeeCount: 5,
+        categories: ['PVC Windows & Doors', 'Composite Doors'],
+        activeProjects: 8,
+        monthlyRevenue: 180000
+      },
+      {
+        id: 'bangor-exterior',
+        name: 'Exterior Solutions Department',
+        description: 'Fascia, soffit, guttering and decking',
+        manager: 'Mark Johnson',
+        employeeCount: 4,
+        categories: ['PVC Fascia Soffit & Guttering', 'HD Decking', 'PVC Cover Sills'],
+        activeProjects: 7,
+        monthlyRevenue: 150000
+      }
+    ]
+  },
+  {
+    name: 'Coleraine',
+    address: '654 Coleraine Road, Coleraine, BT52 1GH',
+    phone: '+44 28 7034 5678',
+    email: 'coleraine@hhi.co.uk',
+    manager: 'Patricia Moore',
+    totalEmployees: 25,
+    totalProjects: 87,
+    totalRevenue: 1420000,
+    departments: [
+      {
+        id: 'coleraine-bathrooms',
+        name: 'Bathrooms Department',
+        description: 'Bathroom installations and renovations',
+        manager: 'Daniel Lee',
+        employeeCount: 6,
+        categories: ['Bathrooms'],
+        activeProjects: 10,
+        monthlyRevenue: 200000
+      },
+      {
+        id: 'coleraine-kitchens',
+        name: 'Kitchens Department',
+        description: 'Kitchen design and installation',
+        manager: 'Catherine Reid',
+        employeeCount: 5,
+        categories: ['Kitchens'],
+        activeProjects: 8,
+        monthlyRevenue: 170000
+      },
+      {
+        id: 'coleraine-windows-doors',
+        name: 'Windows & Doors Department',
+        description: 'PVC windows and composite doors',
+        manager: 'Thomas Adams',
+        employeeCount: 4,
+        categories: ['PVC Windows & Doors', 'Composite Doors'],
+        activeProjects: 7,
+        monthlyRevenue: 150000
+      },
+      {
+        id: 'coleraine-exterior',
+        name: 'Exterior Solutions Department',
+        description: 'Fascia, soffit, guttering and decking',
+        manager: 'Louise Foster',
+        employeeCount: 3,
+        categories: ['PVC Fascia Soffit & Guttering', 'HD Decking', 'PVC Cover Sills'],
+        activeProjects: 6,
+        monthlyRevenue: 120000
+      }
+    ]
+  }
+];
 
 // Mock Customers (from PRD)
 export const mockCustomers: Customer[] = [

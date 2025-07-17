@@ -59,6 +59,12 @@ const navigation = [
     permissions: [PERMISSIONS.ANALYTICS_READ]
   },
   { 
+    name: 'Branches', 
+    href: '/branches', 
+    icon: '🏢',
+    permissions: [PERMISSIONS.ANALYTICS_READ]
+  },
+  { 
     name: 'Settings', 
     href: '/settings', 
     icon: '⚙️',
