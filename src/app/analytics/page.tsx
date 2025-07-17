@@ -6,6 +6,7 @@ import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { apiService } from '@/lib/api';
 import { Analytics } from '@/lib/mock-data';
 import { PERMISSIONS } from '@/lib/auth';
+import { getBranchChartColor } from '@/lib/colors';
 import {
   LineChart,
   Line,
@@ -26,33 +27,15 @@ export default function AnalyticsPage() {
   const [analyticsData, setAnalyticsData] = useState<Analytics | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Branch color mapping
-  const branchColors = {
-    'Belfast': '#3B82F6',      // Blue
-    'Newtownabbey': '#10B981', // Green
-    'Lisburn': '#F59E0B',      // Yellow/Orange
-    'Bangor': '#EF4444',       // Red
-    'Coleraine': '#8B5CF6',    // Purple
-    'Derry': '#06B6D4',        // Cyan
-    'Newry': '#F97316',        // Orange
-    'Other': '#6B7280'         // Gray
-  };
 
-  const getBranchColor = (branchName: string) => {
-    return branchColors[branchName as keyof typeof branchColors] || branchColors['Other'];
-  };
 
   const getBranchBgColor = (branchName: string) => {
-    const color = getBranchColor(branchName);
+    const color = getBranchChartColor(branchName);
     // Convert hex to rgba for background
     const r = parseInt(color.slice(1, 3), 16);
     const g = parseInt(color.slice(3, 5), 16);
     const b = parseInt(color.slice(5, 7), 16);
     return `rgba(${r}, ${g}, ${b}, 0.1)`;
-  };
-
-  const getBranchTextColor = (branchName: string) => {
-    return getBranchColor(branchName);
   };
 
   useEffect(() => {
@@ -352,7 +335,7 @@ export default function AnalyticsPage() {
                                 className="h-8 w-8 rounded-full flex items-center justify-center"
                                 style={{ 
                                   backgroundColor: getBranchBgColor(branch.branch),
-                                  color: getBranchColor(branch.branch)
+                                  color: getBranchChartColor(branch.branch)
                                 }}
                               >
                                 <span className="text-sm font-medium">
@@ -451,7 +434,7 @@ export default function AnalyticsPage() {
                   <div className="flex items-center space-x-2">
                     <div 
                       className="w-3 h-3 rounded-full"
-                      style={{ backgroundColor: getBranchColor(branchData.branch) }}
+                      style={{ backgroundColor: getBranchChartColor(branchData.branch) }}
                     ></div>
                     <span className="text-sm text-gray-500 dark:text-muted-foreground">Active</span>
                   </div>
@@ -667,7 +650,7 @@ export default function AnalyticsPage() {
                       <Tooltip />
                       <Bar dataKey="value">
                         {analyticsData.detailed_branch_analytics?.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={getBranchColor(entry.branch)} />
+                          <Cell key={`cell-${index}`} fill={getBranchChartColor(entry.branch)} />
                         ))}
                       </Bar>
                     </BarChart>
@@ -687,7 +670,7 @@ export default function AnalyticsPage() {
                       <Tooltip />
                       <Bar dataKey="value">
                         {analyticsData.detailed_branch_analytics?.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={getBranchColor(entry.branch)} />
+                          <Cell key={`cell-${index}`} fill={getBranchChartColor(entry.branch)} />
                         ))}
                       </Bar>
                     </BarChart>
@@ -707,7 +690,7 @@ export default function AnalyticsPage() {
                       <Tooltip formatter={(value) => [`${value}%`, 'Utilization']} />
                       <Bar dataKey="value">
                         {analyticsData.detailed_branch_analytics?.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={getBranchColor(entry.branch)} />
+                          <Cell key={`cell-${index}`} fill={getBranchChartColor(entry.branch)} />
                         ))}
                       </Bar>
                     </BarChart>
@@ -727,7 +710,7 @@ export default function AnalyticsPage() {
                       <Tooltip formatter={(value) => [`${value}%`, 'On-time']} />
                       <Bar dataKey="value">
                         {analyticsData.detailed_branch_analytics?.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={getBranchColor(entry.branch)} />
+                          <Cell key={`cell-${index}`} fill={getBranchChartColor(entry.branch)} />
                         ))}
                       </Bar>
                     </BarChart>
@@ -747,7 +730,7 @@ export default function AnalyticsPage() {
                       <Tooltip />
                       <Bar dataKey="value">
                         {analyticsData.detailed_branch_analytics?.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={getBranchColor(entry.branch)} />
+                          <Cell key={`cell-${index}`} fill={getBranchChartColor(entry.branch)} />
                         ))}
                       </Bar>
                     </BarChart>
@@ -767,7 +750,7 @@ export default function AnalyticsPage() {
                       <Tooltip />
                       <Bar dataKey="value">
                         {analyticsData.detailed_branch_analytics?.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={getBranchColor(entry.branch)} />
+                          <Cell key={`cell-${index}`} fill={getBranchChartColor(entry.branch)} />
                         ))}
                       </Bar>
                     </BarChart>
@@ -796,7 +779,7 @@ export default function AnalyticsPage() {
                       <Tooltip formatter={(value) => [`£${value.toLocaleString()}`, 'Revenue']} />
                       <Bar dataKey="value">
                         {analyticsData.detailed_branch_analytics?.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={getBranchColor(entry.branch)} />
+                          <Cell key={`cell-${index}`} fill={getBranchChartColor(entry.branch)} />
                         ))}
                       </Bar>
                     </BarChart>
@@ -816,7 +799,7 @@ export default function AnalyticsPage() {
                       <Tooltip formatter={(value) => [`${value}%`, 'Gross Margin']} />
                       <Bar dataKey="value">
                         {analyticsData.detailed_branch_analytics?.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={getBranchColor(entry.branch)} />
+                          <Cell key={`cell-${index}`} fill={getBranchChartColor(entry.branch)} />
                         ))}
                       </Bar>
                     </BarChart>
@@ -836,7 +819,7 @@ export default function AnalyticsPage() {
                       <Tooltip formatter={(value) => [`${value}%`, 'Net Margin']} />
                       <Bar dataKey="value">
                         {analyticsData.detailed_branch_analytics?.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={getBranchColor(entry.branch)} />
+                          <Cell key={`cell-${index}`} fill={getBranchChartColor(entry.branch)} />
                         ))}
                       </Bar>
                     </BarChart>
@@ -856,7 +839,7 @@ export default function AnalyticsPage() {
                       <Tooltip formatter={(value) => [`£${value.toLocaleString()}`, 'Costs']} />
                       <Bar dataKey="value">
                         {analyticsData.detailed_branch_analytics?.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={getBranchColor(entry.branch)} />
+                          <Cell key={`cell-${index}`} fill={getBranchChartColor(entry.branch)} />
                         ))}
                       </Bar>
                     </BarChart>
@@ -876,7 +859,7 @@ export default function AnalyticsPage() {
                       <Tooltip formatter={(value) => [`£${value.toLocaleString()}`, 'Revenue/Employee']} />
                       <Bar dataKey="value">
                         {analyticsData.detailed_branch_analytics?.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={getBranchColor(entry.branch)} />
+                          <Cell key={`cell-${index}`} fill={getBranchChartColor(entry.branch)} />
                         ))}
                       </Bar>
                     </BarChart>
@@ -896,7 +879,7 @@ export default function AnalyticsPage() {
                       <Tooltip formatter={(value) => [`${value}%`, 'ROI']} />
                       <Bar dataKey="value">
                         {analyticsData.detailed_branch_analytics?.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={getBranchColor(entry.branch)} />
+                          <Cell key={`cell-${index}`} fill={getBranchChartColor(entry.branch)} />
                         ))}
                       </Bar>
                     </BarChart>
@@ -925,7 +908,7 @@ export default function AnalyticsPage() {
                       <Tooltip />
                       <Bar dataKey="value">
                         {analyticsData.detailed_branch_analytics?.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={getBranchColor(entry.branch)} />
+                          <Cell key={`cell-${index}`} fill={getBranchChartColor(entry.branch)} />
                         ))}
                       </Bar>
                     </BarChart>
@@ -945,7 +928,7 @@ export default function AnalyticsPage() {
                       <Tooltip formatter={(value) => [`${value} years`, 'Tenure']} />
                       <Bar dataKey="value">
                         {analyticsData.detailed_branch_analytics?.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={getBranchColor(entry.branch)} />
+                          <Cell key={`cell-${index}`} fill={getBranchChartColor(entry.branch)} />
                         ))}
                       </Bar>
                     </BarChart>
@@ -965,7 +948,7 @@ export default function AnalyticsPage() {
                       <Tooltip formatter={(value) => [`${value}%`, 'Turnover']} />
                       <Bar dataKey="value">
                         {analyticsData.detailed_branch_analytics?.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={getBranchColor(entry.branch)} />
+                          <Cell key={`cell-${index}`} fill={getBranchChartColor(entry.branch)} />
                         ))}
                       </Bar>
                     </BarChart>
@@ -985,7 +968,7 @@ export default function AnalyticsPage() {
                       <Tooltip formatter={(value) => [`${value} projects`, 'Productivity']} />
                       <Bar dataKey="value">
                         {analyticsData.detailed_branch_analytics?.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={getBranchColor(entry.branch)} />
+                          <Cell key={`cell-${index}`} fill={getBranchChartColor(entry.branch)} />
                         ))}
                       </Bar>
                     </BarChart>
@@ -1005,7 +988,7 @@ export default function AnalyticsPage() {
                       <Tooltip formatter={(value) => [`${value}h`, 'Overtime']} />
                       <Bar dataKey="value">
                         {analyticsData.detailed_branch_analytics?.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={getBranchColor(entry.branch)} />
+                          <Cell key={`cell-${index}`} fill={getBranchChartColor(entry.branch)} />
                         ))}
                       </Bar>
                     </BarChart>
@@ -1034,7 +1017,7 @@ export default function AnalyticsPage() {
                       <Tooltip formatter={(value) => [`${value}/5`, 'Satisfaction']} />
                       <Bar dataKey="value">
                         {analyticsData.detailed_branch_analytics?.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={getBranchColor(entry.branch)} />
+                          <Cell key={`cell-${index}`} fill={getBranchChartColor(entry.branch)} />
                         ))}
                       </Bar>
                     </BarChart>
@@ -1054,7 +1037,7 @@ export default function AnalyticsPage() {
                       <Tooltip formatter={(value) => [`${value}%`, 'Complaints']} />
                       <Bar dataKey="value">
                         {analyticsData.detailed_branch_analytics?.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={getBranchColor(entry.branch)} />
+                          <Cell key={`cell-${index}`} fill={getBranchChartColor(entry.branch)} />
                         ))}
                       </Bar>
                     </BarChart>
@@ -1074,7 +1057,7 @@ export default function AnalyticsPage() {
                       <Tooltip formatter={(value) => [`${value}%`, 'Repeat Orders']} />
                       <Bar dataKey="value">
                         {analyticsData.detailed_branch_analytics?.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={getBranchColor(entry.branch)} />
+                          <Cell key={`cell-${index}`} fill={getBranchChartColor(entry.branch)} />
                         ))}
                       </Bar>
                     </BarChart>
@@ -1094,7 +1077,7 @@ export default function AnalyticsPage() {
                       <Tooltip formatter={(value) => [`${value} days`, 'Response Time']} />
                       <Bar dataKey="value">
                         {analyticsData.detailed_branch_analytics?.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={getBranchColor(entry.branch)} />
+                          <Cell key={`cell-${index}`} fill={getBranchChartColor(entry.branch)} />
                         ))}
                       </Bar>
                     </BarChart>
@@ -1114,7 +1097,7 @@ export default function AnalyticsPage() {
                       <Tooltip formatter={(value) => [`${value}/100`, 'Audit Score']} />
                       <Bar dataKey="value">
                         {analyticsData.detailed_branch_analytics?.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={getBranchColor(entry.branch)} />
+                          <Cell key={`cell-${index}`} fill={getBranchChartColor(entry.branch)} />
                         ))}
                       </Bar>
                     </BarChart>
@@ -1143,7 +1126,7 @@ export default function AnalyticsPage() {
                       <Tooltip />
                       <Bar dataKey="value">
                         {analyticsData.detailed_branch_analytics?.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={getBranchColor(entry.branch)} />
+                          <Cell key={`cell-${index}`} fill={getBranchChartColor(entry.branch)} />
                         ))}
                       </Bar>
                     </BarChart>
@@ -1163,7 +1146,7 @@ export default function AnalyticsPage() {
                       <Tooltip formatter={(value) => [`${value}%`, 'Market Growth']} />
                       <Bar dataKey="value">
                         {analyticsData.detailed_branch_analytics?.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={getBranchColor(entry.branch)} />
+                          <Cell key={`cell-${index}`} fill={getBranchChartColor(entry.branch)} />
                         ))}
                       </Bar>
                     </BarChart>
@@ -1183,7 +1166,7 @@ export default function AnalyticsPage() {
                       <Tooltip />
                       <Bar dataKey="value">
                         {analyticsData.detailed_branch_analytics?.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={getBranchColor(entry.branch)} />
+                          <Cell key={`cell-${index}`} fill={getBranchChartColor(entry.branch)} />
                         ))}
                       </Bar>
                     </BarChart>
@@ -1203,7 +1186,7 @@ export default function AnalyticsPage() {
                       <Tooltip />
                       <Bar dataKey="value">
                         {analyticsData.detailed_branch_analytics?.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={getBranchColor(entry.branch)} />
+                          <Cell key={`cell-${index}`} fill={getBranchChartColor(entry.branch)} />
                         ))}
                       </Bar>
                     </BarChart>

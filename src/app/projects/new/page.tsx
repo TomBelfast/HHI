@@ -9,6 +9,7 @@ import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { apiService } from '@/lib/api';
 import { Project, Customer, User } from '@/lib/mock-data';
+import { getProjectStatusColor } from '@/lib/colors';
 
 export default function NewProjectPage() {
   const router = useRouter();
@@ -52,39 +53,7 @@ export default function NewProjectPage() {
     'Awaiting Review'
   ];
 
-  // Project status color mapping
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'Contact Received':
-        return 'bg-gray-100 text-gray-800 border-gray-200';
-      case 'Quote Sent':
-        return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-      case 'Contract Signed':
-        return 'bg-blue-100 text-blue-800 border-blue-200';
-      case 'Approved':
-        return 'bg-blue-100 text-blue-800 border-blue-200';
-      case 'In Progress':
-        return 'bg-orange-100 text-orange-800 border-orange-200';
-      case 'Installation Completed':
-        return 'bg-green-100 text-green-800 border-green-200';
-      case 'Materials Received':
-        return 'bg-purple-100 text-purple-800 border-purple-200';
-      case 'Installation Scheduled':
-        return 'bg-indigo-100 text-indigo-800 border-indigo-200';
-      case 'Repair Completed':
-        return 'bg-green-100 text-green-800 border-green-200';
-      case 'Invoice Sent':
-        return 'bg-cyan-100 text-cyan-800 border-cyan-200';
-      case 'Awaiting Payment':
-        return 'bg-amber-100 text-amber-800 border-amber-200';
-      case 'Paid':
-        return 'bg-emerald-100 text-emerald-800 border-emerald-200';
-      case 'Awaiting Review':
-        return 'bg-rose-100 text-rose-800 border-rose-200';
-      default:
-        return 'bg-gray-100 text-gray-800 border-gray-200';
-    }
-  };
+
 
   useEffect(() => {
     loadFormData();
@@ -285,9 +254,12 @@ export default function NewProjectPage() {
                     >
                       <div className="flex items-center gap-2">
                         {formData.status && (
-                          <Badge className={`${getStatusColor(formData.status)} border text-xs font-medium`}>
-                            {formData.status}
-                          </Badge>
+                                            <Badge 
+                    variant="outline"
+                    className={getProjectStatusColor(formData.status)}
+                  >
+                    {formData.status}
+                  </Badge>
                         )}
                         {!formData.status && (
                           <span className="text-gray-500">Select status</span>
@@ -310,9 +282,12 @@ export default function NewProjectPage() {
                             }}
                             className="w-full px-3 py-2 text-left hover:bg-gray-50 flex items-center gap-2"
                           >
-                            <Badge className={`${getStatusColor(status)} border text-xs font-medium`}>
-                              {status}
-                            </Badge>
+                                                    <Badge 
+                          variant="outline"
+                          className={getProjectStatusColor(status)}
+                        >
+                          {status}
+                        </Badge>
                           </button>
                         ))}
                       </div>

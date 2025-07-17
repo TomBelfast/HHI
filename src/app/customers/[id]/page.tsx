@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/Input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { ArrowLeft, Mail, Phone, MapPin, Calendar, Building } from 'lucide-react';
+import { getBranchColor, getCustomerStatusColor, getProjectStatusColor } from '@/lib/colors';
 
 export default function CustomerDetailsPage() {
   const params = useParams();
@@ -42,66 +43,7 @@ export default function CustomerDetailsPage() {
     fetchCustomerDetails();
   }, [params.id]);
 
-  // Customer status color mapping
-  const getStatusColor = (status: string) => {
-    switch (status.toLowerCase()) {
-      case 'active':
-        return 'bg-green-100 text-green-800 border-green-200';
-      case 'not accepted':
-        return 'bg-red-100 text-red-800 border-red-200';
-      case 'prospect':
-        return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-      case 'suspended':
-        return 'bg-gray-100 text-gray-800 border-gray-200';
-      case 'completed':
-        return 'bg-blue-100 text-blue-800 border-blue-200';
-      default:
-        return 'bg-gray-100 text-gray-800 border-gray-200';
-    }
-  };
 
-  // Project status color mapping
-  const getProjectStatusColor = (status: string) => {
-    switch (status) {
-      case 'Quote Sent':
-        return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-      case 'Approved':
-        return 'bg-blue-100 text-blue-800 border-blue-200';
-      case 'In Progress':
-        return 'bg-orange-100 text-orange-800 border-orange-200';
-      case 'Installation Completed':
-        return 'bg-green-100 text-green-800 border-green-200';
-      case 'Materials Received':
-        return 'bg-purple-100 text-purple-800 border-purple-200';
-      case 'Installation Scheduled':
-        return 'bg-indigo-100 text-indigo-800 border-indigo-200';
-      case 'Repair Completed':
-        return 'bg-green-100 text-green-800 border-green-200';
-      case 'Invoice Sent':
-        return 'bg-cyan-100 text-cyan-800 border-cyan-200';
-      case 'Awaiting Payment':
-        return 'bg-orange-100 text-orange-800 border-orange-200';
-      case 'Paid':
-        return 'bg-green-100 text-green-800 border-green-200';
-      case 'Awaiting Review':
-        return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-      default:
-        return 'bg-gray-100 text-gray-800 border-gray-200';
-    }
-  };
-
-  // Branch color mapping
-  const getBranchColor = (branchName: string) => {
-    const branchColors: Record<string, { bg: string; text: string; border: string }> = {
-      'Belfast': { bg: 'bg-blue-100', text: 'text-blue-800', border: 'border-blue-200' },
-      'Newtownabbey': { bg: 'bg-green-100', text: 'text-green-800', border: 'border-green-200' },
-      'Lisburn': { bg: 'bg-yellow-100', text: 'text-yellow-800', border: 'border-yellow-200' },
-      'Bangor': { bg: 'bg-red-100', text: 'text-red-800', border: 'border-red-200' },
-      'Coleraine': { bg: 'bg-purple-100', text: 'text-purple-800', border: 'border-purple-200' }
-    };
-    
-    return branchColors[branchName] || { bg: 'bg-gray-100', text: 'text-gray-800', border: 'border-gray-200' };
-  };
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-GB', {
@@ -198,7 +140,10 @@ export default function CustomerDetailsPage() {
               <div className="pt-4 border-t">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm font-medium text-gray-700 dark:text-foreground">Status:</span>
-                  <Badge className={`${getStatusColor(customer.status)} border text-xs font-medium`}>
+                  <Badge 
+                    variant="outline"
+                    className={getCustomerStatusColor(customer.status)}
+                  >
                     {customer.status.charAt(0).toUpperCase() + customer.status.slice(1)}
                   </Badge>
                 </div>
@@ -246,7 +191,10 @@ export default function CustomerDetailsPage() {
                            <h3 className="text-sm font-semibold text-gray-900 dark:text-foreground">{project.title}</h3>
                            <p className="text-sm text-gray-600 dark:text-muted-foreground">{project.description}</p>
                          </div>
-                         <Badge className={`${getProjectStatusColor(project.status)} border text-xs font-medium`}>
+                         <Badge 
+                           variant="outline"
+                           className={getProjectStatusColor(project.status)}
+                         >
                            {project.status}
                          </Badge>
                        </div>
@@ -266,7 +214,10 @@ export default function CustomerDetailsPage() {
                          </div>
                         <div>
                           <span className="text-sm text-gray-500 dark:text-muted-foreground">Branch:</span>
-                          <Badge className={`${getBranchColor(project.branch).bg} ${getBranchColor(project.branch).text} ${getBranchColor(project.branch).border} border text-xs font-medium`}>
+                          <Badge 
+                            variant="outline"
+                            className={`${getBranchColor(project.branch).bg} ${getBranchColor(project.branch).text} ${getBranchColor(project.branch).border}`}
+                          >
                             {project.branch}
                           </Badge>
                         </div>

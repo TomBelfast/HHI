@@ -12,6 +12,7 @@ import { Badge } from '@/components/ui/Badge';
 import { apiService, FilterOptions, SortOptions } from '@/lib/api';
 import { Customer } from '@/lib/mock-data';
 import { PERMISSIONS } from '@/lib/auth';
+import { getBranchColor, getCustomerStatusColor } from '@/lib/colors';
 
 export default function CustomersPage() {
   const router = useRouter();
@@ -24,38 +25,7 @@ export default function CustomersPage() {
 
   const branches = ['Belfast', 'Newtownabbey', 'Lisburn', 'Bangor', 'Coleraine'];
 
-  // Branch color mapping - same as in analytics
-  const getBranchColor = (branchName: string) => {
-    const branchColors: Record<string, { bg: string; text: string; border: string }> = {
-      'Belfast': { bg: 'bg-blue-100', text: 'text-blue-800', border: 'border-blue-200' },
-      'Newtownabbey': { bg: 'bg-green-100', text: 'text-green-800', border: 'border-green-200' },
-      'Lisburn': { bg: 'bg-yellow-100', text: 'text-yellow-800', border: 'border-yellow-200' },
-      'Bangor': { bg: 'bg-red-100', text: 'text-red-800', border: 'border-red-200' },
-      'Coleraine': { bg: 'bg-purple-100', text: 'text-purple-800', border: 'border-purple-200' }
-    };
-    
-    return branchColors[branchName] || { bg: 'bg-gray-100', text: 'text-gray-800', border: 'border-gray-200' };
-  };
 
-  // Customer status color mapping
-  const getStatusColor = (status: string) => {
-    switch (status.toLowerCase()) {
-      case 'active':
-        return 'bg-green-100 text-green-800 border-green-200';
-      case 'inactive':
-        return 'bg-red-100 text-red-800 border-red-200';
-      case 'not accepted':
-        return 'bg-red-100 text-red-800 border-red-200';
-      case 'prospect':
-        return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-      case 'suspended':
-        return 'bg-gray-100 text-gray-800 border-gray-200';
-      case 'completed':
-        return 'bg-blue-100 text-blue-800 border-blue-200';
-      default:
-        return 'bg-gray-100 text-gray-800 border-gray-200';
-    }
-  };
 
   useEffect(() => {
     loadCustomers();
@@ -115,11 +85,11 @@ export default function CustomersPage() {
       key: 'status', 
       label: 'Status',
       render: (value: string) => {
-        const statusColor = getStatusColor(value);
+        const statusColor = getCustomerStatusColor(value);
         return (
           <Badge 
             variant="outline"
-            className={`${statusColor}`}
+            className={statusColor}
           >
             {value.charAt(0).toUpperCase() + value.slice(1)}
           </Badge>

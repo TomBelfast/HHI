@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/Badge';
 import { Card } from '@/components/ui/Card';
 import { apiService } from '@/lib/api';
 import { Project, Customer, User, TimelineEvent } from '@/lib/mock-data';
+import { getProjectStatusColor } from '@/lib/colors';
 
 export default function ProjectDetailPage() {
   const params = useParams();
@@ -37,34 +38,7 @@ export default function ProjectDetailPage() {
     'Awaiting Review'
   ];
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'Quote Sent':
-        return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-      case 'Approved':
-        return 'bg-blue-100 text-blue-800 border-blue-200';
-      case 'In Progress':
-        return 'bg-orange-100 text-orange-800 border-orange-200';
-      case 'Installation Completed':
-        return 'bg-green-100 text-green-800 border-green-200';
-      case 'Materials Received':
-        return 'bg-purple-100 text-purple-800 border-purple-200';
-      case 'Installation Scheduled':
-        return 'bg-indigo-100 text-indigo-800 border-indigo-200';
-      case 'Repair Completed':
-        return 'bg-green-100 text-green-800 border-green-200';
-      case 'Invoice Sent':
-        return 'bg-cyan-100 text-cyan-800 border-cyan-200';
-      case 'Awaiting Payment':
-        return 'bg-amber-100 text-amber-800 border-amber-200';
-      case 'Paid':
-        return 'bg-emerald-100 text-emerald-800 border-emerald-200';
-      case 'Awaiting Review':
-        return 'bg-rose-100 text-rose-800 border-rose-200';
-      default:
-        return 'bg-gray-100 text-gray-800 border-gray-200';
-    }
-  };
+
 
   useEffect(() => {
     loadProjectData();
@@ -203,9 +177,12 @@ export default function ProjectDetailPage() {
                   <div>
                     <label className="text-sm font-medium text-gray-500">Status</label>
                     <div className="mt-1">
-                      <Badge className={`${getStatusColor(project.status)} border`}>
-                        {project.status}
-                      </Badge>
+                                      <Badge 
+                  variant="outline"
+                  className={getProjectStatusColor(project.status)}
+                >
+                  {project.status}
+                </Badge>
                     </div>
                   </div>
                   <div>

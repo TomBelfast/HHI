@@ -26,4 +26,20 @@
   - Cancelled: red (bg-red-100 text-red-800 border-red-200)
 - Always use Badge component with variant="outline" for status and branch tags
 - When adding new statuses or branches, maintain the existing color scheme
-- Ensure all tables, cards, and components display statuses and branches with consistent colors 
+- Ensure all tables, cards, and components display statuses and branches with consistent colors
+
+## Universal Tag Color Consistency
+- ALL tags throughout the application must use the SAME colors for the SAME values
+- When displaying any status, branch, or category tag, use the established color scheme
+- Never create different colors for the same tag value in different parts of the application
+- All tag colors must be consistent across:
+  - Dashboard tables and cards
+  - Users page tables and filters
+  - Customers page tables and details
+  - Projects page tables and forms
+  - Analytics charts and tables
+  - Reports and any other components
+- If a tag appears in multiple places, it MUST have the exact same color everywhere
+- Use the centralized color functions (getBranchColor, getStatusColor, etc.) to ensure consistency
+- When adding new tag types, define their colors once and reuse them everywhere
+- Test that all instances of the same tag value have identical colors across the entire application 

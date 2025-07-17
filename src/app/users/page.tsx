@@ -11,6 +11,7 @@ import { Badge } from '@/components/ui/Badge';
 import { DataTable } from '@/components/ui/DataTable';
 import { apiService } from '@/lib/api';
 import { PERMISSIONS } from '@/lib/auth';
+import { getBranchColor, getUserStatusColor, getRoleColor } from '@/lib/colors';
 
 interface User {
   id: string;
@@ -152,21 +153,6 @@ export default function UsersPage() {
     }
   };
 
-  const getRoleColor = (role: string) => {
-    switch (role) {
-      case 'System Administrator':
-        return 'bg-red-100 text-red-800';
-      case 'Branch Manager':
-        return 'bg-blue-100 text-blue-800';
-      case 'Branch Worker':
-        return 'bg-green-100 text-green-800';
-      case 'Subcontractor':
-        return 'bg-purple-100 text-purple-800';
-      default:
-        return 'bg-gray-100 text-gray-800';
-    }
-  };
-
   const getRoleIcon = (role: string) => {
     switch (role) {
       case 'System Administrator':
@@ -180,19 +166,6 @@ export default function UsersPage() {
       default:
         return '👤';
     }
-  };
-
-  // Branch color mapping - same as in analytics and dashboard
-  const getBranchColor = (branchName: string) => {
-    const branchColors: Record<string, { bg: string; text: string; border: string }> = {
-      'Belfast': { bg: 'bg-blue-100', text: 'text-blue-800', border: 'border-blue-200' },
-      'Newtownabbey': { bg: 'bg-green-100', text: 'text-green-800', border: 'border-green-200' },
-      'Lisburn': { bg: 'bg-yellow-100', text: 'text-yellow-800', border: 'border-yellow-200' },
-      'Bangor': { bg: 'bg-red-100', text: 'text-red-800', border: 'border-red-200' },
-      'Coleraine': { bg: 'bg-purple-100', text: 'text-purple-800', border: 'border-purple-200' }
-    };
-    
-    return branchColors[branchName] || { bg: 'bg-gray-100', text: 'text-gray-800', border: 'border-gray-200' };
   };
 
   const filteredUsers = users.filter(user => {
@@ -258,11 +231,7 @@ export default function UsersPage() {
     status: user.status ? (
       <Badge 
         variant="outline"
-        className={
-          user.status === 'active' ? 'bg-green-100 text-green-800 border-green-200' :
-          user.status === 'inactive' ? 'bg-red-100 text-red-800 border-red-200' :
-          'bg-gray-100 text-gray-800 border-gray-200'
-        }
+        className={getUserStatusColor(user.status)}
       >
         {user.status.charAt(0).toUpperCase() + user.status.slice(1)}
       </Badge>
@@ -270,7 +239,10 @@ export default function UsersPage() {
     role: (
       <div className="flex items-center">
         <span className="mr-2">{getRoleIcon(user.role)}</span>
-        <Badge className={getRoleColor(user.role)}>
+        <Badge 
+          variant="outline"
+          className={getRoleColor(user.role)}
+        >
           {user.role}
         </Badge>
       </div>
