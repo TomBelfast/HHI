@@ -1,6 +1,7 @@
 import * as React from "react"
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/Button"
 import { cn } from "@/lib/utils"
+import { useRouter } from "next/navigation"
 import { 
   LayoutDashboard, 
   Users, 
@@ -9,7 +10,8 @@ import {
   Settings,
   Menu,
   X,
-  Mail
+  Mail,
+  FileText
 } from "lucide-react"
 
 interface SidebarProps {
@@ -22,12 +24,20 @@ const navigationItems = [
   { icon: LayoutDashboard, label: "Dashboard", href: "/" },
   { icon: Users, label: "Customers", href: "/customers" },
   { icon: FolderOpen, label: "Projects", href: "/projects" },
+  { icon: FileText, label: "Documents", href: "/documents" },
+  { icon: Mail, label: "Communication", href: "/communication" },
   { icon: BarChart3, label: "Analytics", href: "/analytics" },
-  { icon: Mail, label: "Microsoft 365", href: "/integrations/microsoft365" },
   { icon: Settings, label: "Settings", href: "/settings" },
 ]
 
 export function Sidebar({ isOpen, onToggle, className }: SidebarProps) {
+  const router = useRouter();
+
+  const handleNavigation = (href: string) => {
+    router.push(href);
+    onToggle(); // Close sidebar on mobile
+  };
+
   return (
     <>
       {/* Mobile overlay */}
@@ -65,12 +75,10 @@ export function Sidebar({ isOpen, onToggle, className }: SidebarProps) {
                 <Button
                   variant="ghost"
                   className="w-full justify-start text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
-                  asChild
+                  onClick={() => handleNavigation(item.href)}
                 >
-                  <a href={item.href}>
-                    <item.icon className="mr-3 h-4 w-4" />
-                    {item.label}
-                  </a>
+                  <item.icon className="mr-3 h-4 w-4" />
+                  {item.label}
                 </Button>
               </li>
             ))}
