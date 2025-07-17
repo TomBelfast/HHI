@@ -22,6 +22,7 @@ export default function NewProjectPage() {
     category: '',
     status: 'Contact Received',
     branch: '',
+    department: '',
     assignedWorker: '',
     value: '',
     description: '',
@@ -114,6 +115,7 @@ export default function NewProjectPage() {
         category: formData.category,
         status: formData.status,
         branch: formData.branch,
+        department: formData.department,
         assignedWorker: formData.assignedWorker,
         value: parseFloat(formData.value) || 0,
         createdDate: new Date().toISOString(),
@@ -280,7 +282,7 @@ export default function NewProjectPage() {
                               handleInputChange('status', status);
                               setFormData(prev => ({ ...prev, showStatusDropdown: false }));
                             }}
-                            className="w-full px-3 py-2 text-left hover:bg-gray-50 flex items-center gap-2"
+                            className="w-full px-3 py-2 text-left hover:bg-gray-200 dark:hover:bg-gray-700 flex items-center gap-2"
                           >
                                                     <Badge 
                           variant="outline"
@@ -309,6 +311,27 @@ export default function NewProjectPage() {
                     {branches.map(branch => (
                       <option key={branch} value={branch}>{branch}</option>
                     ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Department *
+                  </label>
+                  <select
+                    value={formData.department}
+                    onChange={(e) => handleInputChange('department', e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
+                    required
+                  >
+                    <option value="">Select department</option>
+                    <option value="Bathrooms Department">Bathrooms Department</option>
+                    <option value="Kitchens Department">Kitchens Department</option>
+                    <option value="Composite Doors Department">Composite Doors Department</option>
+                    <option value="PVC Windows & Doors Department">PVC Windows & Doors Department</option>
+                    <option value="PVC Cover Sills Department">PVC Cover Sills Department</option>
+                    <option value="PVC Fascia Soffit & Guttering Department">PVC Fascia Soffit & Guttering Department</option>
+                    <option value="HD Decking Department">HD Decking Department</option>
                   </select>
                 </div>
 

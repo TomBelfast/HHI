@@ -7,6 +7,23 @@
 - Maintain visual hierarchy by using appropriate font size classes (text-sm, text-base, text-lg, text-xl, text-2xl, etc.)
 - Avoid mixing different font sizes for the same type of content across different pages or components
 
+## Department Structure Based on Product Categories
+- Departments must be organized based on the official product categories:
+  1. Bathrooms
+  2. Kitchens
+  3. Composite Doors
+  4. PVC Windows & Doors
+  5. PVC Cover Sills
+  6. PVC Fascia Soffit & Guttering
+  7. HD Decking
+- Each branch should have departments that correspond to these product categories
+- Department names should follow the pattern: "[Category] Department"
+- Categories can be grouped logically in departments (e.g., "Windows & Doors Department" for "Composite Doors" and "PVC Windows & Doors")
+- "PVC Cover Sills" and "PVC Fascia Soffit & Guttering" can be grouped as "Exterior Solutions Department"
+- "HD Decking" should have its own "Decking Department"
+- All branches must have the same department structure based on these product categories
+- When creating or updating branch data, ensure all branches have identical department categories
+
 ## Status and Branch Color Consistency
 - Always use consistent color coding for statuses and branches throughout the application
 - Use the established color scheme for branches:
@@ -42,4 +59,20 @@
 - If a tag appears in multiple places, it MUST have the exact same color everywhere
 - Use the centralized color functions (getBranchColor, getStatusColor, etc.) to ensure consistency
 - When adding new tag types, define their colors once and reuse them everywhere
-- Test that all instances of the same tag value have identical colors across the entire application 
+- Test that all instances of the same tag value have identical colors across the entire application
+
+## Tag Size and Styling Consistency
+- ALL tags throughout the application must use the SAME size and styling
+- Always use the Badge component with variant="outline" for all tags (status, branch, category, etc.)
+- Never use custom span elements with inline styles for tags
+- All tags must have consistent padding: px-2 py-1
+- All tags must have consistent text size: text-xs
+- All tags must have consistent font weight: font-medium
+- All tags must have consistent border radius: rounded-full
+- In dark mode, tag text MUST be black (dark:!text-black) for better readability on light backgrounds
+- The Badge component should be the single source of truth for tag styling
+- When adding new tags, always use the Badge component instead of custom spans
+- Ensure all existing tags across the application use the Badge component
+- Test that all tags have identical sizing and appearance across the entire application
+- All Badge variants must use dark:!text-black to override any custom color classes
+- The Badge component uses !important (!) to ensure black text in dark mode regardless of custom colors 

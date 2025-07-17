@@ -7,12 +7,12 @@ export interface Customer {
   address: string;
   postcode: string;
   branch: string;
+  department: string;
   registrationDate: string;
   totalProjects: number;
   totalValue: number;
   rating: number;
   // Additional fields required by task #3.1
-  customerType: 'residential' | 'commercial' | 'prospect';
   status: 'active' | 'not accepted' | 'prospect' | 'completed' | 'suspended';
   preferences?: {
     preferredContact: 'email' | 'phone' | 'sms';
@@ -39,6 +39,7 @@ export interface Project {
   category: string;
   status: string;
   branch: string;
+  department: string;
   assignedWorker: string;
   subcontractor?: string;
   value: number;
@@ -310,40 +311,70 @@ export const branchDepartments: Branch[] = [
         name: 'Bathrooms Department',
         description: 'Specialized in bathroom installations and renovations',
         manager: 'Michael Thompson',
-        employeeCount: 12,
+        employeeCount: 8,
         categories: ['Bathrooms'],
-        activeProjects: 23,
-        monthlyRevenue: 450000
+        activeProjects: 12,
+        monthlyRevenue: 120000
       },
       {
         id: 'belfast-kitchens',
         name: 'Kitchens Department',
         description: 'Kitchen design and installation services',
         manager: 'Emma Wilson',
-        employeeCount: 10,
-        categories: ['Kitchens'],
-        activeProjects: 18,
-        monthlyRevenue: 380000
-      },
-      {
-        id: 'belfast-windows-doors',
-        name: 'Windows & Doors Department',
-        description: 'PVC windows, doors and composite door installations',
-        manager: 'David Clarke',
-        employeeCount: 8,
-        categories: ['PVC Windows & Doors', 'Composite Doors'],
-        activeProjects: 15,
-        monthlyRevenue: 320000
-      },
-      {
-        id: 'belfast-exterior',
-        name: 'Exterior Solutions Department',
-        description: 'Fascia, soffit, guttering and decking installations',
-        manager: 'James Anderson',
         employeeCount: 7,
-        categories: ['PVC Fascia Soffit & Guttering', 'HD Decking', 'PVC Cover Sills'],
-        activeProjects: 12,
-        monthlyRevenue: 280000
+        categories: ['Kitchens'],
+        activeProjects: 10,
+        monthlyRevenue: 110000
+      },
+      {
+        id: 'belfast-composite-doors',
+        name: 'Composite Doors Department',
+        description: 'Composite door installations',
+        manager: 'David Clarke',
+        employeeCount: 5,
+        categories: ['Composite Doors'],
+        activeProjects: 7,
+        monthlyRevenue: 90000
+      },
+      {
+        id: 'belfast-pvc-windows-doors',
+        name: 'PVC Windows & Doors Department',
+        description: 'PVC windows and doors installations',
+        manager: 'Anna Smith',
+        employeeCount: 6,
+        categories: ['PVC Windows & Doors'],
+        activeProjects: 8,
+        monthlyRevenue: 95000
+      },
+      {
+        id: 'belfast-pvc-cover-sills',
+        name: 'PVC Cover Sills Department',
+        description: 'PVC cover sills installations',
+        manager: 'James Anderson',
+        employeeCount: 4,
+        categories: ['PVC Cover Sills'],
+        activeProjects: 5,
+        monthlyRevenue: 60000
+      },
+      {
+        id: 'belfast-pvc-fascia',
+        name: 'PVC Fascia Soffit & Guttering Department',
+        description: 'Fascia, soffit and guttering installations',
+        manager: 'Robert Wilson',
+        employeeCount: 5,
+        categories: ['PVC Fascia Soffit & Guttering'],
+        activeProjects: 6,
+        monthlyRevenue: 70000
+      },
+      {
+        id: 'belfast-hd-decking',
+        name: 'HD Decking Department',
+        description: 'HD decking and outdoor installations',
+        manager: 'Lisa Murphy',
+        employeeCount: 3,
+        categories: ['HD Decking'],
+        activeProjects: 4,
+        monthlyRevenue: 50000
       }
     ]
   },
@@ -360,42 +391,72 @@ export const branchDepartments: Branch[] = [
       {
         id: 'newtownabbey-bathrooms',
         name: 'Bathrooms Department',
-        description: 'Bathroom installations and renovations',
+        description: 'Specialized in bathroom installations and renovations',
         manager: 'Lisa Campbell',
-        employeeCount: 10,
+        employeeCount: 7,
         categories: ['Bathrooms'],
-        activeProjects: 19,
-        monthlyRevenue: 380000
+        activeProjects: 10,
+        monthlyRevenue: 100000
       },
       {
         id: 'newtownabbey-kitchens',
         name: 'Kitchens Department',
-        description: 'Kitchen design and installation',
+        description: 'Kitchen design and installation services',
         manager: 'Andrew Brown',
-        employeeCount: 8,
-        categories: ['Kitchens'],
-        activeProjects: 14,
-        monthlyRevenue: 310000
-      },
-      {
-        id: 'newtownabbey-windows-doors',
-        name: 'Windows & Doors Department',
-        description: 'PVC windows and composite doors',
-        manager: 'Rachel Green',
-        employeeCount: 7,
-        categories: ['PVC Windows & Doors', 'Composite Doors'],
-        activeProjects: 12,
-        monthlyRevenue: 260000
-      },
-      {
-        id: 'newtownabbey-exterior',
-        name: 'Exterior Solutions Department',
-        description: 'Fascia, soffit, guttering and decking',
-        manager: 'Paul Murphy',
         employeeCount: 6,
-        categories: ['PVC Fascia Soffit & Guttering', 'HD Decking', 'PVC Cover Sills'],
-        activeProjects: 10,
-        monthlyRevenue: 220000
+        categories: ['Kitchens'],
+        activeProjects: 8,
+        monthlyRevenue: 90000
+      },
+      {
+        id: 'newtownabbey-composite-doors',
+        name: 'Composite Doors Department',
+        description: 'Composite door installations',
+        manager: 'Rachel Green',
+        employeeCount: 4,
+        categories: ['Composite Doors'],
+        activeProjects: 6,
+        monthlyRevenue: 80000
+      },
+      {
+        id: 'newtownabbey-pvc-windows-doors',
+        name: 'PVC Windows & Doors Department',
+        description: 'PVC windows and doors installations',
+        manager: 'Paul Murphy',
+        employeeCount: 5,
+        categories: ['PVC Windows & Doors'],
+        activeProjects: 7,
+        monthlyRevenue: 85000
+      },
+      {
+        id: 'newtownabbey-pvc-cover-sills',
+        name: 'PVC Cover Sills Department',
+        description: 'PVC cover sills installations',
+        manager: 'Stephen Kelly',
+        employeeCount: 3,
+        categories: ['PVC Cover Sills'],
+        activeProjects: 4,
+        monthlyRevenue: 50000
+      },
+      {
+        id: 'newtownabbey-pvc-fascia',
+        name: 'PVC Fascia Soffit & Guttering Department',
+        description: 'Fascia, soffit and guttering installations',
+        manager: 'Amanda Scott',
+        employeeCount: 4,
+        categories: ['PVC Fascia Soffit & Guttering'],
+        activeProjects: 5,
+        monthlyRevenue: 60000
+      },
+      {
+        id: 'newtownabbey-hd-decking',
+        name: 'HD Decking Department',
+        description: 'HD decking and outdoor installations',
+        manager: 'Mark Johnson',
+        employeeCount: 2,
+        categories: ['HD Decking'],
+        activeProjects: 3,
+        monthlyRevenue: 40000
       }
     ]
   },
@@ -412,42 +473,72 @@ export const branchDepartments: Branch[] = [
       {
         id: 'lisburn-bathrooms',
         name: 'Bathrooms Department',
-        description: 'Bathroom installations and renovations',
+        description: 'Specialized in bathroom installations and renovations',
         manager: 'Kevin O\'Neill',
-        employeeCount: 8,
+        employeeCount: 6,
         categories: ['Bathrooms'],
-        activeProjects: 16,
-        monthlyRevenue: 320000
+        activeProjects: 8,
+        monthlyRevenue: 90000
       },
       {
         id: 'lisburn-kitchens',
         name: 'Kitchens Department',
-        description: 'Kitchen design and installation',
+        description: 'Kitchen design and installation services',
         manager: 'Amanda Scott',
-        employeeCount: 7,
-        categories: ['Kitchens'],
-        activeProjects: 13,
-        monthlyRevenue: 280000
-      },
-      {
-        id: 'lisburn-windows-doors',
-        name: 'Windows & Doors Department',
-        description: 'PVC windows and composite doors',
-        manager: 'Steven Kelly',
-        employeeCount: 6,
-        categories: ['PVC Windows & Doors', 'Composite Doors'],
-        activeProjects: 11,
-        monthlyRevenue: 240000
-      },
-      {
-        id: 'lisburn-exterior',
-        name: 'Exterior Solutions Department',
-        description: 'Fascia, soffit, guttering and decking',
-        manager: 'Nicola Hughes',
         employeeCount: 5,
-        categories: ['PVC Fascia Soffit & Guttering', 'HD Decking', 'PVC Cover Sills'],
-        activeProjects: 9,
-        monthlyRevenue: 200000
+        categories: ['Kitchens'],
+        activeProjects: 7,
+        monthlyRevenue: 80000
+      },
+      {
+        id: 'lisburn-composite-doors',
+        name: 'Composite Doors Department',
+        description: 'Composite door installations',
+        manager: 'Steven Kelly',
+        employeeCount: 4,
+        categories: ['Composite Doors'],
+        activeProjects: 5,
+        monthlyRevenue: 70000
+      },
+      {
+        id: 'lisburn-pvc-windows-doors',
+        name: 'PVC Windows & Doors Department',
+        description: 'PVC windows and doors installations',
+        manager: 'Nicola Hughes',
+        employeeCount: 4,
+        categories: ['PVC Windows & Doors'],
+        activeProjects: 6,
+        monthlyRevenue: 75000
+      },
+      {
+        id: 'lisburn-pvc-cover-sills',
+        name: 'PVC Cover Sills Department',
+        description: 'PVC cover sills installations',
+        manager: 'Brian O\'Connor',
+        employeeCount: 3,
+        categories: ['PVC Cover Sills'],
+        activeProjects: 3,
+        monthlyRevenue: 40000
+      },
+      {
+        id: 'lisburn-pvc-fascia',
+        name: 'PVC Fascia Soffit & Guttering Department',
+        description: 'Fascia, soffit and guttering installations',
+        manager: 'Fiona Gallagher',
+        employeeCount: 3,
+        categories: ['PVC Fascia Soffit & Guttering'],
+        activeProjects: 4,
+        monthlyRevenue: 50000
+      },
+      {
+        id: 'lisburn-hd-decking',
+        name: 'HD Decking Department',
+        description: 'HD decking and outdoor installations',
+        manager: 'Sarah Mitchell',
+        employeeCount: 2,
+        categories: ['HD Decking'],
+        activeProjects: 2,
+        monthlyRevenue: 30000
       }
     ]
   },
@@ -464,42 +555,72 @@ export const branchDepartments: Branch[] = [
       {
         id: 'bangor-bathrooms',
         name: 'Bathrooms Department',
-        description: 'Bathroom installations and renovations',
+        description: 'Specialized in bathroom installations and renovations',
         manager: 'Fiona Martin',
-        employeeCount: 7,
+        employeeCount: 5,
         categories: ['Bathrooms'],
-        activeProjects: 12,
-        monthlyRevenue: 240000
+        activeProjects: 6,
+        monthlyRevenue: 70000
       },
       {
         id: 'bangor-kitchens',
         name: 'Kitchens Department',
-        description: 'Kitchen design and installation',
+        description: 'Kitchen design and installation services',
         manager: 'Gary Taylor',
-        employeeCount: 6,
-        categories: ['Kitchens'],
-        activeProjects: 10,
-        monthlyRevenue: 210000
-      },
-      {
-        id: 'bangor-windows-doors',
-        name: 'Windows & Doors Department',
-        description: 'PVC windows and composite doors',
-        manager: 'Helen Walsh',
-        employeeCount: 5,
-        categories: ['PVC Windows & Doors', 'Composite Doors'],
-        activeProjects: 8,
-        monthlyRevenue: 180000
-      },
-      {
-        id: 'bangor-exterior',
-        name: 'Exterior Solutions Department',
-        description: 'Fascia, soffit, guttering and decking',
-        manager: 'Mark Johnson',
         employeeCount: 4,
-        categories: ['PVC Fascia Soffit & Guttering', 'HD Decking', 'PVC Cover Sills'],
-        activeProjects: 7,
-        monthlyRevenue: 150000
+        categories: ['Kitchens'],
+        activeProjects: 5,
+        monthlyRevenue: 60000
+      },
+      {
+        id: 'bangor-composite-doors',
+        name: 'Composite Doors Department',
+        description: 'Composite door installations',
+        manager: 'Helen Walsh',
+        employeeCount: 3,
+        categories: ['Composite Doors'],
+        activeProjects: 4,
+        monthlyRevenue: 50000
+      },
+      {
+        id: 'bangor-pvc-windows-doors',
+        name: 'PVC Windows & Doors Department',
+        description: 'PVC windows and doors installations',
+        manager: 'Mark Johnson',
+        employeeCount: 3,
+        categories: ['PVC Windows & Doors'],
+        activeProjects: 4,
+        monthlyRevenue: 50000
+      },
+      {
+        id: 'bangor-pvc-cover-sills',
+        name: 'PVC Cover Sills Department',
+        description: 'PVC cover sills installations',
+        manager: 'Peter O\'Reilly',
+        employeeCount: 2,
+        categories: ['PVC Cover Sills'],
+        activeProjects: 2,
+        monthlyRevenue: 25000
+      },
+      {
+        id: 'bangor-pvc-fascia',
+        name: 'PVC Fascia Soffit & Guttering Department',
+        description: 'Fascia, soffit and guttering installations',
+        manager: 'Louise Foster',
+        employeeCount: 2,
+        categories: ['PVC Fascia Soffit & Guttering'],
+        activeProjects: 2,
+        monthlyRevenue: 25000
+      },
+      {
+        id: 'bangor-hd-decking',
+        name: 'HD Decking Department',
+        description: 'HD decking and outdoor installations',
+        manager: 'Jennifer Foster',
+        employeeCount: 1,
+        categories: ['HD Decking'],
+        activeProjects: 1,
+        monthlyRevenue: 15000
       }
     ]
   },
@@ -516,42 +637,72 @@ export const branchDepartments: Branch[] = [
       {
         id: 'coleraine-bathrooms',
         name: 'Bathrooms Department',
-        description: 'Bathroom installations and renovations',
+        description: 'Specialized in bathroom installations and renovations',
         manager: 'Daniel Lee',
-        employeeCount: 6,
+        employeeCount: 4,
         categories: ['Bathrooms'],
-        activeProjects: 10,
-        monthlyRevenue: 200000
+        activeProjects: 4,
+        monthlyRevenue: 50000
       },
       {
         id: 'coleraine-kitchens',
         name: 'Kitchens Department',
-        description: 'Kitchen design and installation',
+        description: 'Kitchen design and installation services',
         manager: 'Catherine Reid',
-        employeeCount: 5,
-        categories: ['Kitchens'],
-        activeProjects: 8,
-        monthlyRevenue: 170000
-      },
-      {
-        id: 'coleraine-windows-doors',
-        name: 'Windows & Doors Department',
-        description: 'PVC windows and composite doors',
-        manager: 'Thomas Adams',
-        employeeCount: 4,
-        categories: ['PVC Windows & Doors', 'Composite Doors'],
-        activeProjects: 7,
-        monthlyRevenue: 150000
-      },
-      {
-        id: 'coleraine-exterior',
-        name: 'Exterior Solutions Department',
-        description: 'Fascia, soffit, guttering and decking',
-        manager: 'Louise Foster',
         employeeCount: 3,
-        categories: ['PVC Fascia Soffit & Guttering', 'HD Decking', 'PVC Cover Sills'],
-        activeProjects: 6,
-        monthlyRevenue: 120000
+        categories: ['Kitchens'],
+        activeProjects: 3,
+        monthlyRevenue: 40000
+      },
+      {
+        id: 'coleraine-composite-doors',
+        name: 'Composite Doors Department',
+        description: 'Composite door installations',
+        manager: 'Thomas Adams',
+        employeeCount: 2,
+        categories: ['Composite Doors'],
+        activeProjects: 2,
+        monthlyRevenue: 30000
+      },
+      {
+        id: 'coleraine-pvc-windows-doors',
+        name: 'PVC Windows & Doors Department',
+        description: 'PVC windows and doors installations',
+        manager: 'Louise Foster',
+        employeeCount: 2,
+        categories: ['PVC Windows & Doors'],
+        activeProjects: 2,
+        monthlyRevenue: 30000
+      },
+      {
+        id: 'coleraine-pvc-cover-sills',
+        name: 'PVC Cover Sills Department',
+        description: 'PVC cover sills installations',
+        manager: 'Michael O\'Connor',
+        employeeCount: 1,
+        categories: ['PVC Cover Sills'],
+        activeProjects: 1,
+        monthlyRevenue: 15000
+      },
+      {
+        id: 'coleraine-pvc-fascia',
+        name: 'PVC Fascia Soffit & Guttering Department',
+        description: 'Fascia, soffit and guttering installations',
+        manager: 'Patricia Moore',
+        employeeCount: 1,
+        categories: ['PVC Fascia Soffit & Guttering'],
+        activeProjects: 1,
+        monthlyRevenue: 15000
+      },
+      {
+        id: 'coleraine-hd-decking',
+        name: 'HD Decking Department',
+        description: 'HD decking and outdoor installations',
+        manager: 'Jennifer Foster',
+        employeeCount: 1,
+        categories: ['HD Decking'],
+        activeProjects: 1,
+        monthlyRevenue: 10000
       }
     ]
   }
@@ -567,11 +718,11 @@ export const mockCustomers: Customer[] = [
     address: "15 Stranmillis Road, Belfast BT5 6QR",
     postcode: "BT5 6QR",
     branch: "Belfast",
+    department: "Bathrooms Department",
     registrationDate: "2024-11-15",
     totalProjects: 2,
     totalValue: 15800,
     rating: 4.8,
-    customerType: 'residential',
     status: 'active',
     preferences: {
       preferredContact: 'email',
@@ -597,11 +748,11 @@ export const mockCustomers: Customer[] = [
     address: "42 Ormonde Avenue, Newtownabbey BT36 5AT",
     postcode: "BT36 5AT",
     branch: "Newtownabbey",
+    department: "Kitchens Department",
     registrationDate: "2024-10-22",
     totalProjects: 1,
     totalValue: 8500,
     rating: 4.6,
-    customerType: 'residential',
     status: 'active',
     preferences: {
       preferredContact: 'phone',
@@ -626,11 +777,11 @@ export const mockCustomers: Customer[] = [
     address: "78 Enterprise Crescent, Lisburn BT28 2BP",
     postcode: "BT28 2BP",
     branch: "Lisburn",
+    department: "Bathrooms Department",
     registrationDate: "2024-12-01",
     totalProjects: 1,
     totalValue: 12200,
     rating: 4.9,
-    customerType: 'commercial',
     status: 'active',
     preferences: {
       preferredContact: 'email',
@@ -655,11 +806,11 @@ export const mockCustomers: Customer[] = [
     address: "23 Balloo Drive, Bangor BT19 7QY",
     postcode: "BT19 7QY",
     branch: "Bangor",
+    department: "HD Decking Department",
     registrationDate: "2024-09-18",
     totalProjects: 3,
     totalValue: 22400,
     rating: 4.7,
-    customerType: 'residential',
     status: 'not accepted',
     preferences: {
       preferredContact: 'sms',
@@ -685,11 +836,11 @@ export const mockCustomers: Customer[] = [
     address: "56 Loughanhill Estate, Coleraine BT52 2NJ", 
     postcode: "BT52 2NJ",
     branch: "Coleraine",
+    department: "PVC Fascia Soffit & Guttering Department",
     registrationDate: "2024-11-30",
     totalProjects: 1,
     totalValue: 6800,
     rating: 4.4,
-    customerType: 'commercial',
     status: 'active',
     preferences: {
       preferredContact: 'email',
@@ -714,11 +865,11 @@ export const mockCustomers: Customer[] = [
     address: "89 Antrim Road, Belfast BT1 1GR",
     postcode: "BT1 1GR", 
     branch: "Belfast",
+    department: "Bathrooms Department",
     registrationDate: "2024-10-05",
     totalProjects: 2,
     totalValue: 18900,
     rating: 4.5,
-    customerType: 'residential',
     status: 'active',
     preferences: {
       preferredContact: 'phone',
@@ -743,11 +894,11 @@ export const mockCustomers: Customer[] = [
     address: "34 Glengormley Park, Newtownabbey BT36 7QR",
     postcode: "BT36 7QR",
     branch: "Newtownabbey", 
+    department: "Kitchens Department",
     registrationDate: "2024-08-12",
     totalProjects: 1,
     totalValue: 9750,
     rating: 4.8,
-    customerType: 'commercial',
     status: 'active',
     preferences: {
       preferredContact: 'email',
@@ -772,11 +923,11 @@ export const mockCustomers: Customer[] = [
     address: "67 Hillsborough Road, Lisburn BT27 1AA",
     postcode: "BT27 1AA",
     branch: "Lisburn",
+    department: "Bathrooms Department",
     registrationDate: "2024-07-25",
     totalProjects: 2,
     totalValue: 16200,
     rating: 4.6,
-    customerType: 'residential',
     status: 'not accepted',
     preferences: {
       preferredContact: 'sms',
@@ -801,11 +952,11 @@ export const mockCustomers: Customer[] = [
     address: "12 Holywood Road, Bangor BT20 3AB",
     postcode: "BT20 3AB",
     branch: "Bangor",
+    department: "Windows & Doors Department",
     registrationDate: "2024-06-14",
     totalProjects: 1,
     totalValue: 7400,
     rating: 4.3,
-    customerType: 'commercial',
     status: 'active',
     preferences: {
       preferredContact: 'email',
@@ -830,11 +981,11 @@ export const mockCustomers: Customer[] = [
     address: "91 Causeway Road, Coleraine BT51 3AA",
     postcode: "BT51 3AA",
     branch: "Coleraine",
+    department: "HD Decking Department",
     registrationDate: "2024-05-08",
     totalProjects: 2,
     totalValue: 13600,
     rating: 4.7,
-    customerType: 'residential',
     status: 'completed',
     preferences: {
       preferredContact: 'phone',
@@ -862,6 +1013,7 @@ export const mockProjects: Project[] = [
     category: "Bathrooms",
     status: "Installation Completed",
     branch: "Belfast",
+    department: "Bathrooms Department",
     assignedWorker: "Lindsay Murphy",
     subcontractor: "Premier Bathroom Solutions",
     value: 8500,
@@ -889,6 +1041,7 @@ export const mockProjects: Project[] = [
     category: "Kitchens",
     status: "Quote Sent",
     branch: "Newtownabbey",
+    department: "Kitchens Department",
     assignedWorker: "Alan McKenna",
     value: 12200,
     createdDate: "2024-12-01",
@@ -909,6 +1062,7 @@ export const mockProjects: Project[] = [
     category: "Windows & Doors", 
     status: "Materials Received",
     branch: "Lisburn",
+    department: "Bathrooms Department",
     assignedWorker: "Donna McCartney",
     subcontractor: "Superior Windows Ltd",
     value: 5800,
@@ -927,6 +1081,7 @@ export const mockProjects: Project[] = [
     category: "HD Decking",
     status: "Repair Completed",
     branch: "Bangor", 
+    department: "HD Decking Department",
     assignedWorker: "Stephen Hamilton",
     subcontractor: "Coastal Decking Co",
     value: 4200,
@@ -959,6 +1114,7 @@ export const mockProjects: Project[] = [
     category: "PVC Fascia Soffit & Guttering",
     status: "Installation Scheduled",
     branch: "Coleraine",
+    department: "PVC Fascia Soffit & Guttering Department",
     assignedWorker: "David McKay",
     subcontractor: "Roofline Specialists NI",
     value: 3400,
@@ -974,6 +1130,7 @@ export const mockProjects: Project[] = [
     category: "Bathrooms",
     status: "In Progress",
     branch: "Belfast",
+    department: "Bathrooms Department",
     assignedWorker: "Lindsay Murphy",
     subcontractor: "Premier Bathroom Solutions",
     value: 7200,
@@ -999,6 +1156,7 @@ export const mockProjects: Project[] = [
     category: "Kitchens",
     status: "Approved",
     branch: "Newtownabbey",
+    department: "Kitchens Department",
     assignedWorker: "Alan McKenna",
     value: 15800,
     createdDate: "2024-11-18",
@@ -1021,6 +1179,7 @@ export const mockProjects: Project[] = [
     category: "Windows & Doors",
     status: "Quote Sent",
     branch: "Lisburn",
+    department: "Windows & Doors Department",
     assignedWorker: "Donna McCartney",
     subcontractor: "Superior Windows Ltd",
     value: 4800,
@@ -1042,6 +1201,7 @@ export const mockProjects: Project[] = [
     category: "HD Decking",
     status: "Installation Completed",
     branch: "Bangor",
+    department: "HD Decking Department",
     assignedWorker: "Stephen Hamilton",
     subcontractor: "Coastal Decking Co",
     value: 5600,
@@ -1069,6 +1229,7 @@ export const mockProjects: Project[] = [
     category: "PVC Fascia Soffit & Guttering",
     status: "In Progress",
     branch: "Coleraine",
+    department: "PVC Fascia Soffit & Guttering Department",
     assignedWorker: "David McKay",
     subcontractor: "Roofline Specialists NI",
     value: 4200,
@@ -1094,6 +1255,7 @@ export const mockProjects: Project[] = [
     category: "Bathrooms",
     status: "Quote Sent",
     branch: "Belfast",
+    department: "Bathrooms Department",
     assignedWorker: "Lindsay Murphy",
     value: 6800,
     createdDate: "2024-12-08",
@@ -1114,6 +1276,7 @@ export const mockProjects: Project[] = [
     category: "Windows & Doors",
     status: "Approved",
     branch: "Lisburn",
+    department: "Bathrooms Department",
     assignedWorker: "Donna McCartney",
     subcontractor: "Superior Windows Ltd",
     value: 5200,
@@ -1137,6 +1300,7 @@ export const mockProjects: Project[] = [
     category: "Kitchens",
     status: "Installation Completed",
     branch: "Bangor",
+    department: "Kitchens Department",
     assignedWorker: "Stephen Hamilton",
     value: 3800,
     createdDate: "2024-10-20",
@@ -1163,6 +1327,7 @@ export const mockProjects: Project[] = [
     category: "Heating",
     status: "In Progress",
     branch: "Coleraine",
+    department: "HD Decking Department",
     assignedWorker: "David McKay",
     value: 4500,
     createdDate: "2024-11-25",
@@ -1187,6 +1352,7 @@ export const mockProjects: Project[] = [
     category: "HD Decking",
     status: "Quote Sent",
     branch: "Belfast",
+    department: "HD Decking Department",
     assignedWorker: "Lindsay Murphy",
     subcontractor: "Coastal Decking Co",
     value: 8900,
@@ -1208,6 +1374,7 @@ export const mockProjects: Project[] = [
     category: "Bathrooms",
     status: "Invoice Sent",
     branch: "Belfast",
+    department: "Bathrooms Department",
     assignedWorker: "Lindsay Murphy",
     subcontractor: "Premier Bathroom Solutions",
     value: 6500,
@@ -1236,6 +1403,7 @@ export const mockProjects: Project[] = [
     category: "Kitchens",
     status: "Awaiting Payment",
     branch: "Newtownabbey",
+    department: "Kitchens Department",
     assignedWorker: "Alan McKenna",
     value: 18500,
     createdDate: "2024-10-20",
@@ -1264,6 +1432,7 @@ export const mockProjects: Project[] = [
     category: "Windows & Doors",
     status: "Paid",
     branch: "Lisburn",
+    department: "Windows & Doors Department",
     assignedWorker: "Donna McCartney",
     subcontractor: "Superior Windows Ltd",
     value: 4200,
@@ -1293,6 +1462,7 @@ export const mockProjects: Project[] = [
     category: "HD Decking",
     status: "Awaiting Review",
     branch: "Bangor",
+    department: "HD Decking Department",
     assignedWorker: "Stephen Hamilton",
     subcontractor: "Coastal Decking Co",
     value: 3200,

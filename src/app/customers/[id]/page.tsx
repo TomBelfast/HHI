@@ -7,8 +7,9 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
-import { ArrowLeft, Mail, Phone, MapPin, Calendar, Building } from 'lucide-react';
+import { ArrowLeft, Mail, Phone, MapPin, Calendar, Building, Plus } from 'lucide-react';
 import { getBranchColor, getCustomerStatusColor, getProjectStatusColor } from '@/lib/colors';
+import { AddCommunicationModal } from '@/components/customers/AddCommunicationModal';
 
 export default function CustomerDetailsPage() {
   const params = useParams();
@@ -16,6 +17,7 @@ export default function CustomerDetailsPage() {
   const [customer, setCustomer] = useState<Customer | null>(null);
   const [customerProjects, setCustomerProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showAddCommunication, setShowAddCommunication] = useState(false);
 
   useEffect(() => {
     // Simulate API call to get customer details
@@ -60,6 +62,19 @@ export default function CustomerDetailsPage() {
     }).format(amount);
   };
 
+  const handleAddCommunication = (communication: any) => {
+    if (customer) {
+      const updatedCustomer = {
+        ...customer,
+        communicationHistory: [
+          ...(customer.communicationHistory || []),
+          communication
+        ]
+      };
+      setCustomer(updatedCustomer);
+    }
+  };
+
   if (loading) {
     return (
       <div className="container mx-auto px-4 py-8">
@@ -94,8 +109,8 @@ export default function CustomerDetailsPage() {
           Back
         </Button>
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">{customer.name}</h1>
-          <p className="text-gray-600">Customer Details</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-foreground">{customer.name}</h1>
+          <p className="text-gray-600 dark:text-muted-foreground">Customer Details</p>
         </div>
       </div>
 
@@ -149,9 +164,9 @@ export default function CustomerDetailsPage() {
                 </div>
                 
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-medium text-gray-700 dark:text-foreground">Type:</span>
+                  <span className="text-sm font-medium text-gray-700 dark:text-foreground">Department:</span>
                   <Badge variant="outline" className="text-xs font-medium">
-                    {customer.customerType.charAt(0).toUpperCase() + customer.customerType.slice(1)}
+                    {customer.department}
                   </Badge>
                 </div>
                 
@@ -183,7 +198,7 @@ export default function CustomerDetailsPage() {
                   {customerProjects.map((project) => (
                     <div
                       key={project.id}
-                      className="border rounded-lg p-4 hover:bg-gray-50 transition-colors cursor-pointer"
+                      className="border rounded-lg p-4 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors cursor-pointer"
                       onClick={() => router.push(`/projects/${project.id}`)}
                     >
                                              <div className="flex items-start justify-between mb-2">
@@ -230,6 +245,69 @@ export default function CustomerDetailsPage() {
           </Card>
         </div>
       </div>
-    </div>
-  );
+
+            {/* Communication History */}
+      <div className="mt-8">
+        <Card>
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <CardTitle className="flex items-center gap-2">
+                <Phone className="h-5 w-5" />
+                Communication History ({customer.communicationHistory?.length || 0})
+              </CardTitle>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowAddCommunication(true)}
+                className="flex items-center gap-2"
+              >
+                <Plus className="h-4 w-4" />
+                Add Communication
+              </Button>
+            </div>
+          </CardHeader>
+          <CardContent>
+            {customer.communicationHistory && customer.communicationHistory.length > 0 ? (
+              <div className="space-y-4">
+                {customer.communicationHistory.map((communication, index) => (
+                  <div key={index} className="border rounded-lg p-4">
+                    <div className="flex items-start justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <Badge variant="outline" className="text-xs font-medium">
+                          {communication.type.charAt(0).toUpperCase() + communication.type.slice(1)}
+                        </Badge>
+                        <span className="text-sm text-gray-500 dark:text-muted-foreground">
+                          {formatDate(communication.date)}
+                        </span>
+                      </div>
+                    </div>
+                    <p className="text-sm text-gray-900 dark:text-foreground mb-2">
+                      {communication.summary}
+                    </p>
+                    {communication.outcome && (
+                      <p className="text-sm text-gray-600 dark:text-muted-foreground">
+                        <strong>Outcome:</strong> {communication.outcome}
+                      </p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-8 text-gray-500">
+                <p>No communication history found.</p>
+                <p className="text-sm mt-2">Click "Add Communication" to start tracking interactions.</p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Add Communication Modal */}
+      <AddCommunicationModal
+        isOpen={showAddCommunication}
+        onClose={() => setShowAddCommunication(false)}
+        onAdd={handleAddCommunication}
+      />
+      </div>
+    );
 } 

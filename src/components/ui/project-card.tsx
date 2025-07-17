@@ -1,6 +1,6 @@
 import * as React from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./card"
-import { Badge } from "./badge"
+import { Badge } from "./Badge"
 import { cn } from "@/lib/utils"
 
 export interface ProjectCardProps {

@@ -255,9 +255,9 @@ export default function UsersPage() {
     ) : '-',
     specialization: user.specialization || '-',
     branch: user.branch ? (
-      <span className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${getBranchColor(user.branch).bg} ${getBranchColor(user.branch).text} ${getBranchColor(user.branch).border} border`}>
-        {user.branch}
-      </span>
+      <Badge variant="outline" className={`${getBranchColor(user.branch).bg} ${getBranchColor(user.branch).text} ${getBranchColor(user.branch).border}`}>
+  {user.branch}
+</Badge>
     ) : '-',
     projectsCompleted: user.projectsCompleted || user.completedJobs || '-',
     lastLogin: user.lastLogin ? new Date(user.lastLogin).toLocaleDateString('pl-PL') : '-',

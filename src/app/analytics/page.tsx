@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { apiService } from '@/lib/api';
-import { Analytics } from '@/lib/mock-data';
+import { Analytics, mockProjects, mockCustomers } from '@/lib/mock-data';
 import { PERMISSIONS } from '@/lib/auth';
 import { getBranchChartColor } from '@/lib/colors';
 import {
@@ -104,6 +104,40 @@ export default function AnalyticsPage() {
     projects: item.projects,
     revenue: item.revenue
   }));
+
+  // Prepare department data
+  const departments = [
+    'Bathrooms Department',
+    'Kitchens Department', 
+    'Composite Doors Department',
+    'PVC Windows & Doors Department',
+    'PVC Cover Sills Department',
+    'PVC Fascia Soffit & Guttering Department',
+    'HD Decking Department'
+  ];
+
+  const departmentData = departments.map(department => {
+    const deptProjects = mockProjects.filter(p => p.department === department);
+    const deptCustomers = mockCustomers.filter(c => c.department === department);
+    
+    const totalRevenue = deptProjects.reduce((sum, p) => sum + p.value, 0);
+    const completedProjects = deptProjects.filter(p => p.status === 'Installation Completed').length;
+    const activeProjects = deptProjects.filter(p => p.status === 'In Progress').length;
+    
+    return {
+      department: department.replace(' Department', ''),
+      totalProjects: deptProjects.length,
+      totalRevenue,
+      completedProjects,
+      activeProjects,
+      totalCustomers: deptCustomers.length,
+      averageProjectValue: deptProjects.length > 0 ? totalRevenue / deptProjects.length : 0,
+      completionRate: deptProjects.length > 0 ? (completedProjects / deptProjects.length) * 100 : 0,
+      averageCustomerRating: deptCustomers.length > 0 
+        ? deptCustomers.reduce((sum, c) => sum + c.rating, 0) / deptCustomers.length
+        : 0
+    };
+  });
 
   return (
     <ProtectedRoute permissions={[PERMISSIONS.ANALYTICS_READ]}>
@@ -1192,6 +1226,154 @@ export default function AnalyticsPage() {
                     </BarChart>
                   </ResponsiveContainer>
                 </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Department Analytics */}
+          <div className="space-y-6">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-foreground">Department Analytics</h2>
+            
+            {/* Department Performance Overview */}
+            <div className="bg-white dark:bg-card rounded-lg shadow-sm border border-gray-200 dark:border-border p-6">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-foreground mb-4">Department Performance Overview</h3>
+              <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                  <thead className="bg-gray-50 dark:bg-gray-800">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        Department
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        Projects
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        Revenue (£)
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        Completion Rate
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        Avg Project Value
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        Customers
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        Avg Rating
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700">
+                    {departmentData.map((dept, index) => (
+                      <tr key={dept.department} className={index % 2 === 0 ? 'bg-gray-50 dark:bg-gray-800' : 'bg-white dark:bg-gray-900'}>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="flex items-center">
+                            <div className="flex-shrink-0 h-8 w-8">
+                              <div 
+                                className="h-8 w-8 rounded-full flex items-center justify-center"
+                                style={{ 
+                                  backgroundColor: getBranchBgColor(dept.department),
+                                  color: getBranchChartColor(dept.department)
+                                }}
+                              >
+                                <span className="text-sm font-medium">
+                                  {dept.department.charAt(0)}
+                                </span>
+                              </div>
+                            </div>
+                            <div className="ml-4">
+                              <div className="text-sm font-medium text-gray-900 dark:text-foreground">
+                                {dept.department}
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-foreground">
+                          {dept.totalProjects}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-foreground">
+                          £{dept.totalRevenue.toLocaleString()}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-foreground">
+                          {dept.completionRate.toFixed(1)}%
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-foreground">
+                          £{Math.round(dept.averageProjectValue).toLocaleString()}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-foreground">
+                          {dept.totalCustomers}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-foreground">
+                          {dept.averageCustomerRating.toFixed(1)}/5
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* Department Charts */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Projects by Department */}
+              <div className="bg-white dark:bg-card rounded-lg shadow-sm border border-gray-200 dark:border-border p-6">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-foreground mb-4">Projects by Department</h3>
+                <ResponsiveContainer width="100%" height={300}>
+                  <BarChart data={departmentData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="department" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey="totalProjects" fill="#8884d8" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+
+              {/* Revenue by Department */}
+              <div className="bg-white dark:bg-card rounded-lg shadow-sm border border-gray-200 dark:border-border p-6">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-foreground mb-4">Revenue by Department</h3>
+                <ResponsiveContainer width="100%" height={300}>
+                  <BarChart data={departmentData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="department" />
+                    <YAxis />
+                    <Tooltip formatter={(value) => [`£${value.toLocaleString()}`, 'Revenue']} />
+                    <Legend />
+                    <Bar dataKey="totalRevenue" fill="#82ca9d" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+
+              {/* Completion Rate by Department */}
+              <div className="bg-white dark:bg-card rounded-lg shadow-sm border border-gray-200 dark:border-border p-6">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-foreground mb-4">Completion Rate by Department</h3>
+                <ResponsiveContainer width="100%" height={300}>
+                  <BarChart data={departmentData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="department" />
+                    <YAxis domain={[0, 100]} />
+                    <Tooltip formatter={(value) => [`${value}%`, 'Completion Rate']} />
+                    <Legend />
+                    <Bar dataKey="completionRate" fill="#ffc658" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+
+              {/* Customer Rating by Department */}
+              <div className="bg-white dark:bg-card rounded-lg shadow-sm border border-gray-200 dark:border-border p-6">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-foreground mb-4">Customer Rating by Department</h3>
+                <ResponsiveContainer width="100%" height={300}>
+                  <BarChart data={departmentData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="department" />
+                    <YAxis domain={[0, 5]} />
+                    <Tooltip formatter={(value) => [`${value}/5`, 'Rating']} />
+                    <Legend />
+                    <Bar dataKey="averageCustomerRating" fill="#ff7300" />
+                  </BarChart>
+                </ResponsiveContainer>
               </div>
             </div>
           </div>

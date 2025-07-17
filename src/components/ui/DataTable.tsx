@@ -13,9 +13,10 @@ interface DataTableProps {
   columns: Column[];
   itemsPerPage?: number;
   showPagination?: boolean;
+  onRowClick?: (item: any) => void;
 }
 
-export function DataTable({ data, columns, itemsPerPage = 10, showPagination = true }: DataTableProps) {
+export function DataTable({ data, columns, itemsPerPage = 10, showPagination = true, onRowClick }: DataTableProps) {
   const [currentPage, setCurrentPage] = useState(1);
 
   const totalPages = Math.ceil(data.length / itemsPerPage);
@@ -58,7 +59,11 @@ export function DataTable({ data, columns, itemsPerPage = 10, showPagination = t
         </thead>
         <tbody className="bg-white dark:bg-card divide-y divide-gray-200 dark:divide-border">
           {currentData.map((item, index) => (
-            <tr key={index} className="hover:bg-gray-50">
+            <tr 
+              key={index} 
+              className={`hover:bg-gray-200 dark:hover:bg-gray-700 ${onRowClick ? 'cursor-pointer' : ''}`}
+              onClick={() => onRowClick && onRowClick(item)}
+            >
               {columns.map((column) => (
                 <td
                   key={column.key}

@@ -103,6 +103,9 @@ export default function ReportsPage() {
       case 'branch-kpis':
         reportData = generateBranchKPIsReport();
         break;
+      case 'department-analytics':
+        reportData = generateDepartmentAnalyticsReport();
+        break;
       default:
         reportData = { message: 'Report type not implemented' };
     }
@@ -125,7 +128,7 @@ export default function ReportsPage() {
     if (reportType.includes('project') || reportType.includes('timeline')) return 'project';
     if (reportType.includes('customer') || reportType.includes('satisfaction')) return 'customer';
     if (reportType.includes('employee') || reportType.includes('rankings')) return 'employee';
-    if (reportType.includes('branch') || reportType.includes('kpis')) return 'branch';
+    if (reportType.includes('branch') || reportType.includes('kpis') || reportType.includes('department')) return 'branch';
     return 'custom';
   };
 
@@ -180,11 +183,14 @@ export default function ReportsPage() {
   const generateCustomerAnalyticsReport = () => {
     const totalCustomers = mockCustomers.length;
     const activeCustomers = mockCustomers.filter(c => c.status === 'active').length;
-    const residentialCustomers = mockCustomers.filter(c => c.customerType === 'residential').length;
-    const commercialCustomers = mockCustomers.filter(c => c.customerType === 'commercial').length;
     
     const branchBreakdown = mockCustomers.reduce((acc, customer) => {
       acc[customer.branch] = (acc[customer.branch] || 0) + 1;
+      return acc;
+    }, {} as Record<string, number>);
+    
+    const departmentBreakdown = mockCustomers.reduce((acc, customer) => {
+      acc[customer.department] = (acc[customer.department] || 0) + 1;
       return acc;
     }, {} as Record<string, number>);
     
@@ -192,12 +198,15 @@ export default function ReportsPage() {
       totalCustomers,
       activeCustomers,
       inactiveCustomers: totalCustomers - activeCustomers,
-      residentialCustomers,
-      commercialCustomers,
       averageRating: (mockCustomers.reduce((sum, c) => sum + c.rating, 0) / totalCustomers).toFixed(1),
       totalValue: `£${mockCustomers.reduce((sum, c) => sum + c.totalValue, 0).toLocaleString()}`,
       branchBreakdown: Object.entries(branchBreakdown).map(([branch, count]) => ({
         branch,
+        count,
+        percentage: Math.round((count / totalCustomers) * 100)
+      })),
+      departmentBreakdown: Object.entries(departmentBreakdown).map(([department, count]) => ({
+        department,
         count,
         percentage: Math.round((count / totalCustomers) * 100)
       }))
@@ -426,6 +435,41 @@ export default function ReportsPage() {
     });
   };
 
+  const generateDepartmentAnalyticsReport = () => {
+    const departments = [
+      'Bathrooms Department',
+      'Kitchens Department', 
+      'Composite Doors Department',
+      'PVC Windows & Doors Department',
+      'PVC Cover Sills Department',
+      'PVC Fascia Soffit & Guttering Department',
+      'HD Decking Department'
+    ];
+    
+    return departments.map(department => {
+      const deptProjects = mockProjects.filter(p => p.department === department);
+      const deptCustomers = mockCustomers.filter(c => c.department === department);
+      
+      const totalRevenue = deptProjects.reduce((sum, p) => sum + p.value, 0);
+      const completedProjects = deptProjects.filter(p => p.status === 'Installation Completed').length;
+      const activeProjects = deptProjects.filter(p => p.status === 'In Progress').length;
+      
+      return {
+        department,
+        totalProjects: deptProjects.length,
+        totalRevenue: `£${totalRevenue.toLocaleString()}`,
+        completedProjects,
+        activeProjects,
+        totalCustomers: deptCustomers.length,
+        averageProjectValue: `£${Math.round(totalRevenue / deptProjects.length || 0).toLocaleString()}`,
+        completionRate: `${Math.round((completedProjects / deptProjects.length) * 100 || 0)}%`,
+        averageCustomerRating: deptCustomers.length > 0 
+          ? (deptCustomers.reduce((sum, c) => sum + c.rating, 0) / deptCustomers.length).toFixed(1)
+          : 'N/A'
+      };
+    });
+  };
+
   const downloadReport = (report: ReportData) => {
     const dataStr = JSON.stringify(report.data, null, 2);
     const dataBlob = new Blob([dataStr], { type: 'application/json' });
@@ -616,9 +660,9 @@ export default function ReportsPage() {
                           const branchColor = getBranchColor(value);
                           return (
                             <td key={header} className="px-4 py-2 border-b">
-                              <span className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${branchColor.bg} ${branchColor.text} ${branchColor.border} border`}>
+                              <Badge variant="outline" className={`${branchColor.bg} ${branchColor.text} ${branchColor.border}`}>
                                 {value}
-                              </span>
+                              </Badge>
                             </td>
                           );
                         }
@@ -867,41 +911,83 @@ export default function ReportsPage() {
       case 'branch':
         return (
           <div className="space-y-8">
-            {/* Projects by Branch Chart */}
-            {Array.isArray(report.data) && renderChart(
-              report.data.map((item: any) => ({ 
-                Branch: item.branch, 
-                Projects: item.projects || item.totalProjects || 0
-              })), 
-              'Projects by Branch'
-            )}
+            {renderSummaryCards(report.data)}
             
-            {/* Revenue by Branch Chart */}
-            {Array.isArray(report.data) && renderChart(
-              report.data.map((item: any) => ({ 
-                Branch: item.branch, 
-                Revenue: parseInt((item.revenue || '£0').replace(/[£,]/g, ''))
-              })), 
-              'Revenue by Branch'
+            {/* Check if this is a department report or branch report */}
+            {Array.isArray(report.data) && report.data.length > 0 && report.data[0].department ? (
+              // Department Analytics
+              <>
+                {/* Projects by Department Chart */}
+                {renderChart(
+                  report.data.map((item: any) => ({ 
+                    Department: item.department.replace(' Department', ''), 
+                    Projects: item.totalProjects 
+                  })), 
+                  'Projects by Department'
+                )}
+                
+                {/* Revenue by Department Chart */}
+                {renderChart(
+                  report.data.map((item: any) => ({ 
+                    Department: item.department.replace(' Department', ''), 
+                    Revenue: parseInt(item.totalRevenue.replace(/[£,]/g, ''))
+                  })), 
+                  'Revenue by Department'
+                )}
+                
+                {renderTable(report.data.map((item: any) => ({
+                  Department: item.department,
+                  TotalProjects: item.totalProjects,
+                  TotalRevenue: item.totalRevenue,
+                  CompletedProjects: item.completedProjects,
+                  ActiveProjects: item.activeProjects,
+                  CompletionRate: item.completionRate,
+                  AverageProjectValue: item.averageProjectValue,
+                  TotalCustomers: item.totalCustomers,
+                  AverageRating: item.averageCustomerRating
+                })), 'Department Performance Details')}
+              </>
+            ) : (
+              // Branch Analytics
+              <>
+                {/* Projects by Branch Chart */}
+                {renderChart(
+                  report.data.map((item: any) => ({ 
+                    Branch: item.branch, 
+                    Projects: item.projects || item.totalProjects || 0
+                  })), 
+                  'Projects by Branch'
+                )}
+                
+                {/* Revenue by Branch Chart */}
+                {renderChart(
+                  report.data.map((item: any) => ({ 
+                    Branch: item.branch, 
+                    Revenue: parseInt((item.revenue || '£0').replace(/[£,]/g, ''))
+                  })), 
+                  'Revenue by Branch'
+                )}
+                
+                {/* Customers by Branch Chart */}
+                {renderChart(
+                  report.data.map((item: any) => ({ 
+                    Branch: item.branch, 
+                    Customers: item.customers || 0
+                  })), 
+                  'Customers by Branch'
+                )}
+                
+                {renderTable(report.data.map((item: any) => ({
+                  Branch: item.branch,
+                  Projects: item.projects || item.totalProjects || 0,
+                  Customers: item.customers || 0,
+                  Employees: item.employees || 0,
+                  Revenue: item.revenue || '£0',
+                  AverageValue: item.averageProjectValue || '£0'
+                })), 'Branch Performance')}
+              </>
             )}
-            
-            {/* Customers by Branch Chart */}
-            {Array.isArray(report.data) && renderChart(
-              report.data.map((item: any) => ({ 
-                Branch: item.branch, 
-                Customers: item.customers || 0
-              })), 
-              'Customers by Branch'
-            )}
-            
-            {renderTable(report.data.map((item: any) => ({
-              Branch: item.branch,
-              Projects: item.projects || item.totalProjects || 0,
-              Customers: item.customers || 0,
-              Employees: item.employees || 0,
-              Revenue: item.revenue || '£0',
-              AverageValue: item.averageProjectValue || '£0'
-            })), 'Branch Performance')}
+            {renderKeyValueList(report.data, 'Analytics Summary')}
           </div>
         );
 
@@ -1161,6 +1247,14 @@ export default function ReportsPage() {
                   disabled={isGenerating === 'branch-kpis'}
                 >
                   {isGenerating === 'branch-kpis' ? 'Generating...' : '🎯 Branch KPIs'}
+                </Button>
+                <Button 
+                  variant="outline" 
+                  className="w-full justify-start"
+                  onClick={() => generateReport('department-analytics', 'Department Analytics')}
+                  disabled={isGenerating === 'department-analytics'}
+                >
+                  {isGenerating === 'department-analytics' ? 'Generating...' : '🏭 Department Analytics'}
                 </Button>
               </div>
             </Card>

@@ -107,7 +107,7 @@ export default function LoginPage() {
                   <button
                     key={index}
                     onClick={() => fillDemoCredentials(cred.email, cred.password)}
-                    className="w-full text-left p-2 rounded-md hover:bg-gray-50 transition-colors"
+                    className="w-full text-left p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
                   >
                     <div className="text-sm font-medium text-gray-900">{cred.role}</div>
                     <div className="text-xs text-gray-500">{cred.email}</div>

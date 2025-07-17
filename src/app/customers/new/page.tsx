@@ -27,7 +27,7 @@ export default function NewCustomerPage() {
     town: '',
     postcode: '',
     branch: '',
-    customerType: 'residential' as 'residential' | 'commercial' | 'prospect',
+    department: '',
     status: 'active' as 'active' | 'prospect' | 'not accepted' | 'completed' | 'suspended',
     preferredContact: 'email' as 'email' | 'phone' | 'sms',
     communicationFrequency: 'monthly' as 'weekly' | 'monthly' | 'quarterly',
@@ -58,18 +58,18 @@ export default function NewCustomerPage() {
         address: `${formData.address}, ${formData.town}`,
         postcode: formData.postcode,
         branch: formData.branch,
+        department: formData.department,
         registrationDate: new Date().toISOString(),
         totalProjects: 0,
         totalValue: 0,
         rating: 0,
-        customerType: formData.customerType,
         status: formData.status,
         preferences: {
           preferredContact: formData.preferredContact,
           communicationFrequency: formData.communicationFrequency,
           specialRequirements: formData.specialRequirements || undefined
         },
-        companyInfo: formData.customerType === 'commercial' ? {
+        companyInfo: formData.companyName || formData.vatNumber || formData.businessType ? {
           companyName: formData.companyName || undefined,
           vatNumber: formData.vatNumber || undefined,
           businessType: formData.businessType || undefined
@@ -219,15 +219,19 @@ export default function NewCustomerPage() {
                 </div>
                 <div className="p-6 pt-4 space-y-4">
                   <div>
-                    <Label htmlFor="customerType">Customer Type *</Label>
-                    <Select value={formData.customerType} onValueChange={(value: 'residential' | 'commercial' | 'prospect') => handleInputChange('customerType', value)}>
+                    <Label htmlFor="department">Department *</Label>
+                    <Select value={formData.department} onValueChange={(value: string) => handleInputChange('department', value)}>
                       <SelectTrigger>
-                        <SelectValue />
+                        <SelectValue placeholder="Select a department" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="residential">Residential</SelectItem>
-                        <SelectItem value="commercial">Commercial</SelectItem>
-                        <SelectItem value="prospect">Prospect</SelectItem>
+                        <SelectItem value="Bathrooms Department">Bathrooms Department</SelectItem>
+                        <SelectItem value="Kitchens Department">Kitchens Department</SelectItem>
+                        <SelectItem value="Composite Doors Department">Composite Doors Department</SelectItem>
+                        <SelectItem value="PVC Windows & Doors Department">PVC Windows & Doors Department</SelectItem>
+                        <SelectItem value="PVC Cover Sills Department">PVC Cover Sills Department</SelectItem>
+                        <SelectItem value="PVC Fascia Soffit & Guttering Department">PVC Fascia Soffit & Guttering Department</SelectItem>
+                        <SelectItem value="HD Decking Department">HD Decking Department</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -289,50 +293,48 @@ export default function NewCustomerPage() {
               </Card>
             </div>
 
-            {/* Company Information (for commercial customers) */}
-            {formData.customerType === 'commercial' && (
-              <Card>
-                <div className="p-6 pb-0">
-                  <div className="text-lg font-semibold mb-2">Company Information</div>
-                  <p className="text-sm text-gray-600 dark:text-muted-foreground">
-                    Business details for commercial customers
-                  </p>
-                </div>
-                <div className="p-6 pt-4 space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="companyName">Company Name</Label>
-                      <Input
-                        id="companyName"
-                        value={formData.companyName}
-                        onChange={(e) => handleInputChange('companyName', e.target.value)}
-                        placeholder="Company Ltd."
-                      />
-                    </div>
+            {/* Company Information */}
+            <Card>
+              <div className="p-6 pb-0">
+                <div className="text-lg font-semibold mb-2">Company Information (Optional)</div>
+                <p className="text-sm text-gray-600 dark:text-muted-foreground">
+                  Business details for commercial customers
+                </p>
+              </div>
+              <div className="p-6 pt-4 space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="companyName">Company Name</Label>
+                    <Input
+                      id="companyName"
+                      value={formData.companyName}
+                      onChange={(e) => handleInputChange('companyName', e.target.value)}
+                      placeholder="Company Ltd."
+                    />
+                  </div>
 
-                    <div>
-                      <Label htmlFor="vatNumber">VAT Number</Label>
-                      <Input
-                        id="vatNumber"
-                        value={formData.vatNumber}
-                        onChange={(e) => handleInputChange('vatNumber', e.target.value)}
-                        placeholder="GB123456789"
-                      />
-                    </div>
+                  <div>
+                    <Label htmlFor="vatNumber">VAT Number</Label>
+                    <Input
+                      id="vatNumber"
+                      value={formData.vatNumber}
+                      onChange={(e) => handleInputChange('vatNumber', e.target.value)}
+                      placeholder="GB123456789"
+                    />
+                  </div>
 
-                    <div>
-                      <Label htmlFor="businessType">Business Type</Label>
-                      <Input
-                        id="businessType"
-                        value={formData.businessType}
-                        onChange={(e) => handleInputChange('businessType', e.target.value)}
-                        placeholder="Retail, Manufacturing, etc."
-                      />
-                    </div>
+                  <div>
+                    <Label htmlFor="businessType">Business Type</Label>
+                    <Input
+                      id="businessType"
+                      value={formData.businessType}
+                      onChange={(e) => handleInputChange('businessType', e.target.value)}
+                      placeholder="Retail, Manufacturing, etc."
+                    />
                   </div>
                 </div>
-              </Card>
-            )}
+              </div>
+            </Card>
 
             {/* Submit Button */}
             <div className="flex justify-end space-x-4">

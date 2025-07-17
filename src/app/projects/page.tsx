@@ -11,7 +11,7 @@ import { Badge } from '@/components/ui/Badge';
 import { apiService, FilterOptions, SortOptions } from '@/lib/api';
 import { Project, Customer } from '@/lib/mock-data';
 import { PERMISSIONS } from '@/lib/auth';
-import { getBranchColor, getProjectStatusColor } from '@/lib/colors';
+import { getBranchColor, getProjectStatusColor, getDepartmentColor } from '@/lib/colors';
 import Link from 'next/link';
 
 export default function ProjectsPage() {
@@ -81,9 +81,21 @@ export default function ProjectsPage() {
       render: (value: string) => {
         const branchColor = getBranchColor(value);
         return (
-          <span className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${branchColor.bg} ${branchColor.text} ${branchColor.border} border`}>
+          <Badge variant="outline" className={`${branchColor.bg} ${branchColor.text} ${branchColor.border}`}>
             {value}
-          </span>
+          </Badge>
+        );
+      }
+    },
+    { 
+      key: 'department', 
+      label: 'Department',
+      render: (value: string) => {
+        const departmentColor = getDepartmentColor(value);
+        return (
+          <Badge variant="outline" className={departmentColor}>
+            {value}
+          </Badge>
         );
       }
     },

@@ -149,8 +149,8 @@ export default function WhatsAppIntegrationPage() {
                 {mockCustomers.map((customer) => (
                   <div
                     key={customer.id}
-                    className={`p-3 cursor-pointer hover:bg-gray-50 border-l-4 transition-colors ${
-                      selectedCustomer === customer.id ? 'border-blue-500 bg-blue-50' : 'border-transparent'
+                    className={`p-3 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 border-l-4 transition-colors ${
+                      selectedCustomer === customer.id ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' : 'border-transparent'
                     }`}
                     onClick={() => setSelectedCustomer(customer.id)}
                   >
@@ -273,7 +273,7 @@ export default function WhatsAppIntegrationPage() {
                 {mockMessageTemplates.map((template) => (
                   <div
                     key={template.id}
-                    className="p-4 border rounded-lg hover:bg-gray-50 cursor-pointer"
+                    className="p-4 border rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 cursor-pointer"
                     onClick={() => handleTemplateSelect(template.id.toString())}
                   >
                     <div className="flex items-center justify-between mb-2">

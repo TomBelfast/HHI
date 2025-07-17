@@ -2,7 +2,7 @@ import * as React from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "./card"
 import { Input } from "./input"
 import { Button } from "./button"
-import { Badge } from "./badge"
+import { Badge } from "./Badge"
 import { cn } from "@/lib/utils"
 import { ChevronLeft, ChevronRight, Search } from "lucide-react"
 

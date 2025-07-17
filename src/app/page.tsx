@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { MetricCard } from '@/components/ui/MetricCard';
 import { ProjectCard } from '@/components/ui/ProjectCard';
@@ -12,6 +13,7 @@ import { Customer, Project, Analytics } from '@/lib/mock-data';
 import { getBranchColor, getProjectStatusColor } from '@/lib/colors';
 
 export default function DashboardPage() {
+  const router = useRouter();
   const [analyticsData, setAnalyticsData] = useState<Analytics | null>(null);
   const [dashboardData, setDashboardData] = useState<{
     totalCustomers: number;
@@ -121,9 +123,9 @@ export default function DashboardPage() {
       render: (value: string) => {
         const branchColor = getBranchColor(value);
         return (
-          <span className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${branchColor.bg} ${branchColor.text} ${branchColor.border} border`}>
+          <Badge variant="outline" className={`${branchColor.bg} ${branchColor.text} ${branchColor.border}`}>
             {value}
-          </span>
+          </Badge>
         );
       }
     }
@@ -136,6 +138,14 @@ export default function DashboardPage() {
     { key: 'totalValue', label: 'Value' },
     { key: 'rating', label: 'Rating' }
   ];
+
+  const handleCustomerClick = (customer: Customer) => {
+    router.push(`/customers/${customer.id}`);
+  };
+
+  const handleProjectClick = (project: Project) => {
+    router.push(`/projects/${project.id}`);
+  };
 
   return (
     <ProtectedRoute>
@@ -203,6 +213,7 @@ export default function DashboardPage() {
                   columns={topCustomersColumns}
                   itemsPerPage={5}
                   showPagination={false}
+                  onRowClick={handleCustomerClick}
                 />
               </div>
             </div>
@@ -219,6 +230,7 @@ export default function DashboardPage() {
                 columns={recentProjectsColumns}
                 itemsPerPage={10}
                 showPagination={true}
+                onRowClick={handleProjectClick}
               />
             </div>
           </div>
