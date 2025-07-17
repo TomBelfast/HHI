@@ -261,12 +261,15 @@ export default function UserPermissionsPage() {
                       </p>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <Badge className={
-                        user.status === 'active' ? 'bg-green-100 text-green-800' :
-                        user.status === 'inactive' ? 'bg-gray-100 text-gray-800' :
-                        'bg-red-100 text-red-800'
-                      }>
-                        {user.status}
+                      <Badge 
+                        variant="outline"
+                        className={
+                          user.status === 'active' ? 'bg-green-100 text-green-800 border-green-200' :
+                          user.status === 'inactive' ? 'bg-red-100 text-red-800 border-red-200' :
+                          'bg-gray-100 text-gray-800 border-gray-200'
+                        }
+                      >
+                        {user.status.charAt(0).toUpperCase() + user.status.slice(1)}
                       </Badge>
                       {canEditUser(user) && (
                         <Button

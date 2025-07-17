@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
 import { Textarea } from '@/components/ui/Textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/Select';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
 import { apiService } from '@/lib/api';
 import { PERMISSIONS, AuthService } from '@/lib/auth';
 
@@ -410,7 +410,7 @@ export default function EditUserPage() {
                   </Button>
                   <Button
                     type="submit"
-                    variant="default"
+                    variant="primary"
                     disabled={saving}
                   >
                     {saving ? 'Saving Changes...' : 'Save Changes'}

@@ -46,14 +46,14 @@ export default function ReportsPage() {
   const [isGenerating, setIsGenerating] = useState<string | null>(null);
   const [selectedReport, setSelectedReport] = useState<ReportData | null>(null);
 
-  // Branch color mapping
+  // Branch color mapping - same as in analytics
   const getBranchColor = (branchName: string) => {
     const branchColors: Record<string, { bg: string; text: string; border: string }> = {
-      'Belfast': { bg: 'bg-red-100', text: 'text-red-800', border: 'border-red-200' },
-      'Newtownabbey': { bg: 'bg-blue-100', text: 'text-blue-800', border: 'border-blue-200' },
-      'Lisburn': { bg: 'bg-green-100', text: 'text-green-800', border: 'border-green-200' },
-      'Bangor': { bg: 'bg-purple-100', text: 'text-purple-800', border: 'border-purple-200' },
-      'Coleraine': { bg: 'bg-orange-100', text: 'text-orange-800', border: 'border-orange-200' }
+      'Belfast': { bg: 'bg-blue-100', text: 'text-blue-800', border: 'border-blue-200' },
+      'Newtownabbey': { bg: 'bg-green-100', text: 'text-green-800', border: 'border-green-200' },
+      'Lisburn': { bg: 'bg-yellow-100', text: 'text-yellow-800', border: 'border-yellow-200' },
+      'Bangor': { bg: 'bg-red-100', text: 'text-red-800', border: 'border-red-200' },
+      'Coleraine': { bg: 'bg-purple-100', text: 'text-purple-800', border: 'border-purple-200' }
     };
     
     return branchColors[branchName] || { bg: 'bg-gray-100', text: 'text-gray-800', border: 'border-gray-200' };
@@ -61,11 +61,11 @@ export default function ReportsPage() {
 
   const getBranchChartColor = (branchName: string) => {
     const branchChartColors: Record<string, string> = {
-      'Belfast': '#ef4444', // red-500
-      'Newtownabbey': '#3b82f6', // blue-500
-      'Lisburn': '#22c55e', // green-500
-      'Bangor': '#a855f7', // purple-500
-      'Coleraine': '#f97316' // orange-500
+      'Belfast': '#3B82F6', // blue
+      'Newtownabbey': '#10B981', // green
+      'Lisburn': '#F59E0B', // yellow/orange
+      'Bangor': '#EF4444', // red
+      'Coleraine': '#8B5CF6' // purple
     };
     
     return branchChartColors[branchName] || '#6b7280'; // gray-500

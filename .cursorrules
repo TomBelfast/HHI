@@ -1,0 +1,29 @@
+# Cursor Rules for HHI Project
+
+## Font Consistency
+- Always use consistent font sizes throughout the application to ensure layout consistency
+- Use the same font size for all headers of the same level (h1, h2, h3, h4, etc.)
+- When updating font sizes, ensure all similar elements across the application use the same sizing
+- Maintain visual hierarchy by using appropriate font size classes (text-sm, text-base, text-lg, text-xl, text-2xl, etc.)
+- Avoid mixing different font sizes for the same type of content across different pages or components
+
+## Status and Branch Color Consistency
+- Always use consistent color coding for statuses and branches throughout the application
+- Use the established color scheme for branches:
+  - Belfast: blue (bg-blue-100 text-blue-800 border-blue-200)
+  - Newtownabbey: green (bg-green-100 text-green-800 border-green-200)
+  - Lisburn: yellow (bg-yellow-100 text-yellow-800 border-yellow-200)
+  - Bangor: red (bg-red-100 text-red-800 border-red-200)
+  - Coleraine: purple (bg-purple-100 text-purple-800 border-purple-200)
+- Use the established color scheme for user statuses:
+  - Active: green (bg-green-100 text-green-800 border-green-200)
+  - Inactive: red (bg-red-100 text-red-800 border-red-200)
+  - Suspended: gray (bg-gray-100 text-gray-800 border-gray-200)
+- Use the established color scheme for project statuses:
+  - Completed: green (bg-green-100 text-green-800 border-green-200)
+  - In Progress: blue (bg-blue-100 text-blue-800 border-blue-200)
+  - Pending: yellow (bg-yellow-100 text-yellow-800 border-yellow-200)
+  - Cancelled: red (bg-red-100 text-red-800 border-red-200)
+- Always use Badge component with variant="outline" for status and branch tags
+- When adding new statuses or branches, maintain the existing color scheme
+- Ensure all tables, cards, and components display statuses and branches with consistent colors 

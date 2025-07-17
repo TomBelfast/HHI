@@ -58,6 +58,7 @@ export default function UsersPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [roleFilter, setRoleFilter] = useState('');
   const [branchFilter, setBranchFilter] = useState('');
+  const [statusFilter, setStatusFilter] = useState('');
   const [sortField, setSortField] = useState('');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
 
@@ -82,6 +83,72 @@ export default function UsersPage() {
       console.error('Error loading users:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDeactivateUser = async (userId: string) => {
+    if (!confirm('Czy na pewno chcesz dezaktywować tego użytkownika?')) {
+      return;
+    }
+
+    try {
+      // Symulacja API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      setUsers(prevUsers => 
+        prevUsers.map(user => 
+          user.id === userId 
+            ? { ...user, status: 'inactive' as const }
+            : user
+        )
+      );
+      
+      alert('Użytkownik został dezaktywowany.');
+    } catch (error) {
+      console.error('Error deactivating user:', error);
+      alert('Błąd podczas dezaktywacji użytkownika.');
+    }
+  };
+
+  const handleActivateUser = async (userId: string) => {
+    if (!confirm('Czy na pewno chcesz aktywować tego użytkownika?')) {
+      return;
+    }
+
+    try {
+      // Symulacja API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      setUsers(prevUsers => 
+        prevUsers.map(user => 
+          user.id === userId 
+            ? { ...user, status: 'active' as const }
+            : user
+        )
+      );
+      
+      alert('Użytkownik został aktywowany.');
+    } catch (error) {
+      console.error('Error activating user:', error);
+      alert('Błąd podczas aktywacji użytkownika.');
+    }
+  };
+
+  const handleDeleteUser = async (userId: string) => {
+    if (!confirm('Czy na pewno chcesz usunąć tego użytkownika? Ta operacja jest nieodwracalna.')) {
+      return;
+    }
+
+    try {
+      // Symulacja API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      setUsers(prevUsers => prevUsers.filter(user => user.id !== userId));
+      
+      alert('Użytkownik został usunięty.');
+    } catch (error) {
+      console.error('Error deleting user:', error);
+      alert('Błąd podczas usuwania użytkownika.');
     }
   };
 
@@ -115,14 +182,28 @@ export default function UsersPage() {
     }
   };
 
+  // Branch color mapping - same as in analytics and dashboard
+  const getBranchColor = (branchName: string) => {
+    const branchColors: Record<string, { bg: string; text: string; border: string }> = {
+      'Belfast': { bg: 'bg-blue-100', text: 'text-blue-800', border: 'border-blue-200' },
+      'Newtownabbey': { bg: 'bg-green-100', text: 'text-green-800', border: 'border-green-200' },
+      'Lisburn': { bg: 'bg-yellow-100', text: 'text-yellow-800', border: 'border-yellow-200' },
+      'Bangor': { bg: 'bg-red-100', text: 'text-red-800', border: 'border-red-200' },
+      'Coleraine': { bg: 'bg-purple-100', text: 'text-purple-800', border: 'border-purple-200' }
+    };
+    
+    return branchColors[branchName] || { bg: 'bg-gray-100', text: 'text-gray-800', border: 'border-gray-200' };
+  };
+
   const filteredUsers = users.filter(user => {
     const matchesSearch = user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          user.role.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesRole = !roleFilter || user.role === roleFilter;
     const matchesBranch = !branchFilter || user.branch === branchFilter;
+    const matchesStatus = !statusFilter || user.status === statusFilter;
     
-    return matchesSearch && matchesRole && matchesBranch;
+    return matchesSearch && matchesRole && matchesBranch && matchesStatus;
   });
 
   console.log('Users state:', users);
@@ -154,6 +235,7 @@ export default function UsersPage() {
 
   const roles = Array.from(new Set(users.map(u => u.role)));
   const branches = Array.from(new Set(users.map(u => u.branch).filter(Boolean)));
+  const statuses = Array.from(new Set(users.map(u => u.status)));
 
   const columns = [
     { key: 'name', label: 'Name' },
@@ -174,11 +256,14 @@ export default function UsersPage() {
     ...user,
     userType: user.userType ? user.userType.replace('_', ' ').charAt(0).toUpperCase() + user.userType.replace('_', ' ').slice(1) : '-',
     status: user.status ? (
-      <Badge className={
-        user.status === 'active' ? 'bg-green-100 text-green-800' :
-        user.status === 'inactive' ? 'bg-gray-100 text-gray-800' :
-        'bg-red-100 text-red-800'
-      }>
+      <Badge 
+        variant="outline"
+        className={
+          user.status === 'active' ? 'bg-green-100 text-green-800 border-green-200' :
+          user.status === 'inactive' ? 'bg-red-100 text-red-800 border-red-200' :
+          'bg-gray-100 text-gray-800 border-gray-200'
+        }
+      >
         {user.status.charAt(0).toUpperCase() + user.status.slice(1)}
       </Badge>
     ) : '-',
@@ -197,6 +282,11 @@ export default function UsersPage() {
       </div>
     ) : '-',
     specialization: user.specialization || '-',
+    branch: user.branch ? (
+      <span className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${getBranchColor(user.branch).bg} ${getBranchColor(user.branch).text} ${getBranchColor(user.branch).border} border`}>
+        {user.branch}
+      </span>
+    ) : '-',
     projectsCompleted: user.projectsCompleted || user.completedJobs || '-',
     lastLogin: user.lastLogin ? new Date(user.lastLogin).toLocaleDateString('pl-PL') : '-',
     actions: (
@@ -217,6 +307,37 @@ export default function UsersPage() {
             onClick={() => router.push(`/users/${user.id}/permissions`)}
           >
             Permissions
+          </Button>
+        </PermissionGate>
+        <PermissionGate permissions={[PERMISSIONS.USERS_WRITE]}>
+          {user.status === 'active' ? (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => handleDeactivateUser(user.id)}
+              className="text-orange-600 border-orange-200 hover:bg-orange-50"
+            >
+              Deactivate
+            </Button>
+          ) : (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => handleActivateUser(user.id)}
+              className="text-green-600 border-green-200 hover:bg-green-50"
+            >
+              Activate
+            </Button>
+          )}
+        </PermissionGate>
+        <PermissionGate permissions={[PERMISSIONS.USERS_WRITE]}>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => handleDeleteUser(user.id)}
+            className="text-red-600 border-red-200 hover:bg-red-50"
+          >
+            Delete
           </Button>
         </PermissionGate>
       </div>
@@ -319,7 +440,7 @@ export default function UsersPage() {
 
           {/* Filters */}
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Search
@@ -361,6 +482,23 @@ export default function UsersPage() {
                   ))}
                 </select>
               </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Status
+                </label>
+                <select
+                  value={statusFilter}
+                  onChange={(e) => setStatusFilter(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
+                >
+                  <option value="">All statuses</option>
+                  {statuses.map(status => (
+                    <option key={status} value={status}>
+                      {status.charAt(0).toUpperCase() + status.slice(1)}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
             <div className="mt-4">
               <Button 
@@ -369,6 +507,7 @@ export default function UsersPage() {
                   setSearchQuery('');
                   setRoleFilter('');
                   setBranchFilter('');
+                  setStatusFilter('');
                   setSortField('');
                   setSortDirection('asc');
                 }}

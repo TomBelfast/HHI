@@ -5,6 +5,7 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { MetricCard } from '@/components/ui/MetricCard';
 import { ProjectCard } from '@/components/ui/ProjectCard';
 import { DataTable } from '@/components/ui/DataTable';
+import { Badge } from '@/components/ui/Badge';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { apiService } from '@/lib/api';
 import { Customer, Project, Analytics } from '@/lib/mock-data';
@@ -95,12 +96,63 @@ export default function DashboardPage() {
     }
   ] : [];
 
+  // Branch color mapping - same as in analytics
+  const getBranchColor = (branchName: string) => {
+    const branchColors: Record<string, { bg: string; text: string; border: string }> = {
+      'Belfast': { bg: 'bg-blue-100', text: 'text-blue-800', border: 'border-blue-200' },
+      'Newtownabbey': { bg: 'bg-green-100', text: 'text-green-800', border: 'border-green-200' },
+      'Lisburn': { bg: 'bg-yellow-100', text: 'text-yellow-800', border: 'border-yellow-200' },
+      'Bangor': { bg: 'bg-red-100', text: 'text-red-800', border: 'border-red-200' },
+      'Coleraine': { bg: 'bg-purple-100', text: 'text-purple-800', border: 'border-purple-200' }
+    };
+    
+    return branchColors[branchName] || { bg: 'bg-gray-100', text: 'text-gray-800', border: 'border-gray-200' };
+  };
+
+  // Status color mapping for projects
+  const getProjectStatusColor = (status: string) => {
+    switch (status.toLowerCase()) {
+      case 'completed':
+        return 'bg-green-100 text-green-800 border-green-200';
+      case 'in progress':
+        return 'bg-blue-100 text-blue-800 border-blue-200';
+      case 'pending':
+        return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+      case 'cancelled':
+        return 'bg-red-100 text-red-800 border-red-200';
+      default:
+        return 'bg-gray-100 text-gray-800 border-gray-200';
+    }
+  };
+
   const recentProjectsColumns = [
     { key: 'title', label: 'Project' },
     { key: 'customerId', label: 'Customer' },
-    { key: 'status', label: 'Status' },
+    { 
+      key: 'status', 
+      label: 'Status',
+      render: (value: string) => (
+        <Badge 
+          variant="outline"
+          className={getProjectStatusColor(value)}
+        >
+          {value.charAt(0).toUpperCase() + value.slice(1)}
+        </Badge>
+      )
+    },
     { key: 'value', label: 'Value' },
-    { key: 'branch', label: 'Branch' }
+    { 
+      key: 'branch', 
+      label: 'Branch',
+      render: (value: string) => {
+        const branchColor = getBranchColor(value);
+        return (
+          <span className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${branchColor.bg} ${branchColor.text} ${branchColor.border} border`}>
+            {value}
+          </span>
+        );
+      }
+    }
   ];
 
   const topCustomersColumns = [

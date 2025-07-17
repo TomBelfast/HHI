@@ -37,6 +37,19 @@ export function ProjectCard({ project, customer }: ProjectCardProps) {
     }
   };
 
+  // Branch color mapping - same as in analytics
+  const getBranchColor = (branchName: string) => {
+    const branchColors: Record<string, { bg: string; text: string; border: string }> = {
+      'Belfast': { bg: 'bg-blue-100', text: 'text-blue-800', border: 'border-blue-200' },
+      'Newtownabbey': { bg: 'bg-green-100', text: 'text-green-800', border: 'border-green-200' },
+      'Lisburn': { bg: 'bg-yellow-100', text: 'text-yellow-800', border: 'border-yellow-200' },
+      'Bangor': { bg: 'bg-red-100', text: 'text-red-800', border: 'border-red-200' },
+      'Coleraine': { bg: 'bg-purple-100', text: 'text-purple-800', border: 'border-purple-200' }
+    };
+    
+    return branchColors[branchName] || { bg: 'bg-gray-100', text: 'text-gray-800', border: 'border-gray-200' };
+  };
+
   const getCategoryIcon = (category: string) => {
     switch (category) {
       case 'Bathrooms':
@@ -77,7 +90,7 @@ export function ProjectCard({ project, customer }: ProjectCardProps) {
           
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <span className="text-xs text-gray-500">
+              <span className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${getBranchColor(project.branch).bg} ${getBranchColor(project.branch).text} ${getBranchColor(project.branch).border} border`}>
                 {project.branch}
               </span>
               <span className="text-xs font-medium text-gray-900">

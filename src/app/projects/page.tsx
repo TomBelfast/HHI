@@ -26,14 +26,14 @@ export default function ProjectsPage() {
   const branches = ['Belfast', 'Newtownabbey', 'Lisburn', 'Bangor', 'Coleraine'];
   const statuses = ['Quote Sent', 'Approved', 'In Progress', 'Installation Completed', 'Materials Received', 'Installation Scheduled', 'Repair Completed', 'Invoice Sent', 'Awaiting Payment', 'Paid', 'Awaiting Review'];
 
-  // Branch color mapping - same as in reports and customers
+  // Branch color mapping - same as in analytics
   const getBranchColor = (branchName: string) => {
     const branchColors: Record<string, { bg: string; text: string; border: string }> = {
-      'Belfast': { bg: 'bg-red-100', text: 'text-red-800', border: 'border-red-200' },
-      'Newtownabbey': { bg: 'bg-blue-100', text: 'text-blue-800', border: 'border-blue-200' },
-      'Lisburn': { bg: 'bg-green-100', text: 'text-green-800', border: 'border-green-200' },
-      'Bangor': { bg: 'bg-purple-100', text: 'text-purple-800', border: 'border-purple-200' },
-      'Coleraine': { bg: 'bg-orange-100', text: 'text-orange-800', border: 'border-orange-200' }
+      'Belfast': { bg: 'bg-blue-100', text: 'text-blue-800', border: 'border-blue-200' },
+      'Newtownabbey': { bg: 'bg-green-100', text: 'text-green-800', border: 'border-green-200' },
+      'Lisburn': { bg: 'bg-yellow-100', text: 'text-yellow-800', border: 'border-yellow-200' },
+      'Bangor': { bg: 'bg-red-100', text: 'text-red-800', border: 'border-red-200' },
+      'Coleraine': { bg: 'bg-purple-100', text: 'text-purple-800', border: 'border-purple-200' }
     };
     
     return branchColors[branchName] || { bg: 'bg-gray-100', text: 'text-gray-800', border: 'border-gray-200' };
@@ -157,7 +157,7 @@ export default function ProjectsPage() {
     ...project,
     customerName: getCustomerName(project.customerId),
     status: project.status, // Explicitly include status
-    value: `£${project.value.toLocaleString()}`,
+    value: project.value, // Keep as number for DataTable formatting
     createdDate: new Date(project.createdDate).toLocaleDateString('pl-PL'),
     title: (
       <Link 

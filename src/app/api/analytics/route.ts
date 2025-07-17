@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { mockProjects } from '@/lib/mock-data';
+import { mockProjects, mockAnalytics } from '@/lib/mock-data';
 
 function parseDate(dateStr?: string) {
   return dateStr ? new Date(dateStr).getTime() : undefined;
@@ -187,11 +187,9 @@ export async function GET() {
   // Analiza pracowników
   const employeeAnalytics = calculateEmployeePerformance(mockProjects);
 
-  // Odczytaj dotychczasowe dane
-  const analytics = require('@/data/analytics.json');
-
+  // Użyj mockAnalytics zamiast starego pliku analytics.json
   return NextResponse.json({
-    ...analytics,
+    ...mockAnalytics,
     avg_days_phone_to_measurement: avgTime(phoneToMeasurement),
     avg_days_complaint_wait: avgTime(complaintWait),
     avg_days_contact_to_contract: avgTime(contactToContract),

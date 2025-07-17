@@ -24,14 +24,14 @@ export default function CustomersPage() {
 
   const branches = ['Belfast', 'Newtownabbey', 'Lisburn', 'Bangor', 'Coleraine'];
 
-  // Branch color mapping - same as in reports
+  // Branch color mapping - same as in analytics
   const getBranchColor = (branchName: string) => {
     const branchColors: Record<string, { bg: string; text: string; border: string }> = {
-      'Belfast': { bg: 'bg-red-100', text: 'text-red-800', border: 'border-red-200' },
-      'Newtownabbey': { bg: 'bg-blue-100', text: 'text-blue-800', border: 'border-blue-200' },
-      'Lisburn': { bg: 'bg-green-100', text: 'text-green-800', border: 'border-green-200' },
-      'Bangor': { bg: 'bg-purple-100', text: 'text-purple-800', border: 'border-purple-200' },
-      'Coleraine': { bg: 'bg-orange-100', text: 'text-orange-800', border: 'border-orange-200' }
+      'Belfast': { bg: 'bg-blue-100', text: 'text-blue-800', border: 'border-blue-200' },
+      'Newtownabbey': { bg: 'bg-green-100', text: 'text-green-800', border: 'border-green-200' },
+      'Lisburn': { bg: 'bg-yellow-100', text: 'text-yellow-800', border: 'border-yellow-200' },
+      'Bangor': { bg: 'bg-red-100', text: 'text-red-800', border: 'border-red-200' },
+      'Coleraine': { bg: 'bg-purple-100', text: 'text-purple-800', border: 'border-purple-200' }
     };
     
     return branchColors[branchName] || { bg: 'bg-gray-100', text: 'text-gray-800', border: 'border-gray-200' };
@@ -42,6 +42,8 @@ export default function CustomersPage() {
     switch (status.toLowerCase()) {
       case 'active':
         return 'bg-green-100 text-green-800 border-green-200';
+      case 'inactive':
+        return 'bg-red-100 text-red-800 border-red-200';
       case 'not accepted':
         return 'bg-red-100 text-red-800 border-red-200';
       case 'prospect':
@@ -115,9 +117,12 @@ export default function CustomersPage() {
       render: (value: string) => {
         const statusColor = getStatusColor(value);
         return (
-          <span className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${statusColor} border`}>
+          <Badge 
+            variant="outline"
+            className={`${statusColor}`}
+          >
             {value.charAt(0).toUpperCase() + value.slice(1)}
-          </span>
+          </Badge>
         );
       }
     },

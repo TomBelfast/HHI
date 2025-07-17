@@ -156,6 +156,50 @@ export interface Analytics {
     avg_days_contact_to_contract: number | null;
     avg_project_duration: number | null;
   }[];
+  detailed_branch_analytics?: {
+    branch: string;
+    // Operational Metrics
+    operational: {
+      active_projects: number;
+      avg_project_duration: number;
+      resource_utilization: number; // percentage
+      on_time_delivery_rate: number; // percentage
+      complaints_count: number;
+      returns_count: number;
+    };
+    // Financial Metrics
+    financial: {
+      revenue: number;
+      gross_margin: number; // percentage
+      net_margin: number; // percentage
+      operational_costs: number;
+      roi: number; // percentage
+      revenue_per_employee: number;
+    };
+    // HR Metrics
+    hr: {
+      employee_count: number;
+      avg_tenure: number; // years
+      turnover_rate: number; // percentage
+      productivity_per_employee: number;
+      overtime_hours: number;
+    };
+    // Quality Metrics
+    quality: {
+      customer_satisfaction: number; // 1-5 scale
+      complaints_rate: number; // percentage
+      repeat_orders_rate: number; // percentage
+      response_time: number; // days
+      quality_audit_score: number; // 1-100
+    };
+    // Growth Metrics
+    growth: {
+      new_contracts: number;
+      market_share_growth: number; // percentage
+      new_customers: number;
+      expansion_projects: number;
+    };
+  }[];
   employee_performance?: {
     top_by_projects: {
       name: string;
@@ -1440,6 +1484,203 @@ export const mockAnalytics: Analytics = {
       avg_days_complaint_wait: 8,
       avg_days_contact_to_contract: 12,
       avg_project_duration: 18
+    }
+  ],
+  detailed_branch_analytics: [
+    {
+      branch: "Belfast",
+      operational: {
+        active_projects: 15,
+        avg_project_duration: 22,
+        resource_utilization: 85,
+        on_time_delivery_rate: 92,
+        complaints_count: 5,
+        returns_count: 1
+      },
+      financial: {
+        revenue: 85000,
+        gross_margin: 30,
+        net_margin: 20,
+        operational_costs: 25000,
+        roi: 15,
+        revenue_per_employee: 5000
+      },
+      hr: {
+        employee_count: 10,
+        avg_tenure: 2.5,
+        turnover_rate: 5,
+        productivity_per_employee: 12,
+        overtime_hours: 100
+      },
+      quality: {
+        customer_satisfaction: 4.8,
+        complaints_rate: 2,
+        repeat_orders_rate: 10,
+        response_time: 1.5,
+        quality_audit_score: 95
+      },
+      growth: {
+        new_contracts: 10,
+        market_share_growth: 2,
+        new_customers: 50,
+        expansion_projects: 5
+      }
+    },
+    {
+      branch: "Newtownabbey",
+      operational: {
+        active_projects: 10,
+        avg_project_duration: 20,
+        resource_utilization: 75,
+        on_time_delivery_rate: 90,
+        complaints_count: 3,
+        returns_count: 0
+      },
+      financial: {
+        revenue: 45000,
+        gross_margin: 25,
+        net_margin: 15,
+        operational_costs: 12000,
+        roi: 10,
+        revenue_per_employee: 4500
+      },
+      hr: {
+        employee_count: 8,
+        avg_tenure: 1.8,
+        turnover_rate: 8,
+        productivity_per_employee: 10,
+        overtime_hours: 80
+      },
+      quality: {
+        customer_satisfaction: 4.5,
+        complaints_rate: 3,
+        repeat_orders_rate: 8,
+        response_time: 2,
+        quality_audit_score: 90
+      },
+      growth: {
+        new_contracts: 5,
+        market_share_growth: 1,
+        new_customers: 20,
+        expansion_projects: 2
+      }
+    },
+    {
+      branch: "Lisburn",
+      operational: {
+        active_projects: 12,
+        avg_project_duration: 25,
+        resource_utilization: 80,
+        on_time_delivery_rate: 95,
+        complaints_count: 4,
+        returns_count: 1
+      },
+      financial: {
+        revenue: 50000,
+        gross_margin: 28,
+        net_margin: 18,
+        operational_costs: 15000,
+        roi: 12,
+        revenue_per_employee: 4167
+      },
+      hr: {
+        employee_count: 9,
+        avg_tenure: 2,
+        turnover_rate: 6,
+        productivity_per_employee: 11,
+        overtime_hours: 90
+      },
+      quality: {
+        customer_satisfaction: 4.7,
+        complaints_rate: 2,
+        repeat_orders_rate: 10,
+        response_time: 1.8,
+        quality_audit_score: 92
+      },
+      growth: {
+        new_contracts: 8,
+        market_share_growth: 1.5,
+        new_customers: 30,
+        expansion_projects: 3
+      }
+    },
+    {
+      branch: "Bangor",
+      operational: {
+        active_projects: 10,
+        avg_project_duration: 28,
+        resource_utilization: 70,
+        on_time_delivery_rate: 85,
+        complaints_count: 6,
+        returns_count: 2
+      },
+      financial: {
+        revenue: 60000,
+        gross_margin: 20,
+        net_margin: 10,
+        operational_costs: 18000,
+        roi: 8,
+        revenue_per_employee: 6000
+      },
+      hr: {
+        employee_count: 12,
+        avg_tenure: 2.2,
+        turnover_rate: 7,
+        productivity_per_employee: 10,
+        overtime_hours: 120
+      },
+      quality: {
+        customer_satisfaction: 4.4,
+        complaints_rate: 3,
+        repeat_orders_rate: 12,
+        response_time: 2.5,
+        quality_audit_score: 88
+      },
+      growth: {
+        new_contracts: 7,
+        market_share_growth: 1.2,
+        new_customers: 40,
+        expansion_projects: 4
+      }
+    },
+    {
+      branch: "Coleraine",
+      operational: {
+        active_projects: 10,
+        avg_project_duration: 18,
+        resource_utilization: 90,
+        on_time_delivery_rate: 98,
+        complaints_count: 2,
+        returns_count: 0
+      },
+      financial: {
+        revenue: 70000,
+        gross_margin: 35,
+        net_margin: 25,
+        operational_costs: 10000,
+        roi: 20,
+        revenue_per_employee: 7000
+      },
+      hr: {
+        employee_count: 15,
+        avg_tenure: 2.8,
+        turnover_rate: 4,
+        productivity_per_employee: 15,
+        overtime_hours: 150
+      },
+      quality: {
+        customer_satisfaction: 4.9,
+        complaints_rate: 1,
+        repeat_orders_rate: 15,
+        response_time: 1.2,
+        quality_audit_score: 98
+      },
+      growth: {
+        new_contracts: 12,
+        market_share_growth: 2.5,
+        new_customers: 60,
+        expansion_projects: 6
+      }
     }
   ],
   employee_performance: {
