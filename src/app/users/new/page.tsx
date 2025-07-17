@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
 import { Textarea } from '@/components/ui/Textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/Select';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card } from '@/components/ui/Card';
 import { apiService } from '@/lib/api';
 import { PERMISSIONS, AuthService } from '@/lib/auth';
 
@@ -203,13 +203,7 @@ export default function NewUserPage() {
 
           {/* Form */}
           <Card>
-            <CardHeader>
-              <CardTitle>User Information</CardTitle>
-              <CardDescription>
-                Fill in the details to create a new user account
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
+            <div className="p-6">
               <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Basic Information */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -396,14 +390,14 @@ export default function NewUserPage() {
                   </Button>
                   <Button
                     type="submit"
-                    variant="default"
+                    variant="primary"
                     disabled={loading}
                   >
                     {loading ? 'Creating User...' : 'Create User'}
                   </Button>
                 </div>
               </form>
-            </CardContent>
+            </div>
           </Card>
         </div>
       </DashboardLayout>

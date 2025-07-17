@@ -997,11 +997,13 @@ export default function ReportsPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Financial Reports */}
             <Card>
-              <div className="flex items-center">
-                <span className="text-green-600 dark:text-green-400 text-lg mr-2">💰</span>
-                <h3 className="text-lg font-semibold">Financial Reports</h3>
+              <div className="p-6 pb-0">
+                <div className="flex items-center">
+                  <span className="text-green-600 dark:text-green-400 text-lg mr-2">💰</span>
+                  <h3 className="text-lg font-semibold">Financial Reports</h3>
+                </div>
               </div>
-              <div className="space-y-3">
+              <div className="p-6 pt-4 space-y-3">
                 <Button 
                   variant="outline" 
                   className="w-full justify-start"
@@ -1031,11 +1033,13 @@ export default function ReportsPage() {
 
             {/* Project Reports */}
             <Card>
-              <div className="flex items-center">
-                <span className="text-blue-600 dark:text-blue-400 text-lg mr-2">🔨</span>
-                <h3 className="text-lg font-semibold">Project Reports</h3>
+              <div className="p-6 pb-0">
+                <div className="flex items-center">
+                  <span className="text-blue-600 dark:text-blue-400 text-lg mr-2">🔨</span>
+                  <h3 className="text-lg font-semibold">Project Reports</h3>
+                </div>
               </div>
-              <div className="space-y-3">
+              <div className="p-6 pt-4 space-y-3">
                 <Button 
                   variant="outline" 
                   className="w-full justify-start"
@@ -1065,11 +1069,13 @@ export default function ReportsPage() {
 
             {/* Customer Reports */}
             <Card>
-              <div className="flex items-center">
-                <span className="text-purple-600 dark:text-purple-400 text-lg mr-2">👥</span>
-                <h3 className="text-lg font-semibold">Customer Reports</h3>
+              <div className="p-6 pb-0">
+                <div className="flex items-center">
+                  <span className="text-purple-600 dark:text-purple-400 text-lg mr-2">👥</span>
+                  <h3 className="text-lg font-semibold">Customer Reports</h3>
+                </div>
               </div>
-              <div className="space-y-3">
+              <div className="p-6 pt-4 space-y-3">
                 <Button 
                   variant="outline" 
                   className="w-full justify-start"
@@ -1099,11 +1105,13 @@ export default function ReportsPage() {
 
             {/* Employee Reports */}
             <Card>
-              <div className="flex items-center">
-                <span className="text-orange-600 dark:text-orange-400 text-lg mr-2">👤</span>
-                <h3 className="text-lg font-semibold">Employee Reports</h3>
+              <div className="p-6 pb-0">
+                <div className="flex items-center">
+                  <span className="text-orange-600 dark:text-orange-400 text-lg mr-2">👤</span>
+                  <h3 className="text-lg font-semibold">Employee Reports</h3>
+                </div>
               </div>
-              <div className="space-y-3">
+              <div className="p-6 pt-4 space-y-3">
                 <Button 
                   variant="outline" 
                   className="w-full justify-start"
@@ -1133,11 +1141,13 @@ export default function ReportsPage() {
 
             {/* Branch Reports */}
             <Card>
-              <div className="flex items-center">
-                <span className="text-yellow-600 dark:text-yellow-400 text-lg mr-2">🏢</span>
-                <h3 className="text-lg font-semibold">Branch Reports</h3>
+              <div className="p-6 pb-0">
+                <div className="flex items-center">
+                  <span className="text-yellow-600 dark:text-yellow-400 text-lg mr-2">🏢</span>
+                  <h3 className="text-lg font-semibold">Branch Reports</h3>
+                </div>
               </div>
-              <div className="space-y-3">
+              <div className="p-6 pt-4 space-y-3">
                 <Button 
                   variant="outline" 
                   className="w-full justify-start"
@@ -1167,11 +1177,13 @@ export default function ReportsPage() {
 
             {/* Custom Reports */}
             <Card>
-              <div className="flex items-center">
-                <span className="text-gray-600 dark:text-gray-400 text-lg mr-2">⚙️</span>
-                <h3 className="text-lg font-semibold">Custom Reports</h3>
+              <div className="p-6 pb-0">
+                <div className="flex items-center">
+                  <span className="text-gray-600 dark:text-gray-400 text-lg mr-2">⚙️</span>
+                  <h3 className="text-lg font-semibold">Custom Reports</h3>
+                </div>
               </div>
-              <div className="space-y-3">
+              <div className="p-6 pt-4 space-y-3">
                 <Button variant="outline" className="w-full justify-start">
                   📝 Report Builder
                 </Button>

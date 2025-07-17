@@ -7,7 +7,7 @@ import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { PermissionGate } from '@/components/auth/PermissionGate';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { apiService } from '@/lib/api';
 import { PERMISSIONS, AuthService } from '@/lib/auth';
@@ -221,7 +221,7 @@ export default function UserPermissionsPage() {
               </Button>
               {canEditUser() && (
                 <Button
-                  variant={editing ? "destructive" : "default"}
+                  variant={editing ? "destructive" : "primary"}
                   onClick={() => setEditing(!editing)}
                   disabled={saving}
                 >
@@ -242,121 +242,70 @@ export default function UserPermissionsPage() {
 
           {/* User Info */}
           <Card>
-            <CardHeader>
-              <CardTitle>User Information</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <p className="text-sm font-medium text-gray-500">Name</p>
-                  <p className="text-lg">{user.name}</p>
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-gray-500">Email</p>
-                  <p className="text-lg">{user.email}</p>
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-gray-500">Role</p>
-                  <p className="text-lg">{user.role}</p>
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-gray-500">User Type</p>
-                  <p className="text-lg">{user.userType.replace('_', ' ').charAt(0).toUpperCase() + user.userType.replace('_', ' ').slice(1)}</p>
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-gray-500">Branch</p>
-                  <p className="text-lg">{user.branch || 'N/A'}</p>
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-gray-500">Status</p>
-                  <Badge className={
-                    user.status === 'active' ? 'bg-green-100 text-green-800' :
-                    user.status === 'inactive' ? 'bg-gray-100 text-gray-800' :
-                    'bg-red-100 text-red-800'
-                  }>
-                    {user.status.charAt(0).toUpperCase() + user.status.slice(1)}
-                  </Badge>
-                </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <p className="text-sm font-medium text-gray-500">Name</p>
+                <p className="text-lg">{user.name}</p>
               </div>
-            </CardContent>
+              <div>
+                <p className="text-sm font-medium text-gray-500">Email</p>
+                <p className="text-lg">{user.email}</p>
+              </div>
+              <div>
+                <p className="text-sm font-medium text-gray-500">Role</p>
+                <p className="text-lg">{user.role}</p>
+              </div>
+              <div>
+                <p className="text-sm font-medium text-gray-500">User Type</p>
+                <p className="text-lg">{user.userType.replace('_', ' ').charAt(0).toUpperCase() + user.userType.replace('_', ' ').slice(1)}</p>
+              </div>
+              <div>
+                <p className="text-sm font-medium text-gray-500">Branch</p>
+                <p className="text-lg">{user.branch || 'N/A'}</p>
+              </div>
+              <div>
+                <p className="text-sm font-medium text-gray-500">Status</p>
+                <Badge className={
+                  user.status === 'active' ? 'bg-green-100 text-green-800' :
+                  user.status === 'inactive' ? 'bg-gray-100 text-gray-800' :
+                  'bg-red-100 text-red-800'
+                }>
+                  {user.status.charAt(0).toUpperCase() + user.status.slice(1)}
+                </Badge>
+              </div>
+            </div>
           </Card>
 
           {/* Permissions */}
           <Card>
-            <CardHeader>
-              <CardTitle>Permissions</CardTitle>
-              <CardDescription>
-                {editing ? 'Select the permissions to grant to this user' : 'Current permissions for this user'}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              {editing ? (
-                <div className="space-y-6">
-                  {Object.entries(
-                    availablePermissions.reduce((acc, perm) => {
-                      const category = perm.category;
-                      if (!acc[category]) acc[category] = [];
-                      acc[category].push(perm);
-                      return acc;
-                    }, {} as Record<string, typeof availablePermissions>)
-                  ).map(([category, permissions]) => (
-                    <div key={category} className="space-y-3">
-                      <h4 className="font-medium text-lg text-gray-700">{category}</h4>
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                        {permissions.map(permission => (
-                          <label key={permission.key} className="flex items-center space-x-2 p-3 border rounded-lg hover:bg-gray-50">
-                            <input
-                              type="checkbox"
-                              checked={userPermissions.includes(permission.key)}
-                              onChange={() => togglePermission(permission.key)}
-                              disabled={!canGrantPermission(permission.key)}
-                              className="rounded border-gray-300 text-primary focus:ring-primary"
-                            />
-                            <span className="text-sm text-gray-700">{permission.label}</span>
-                          </label>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
+            <div className="space-y-6">
+              {Object.entries(
+                availablePermissions.reduce((acc, perm) => {
+                  const category = perm.category;
+                  if (!acc[category]) acc[category] = [];
+                  acc[category].push(perm);
+                  return acc;
+                }, {} as Record<string, typeof availablePermissions>)
+              ).map(([category, permissions]) => (
+                <div key={category} className="space-y-3">
+                  <h4 className="font-medium text-lg text-gray-700">{category}</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                    {permissions.map(permission => (
+                      <label key={permission.key} className="flex items-center space-x-2 p-3 border rounded-lg hover:bg-gray-50">
+                        <input
+                          type="checkbox"
+                          checked={userPermissions.includes(permission.key)}
+                          onChange={() => togglePermission(permission.key)}
+                          disabled={!canGrantPermission(permission.key)}
+                          className="rounded border-gray-300 text-primary focus:ring-primary"
+                        />
+                        <span className="text-sm text-gray-700">{permission.label}</span>
+                      </label>
+                    ))}
+                  </div>
                 </div>
-              ) : (
-                <div className="space-y-4">
-                  {Object.entries(
-                    userPermissions.reduce((acc, permission) => {
-                      const category = getPermissionCategory(permission);
-                      if (!acc[category]) acc[category] = [];
-                      acc[category].push(permission);
-                      return acc;
-                    }, {} as Record<string, string[]>)
-                  ).map(([category, permissions]) => (
-                    <div key={category} className="space-y-2">
-                      <h4 className="font-medium text-sm text-gray-700">{category}</h4>
-                      <div className="flex flex-wrap gap-1">
-                        {permissions.map(permission => {
-                          const perm = availablePermissions.find(p => p.key === permission);
-                          return (
-                            <Badge key={permission} variant="secondary" className="text-xs">
-                              {perm?.label || permission}
-                            </Badge>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  ))}
-                  
-                  {userPermissions.length === 0 && (
-                    <p className="text-sm text-gray-500">No permissions assigned</p>
-                  )}
-                </div>
-              )}
-
-              {/* Save Error */}
-              {errors.save && (
-                <div className="mt-4 bg-red-50 border border-red-200 rounded-md p-4">
-                  <p className="text-red-600 text-sm">{errors.save}</p>
-                </div>
-              )}
-            </CardContent>
+              ))}
+            </div>
           </Card>
         </div>
       </DashboardLayout>

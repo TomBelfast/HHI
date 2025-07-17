@@ -68,7 +68,15 @@ export default function UsersPage() {
   const loadUsers = async () => {
     try {
       setLoading(true);
-      const response = await apiService.getUsers();
+      console.log('Starting to load users...');
+      
+      // Test bezpośredniego dostępu do mockUsers
+      const mockUsersDirect = await import('@/lib/mock-data');
+      console.log('Direct mockUsers:', mockUsersDirect.mockUsers);
+      
+      const response = await apiService.getUsers(1, 100); // Pobierz więcej użytkowników
+      console.log('API Response:', response);
+      console.log('Users data:', response.data);
       setUsers(response.data);
     } catch (error) {
       console.error('Error loading users:', error);
@@ -117,6 +125,12 @@ export default function UsersPage() {
     return matchesSearch && matchesRole && matchesBranch;
   });
 
+  console.log('Users state:', users);
+  console.log('Filtered users:', filteredUsers);
+  console.log('Search query:', searchQuery);
+  console.log('Role filter:', roleFilter);
+  console.log('Branch filter:', branchFilter);
+
   const sortedUsers = [...filteredUsers].sort((a, b) => {
     if (!sortField) return 0;
     
@@ -135,6 +149,8 @@ export default function UsersPage() {
     
     return 0;
   });
+
+  console.log('Sorted users:', sortedUsers);
 
   const roles = Array.from(new Set(users.map(u => u.role)));
   const branches = Array.from(new Set(users.map(u => u.branch).filter(Boolean)));
@@ -206,6 +222,8 @@ export default function UsersPage() {
       </div>
     )
   }));
+
+  console.log('Enhanced data:', enhancedData);
 
   const totalUsers = users.length;
   const activeWorkers = users.filter(u => u.role === 'Branch Worker').length;
@@ -377,12 +395,21 @@ export default function UsersPage() {
                   <div className="text-lg">Loading users...</div>
                 </div>
               ) : (
-                <DataTable
-                  data={enhancedData}
-                  columns={columns}
-                  itemsPerPage={15}
-                  showPagination={true}
-                />
+                <div>
+                  <div className="mb-4 p-4 bg-blue-50 border border-blue-200 rounded">
+                    <p><strong>Debug Info:</strong></p>
+                    <p>Users count: {users.length}</p>
+                    <p>Filtered users count: {filteredUsers.length}</p>
+                    <p>Sorted users count: {sortedUsers.length}</p>
+                    <p>Enhanced data count: {enhancedData.length}</p>
+                  </div>
+                  <DataTable
+                    data={enhancedData}
+                    columns={columns}
+                    itemsPerPage={15}
+                    showPagination={true}
+                  />
+                </div>
               )}
             </div>
           </div>

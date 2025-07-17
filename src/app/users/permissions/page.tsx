@@ -7,8 +7,8 @@ import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { PermissionGate } from '@/components/auth/PermissionGate';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/Badge';
+import { Card } from '@/components/ui/Card';
 import { apiService } from '@/lib/api';
 import { PERMISSIONS, AuthService } from '@/lib/auth';
 
@@ -253,75 +253,71 @@ export default function UserPermissionsPage() {
             <div className="space-y-6">
               {filteredUsers.map(user => (
                 <Card key={user.id} className="border border-gray-200">
-                  <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <CardTitle className="text-lg">{user.name}</CardTitle>
-                        <CardDescription>
-                          {user.email} • {user.role} • {user.branch || 'No branch'}
-                        </CardDescription>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Badge className={
-                          user.status === 'active' ? 'bg-green-100 text-green-800' :
-                          user.status === 'inactive' ? 'bg-gray-100 text-gray-800' :
-                          'bg-red-100 text-red-800'
-                        }>
-                          {user.status}
-                        </Badge>
-                        {canEditUser(user) && (
-                          <Button
-                            variant={editingUser === user.id ? "destructive" : "default"}
-                            size="sm"
-                            onClick={() => setEditingUser(editingUser === user.id ? null : user.id)}
-                            disabled={saving}
-                          >
-                            {editingUser === user.id ? 'Cancel' : 'Edit Permissions'}
-                          </Button>
-                        )}
-                        {editingUser === user.id && (
-                          <Button
-                            variant="default"
-                            size="sm"
-                            onClick={() => saveUserPermissions(user.id)}
-                            disabled={saving}
-                          >
-                            {saving ? 'Saving...' : 'Save'}
-                          </Button>
-                        )}
-                      </div>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="text-lg font-bold">{user.name}</h3>
+                      <p className="text-sm text-gray-600">
+                        {user.email} • {user.role} • {user.branch || 'No branch'}
+                      </p>
                     </div>
-                  </CardHeader>
-                  <CardContent>
+                    <div className="flex items-center space-x-2">
+                      <Badge className={
+                        user.status === 'active' ? 'bg-green-100 text-green-800' :
+                        user.status === 'inactive' ? 'bg-gray-100 text-gray-800' :
+                        'bg-red-100 text-red-800'
+                      }>
+                        {user.status}
+                      </Badge>
+                      {canEditUser(user) && (
+                        <Button
+                          variant={editingUser === user.id ? "destructive" : "secondary"}
+                          size="sm"
+                          onClick={() => setEditingUser(editingUser === user.id ? null : user.id)}
+                          disabled={saving}
+                        >
+                          {editingUser === user.id ? 'Cancel' : 'Edit Permissions'}
+                        </Button>
+                      )}
+                      {editingUser === user.id && (
+                        <>
+                          <Button variant="primary" size="sm" onClick={() => saveUserPermissions(user.id)}>
+                            Zapisz
+                          </Button>
+                          <Button variant="secondary" size="sm" onClick={() => setEditingUser(null)}>
+                            Anuluj
+                          </Button>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                  <div className="space-y-4">
                     {editingUser === user.id ? (
-                      <div className="space-y-4">
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                          {Object.entries(
-                            availablePermissions.reduce((acc, perm) => {
-                              const category = perm.category;
-                              if (!acc[category]) acc[category] = [];
-                              acc[category].push(perm);
-                              return acc;
-                            }, {} as Record<string, typeof availablePermissions>)
-                          ).map(([category, permissions]) => (
-                            <div key={category} className="space-y-2">
-                              <h4 className="font-medium text-sm text-gray-700">{category}</h4>
-                              <div className="space-y-2">
-                                {permissions.map(permission => (
-                                  <label key={permission.key} className="flex items-center space-x-2">
-                                    <input
-                                      type="checkbox"
-                                      checked={userPermissions[user.id]?.includes(permission.key) || false}
-                                      onChange={() => togglePermission(user.id, permission.key)}
-                                      className="rounded border-gray-300 text-primary focus:ring-primary"
-                                    />
-                                    <span className="text-sm text-gray-600">{permission.label}</span>
-                                  </label>
-                                ))}
-                              </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {Object.entries(
+                          availablePermissions.reduce((acc, perm) => {
+                            const category = perm.category;
+                            if (!acc[category]) acc[category] = [];
+                            acc[category].push(perm);
+                            return acc;
+                          }, {} as Record<string, typeof availablePermissions>)
+                        ).map(([category, permissions]) => (
+                          <div key={category} className="space-y-2">
+                            <h4 className="font-medium text-sm text-gray-700">{category}</h4>
+                            <div className="space-y-2">
+                              {permissions.map(permission => (
+                                <label key={permission.key} className="flex items-center space-x-2">
+                                  <input
+                                    type="checkbox"
+                                    checked={userPermissions[user.id]?.includes(permission.key) || false}
+                                    onChange={() => togglePermission(user.id, permission.key)}
+                                    className="rounded border-gray-300 text-primary focus:ring-primary"
+                                  />
+                                  <span className="text-sm text-gray-600">{permission.label}</span>
+                                </label>
+                              ))}
                             </div>
-                          ))}
-                        </div>
+                          </div>
+                        ))}
                       </div>
                     ) : (
                       <div className="space-y-2">
@@ -340,7 +336,7 @@ export default function UserPermissionsPage() {
                         )}
                       </div>
                     )}
-                  </CardContent>
+                  </div>
                 </Card>
               ))}
               

@@ -29,9 +29,8 @@ const navigation = [
   { 
     name: 'Users', 
     href: '/users', 
-    icon: '👤',
-    permissions: [PERMISSIONS.USERS_READ],
-    userTypes: ['admin', 'branch_manager']
+    icon: '��',
+    permissions: [PERMISSIONS.USERS_READ]
   },
   { 
     name: 'Add User', 
@@ -72,6 +71,12 @@ export function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const pathname = usePathname();
   const { user } = useAuth();
+
+  // Debug log
+  console.log('Sidebar - Current user:', user);
+  console.log('Sidebar - User type:', user?.userType);
+  console.log('Sidebar - User permissions:', user?.permissions);
+  console.log('Sidebar - Is authenticated:', !!user);
 
   const getInitials = (name: string) => {
     return name
