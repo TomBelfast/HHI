@@ -139,7 +139,7 @@ export default function CustomersPage() {
           {/* Header */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-foreground dark:bg-[#404040] px-4 py-2 rounded">Customers</h1>
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-foreground">Customers</h1>
               <p className="mt-2 text-sm text-gray-600 dark:text-muted-foreground">
                 Manage HHI customer database - {customers.length} customers
               </p>

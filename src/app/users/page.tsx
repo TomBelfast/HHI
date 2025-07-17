@@ -490,29 +490,29 @@ export default function UsersPage() {
           </div>
 
           {/* Users Table */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+          <div className="bg-white dark:bg-card rounded-lg shadow-sm border border-gray-200 dark:border-border">
             <div className="p-6">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-gray-900">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-foreground">
                   User List
                 </h3>
-                <div className="text-sm text-gray-500">
+                <div className="text-sm text-gray-500 dark:text-muted-foreground">
                   {sortedUsers.length} users
                 </div>
               </div>
 
               {loading ? (
                 <div className="flex items-center justify-center h-32">
-                  <div className="text-lg">Loading users...</div>
+                  <div className="text-lg dark:text-foreground">Loading users...</div>
                 </div>
               ) : (
                 <div>
-                  <div className="mb-4 p-4 bg-blue-50 border border-blue-200 rounded">
-                    <p><strong>Debug Info:</strong></p>
-                    <p>Users count: {users.length}</p>
-                    <p>Filtered users count: {filteredUsers.length}</p>
-                    <p>Sorted users count: {sortedUsers.length}</p>
-                    <p>Enhanced data count: {enhancedData.length}</p>
+                  <div className="mb-4 p-4 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded">
+                    <p className="dark:text-foreground"><strong>Debug Info:</strong></p>
+                    <p className="dark:text-foreground">Users count: {users.length}</p>
+                    <p className="dark:text-foreground">Filtered users count: {filteredUsers.length}</p>
+                    <p className="dark:text-foreground">Sorted users count: {sortedUsers.length}</p>
+                    <p className="dark:text-foreground">Enhanced data count: {enhancedData.length}</p>
                   </div>
                   <DataTable
                     data={enhancedData}
