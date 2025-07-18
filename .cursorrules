@@ -75,4 +75,16 @@
 - Ensure all existing tags across the application use the Badge component
 - Test that all tags have identical sizing and appearance across the entire application
 - All Badge variants must use dark:!text-black to override any custom color classes
-- The Badge component uses !important (!) to ensure black text in dark mode regardless of custom colors 
+- The Badge component uses !important (!) to ensure black text in dark mode regardless of custom colors
+
+## Mock Data and Language Requirements
+- ALL mock data must be set in Northern Ireland and use English language
+- Customer names should be typical Northern Irish names (e.g., John Smith, Mary O'Connor, Patrick Murphy)
+- Addresses should be realistic Northern Irish addresses (e.g., Belfast, Newtownabbey, Lisburn, Bangor, Coleraine)
+- Phone numbers should follow Northern Ireland format (+44 28 XXXX XXXX)
+- Company names should be realistic Northern Irish business names
+- All text content in the application interface must be in English
+- Our conversation and communication will be in Polish language
+- When creating mock data, ensure it reflects the Northern Ireland business environment
+- Branch locations should be actual Northern Irish cities and towns
+- Department names should be in English but reflect the local business context 

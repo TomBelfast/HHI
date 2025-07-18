@@ -8,8 +8,9 @@ import { Input } from '@/components/ui/Input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { ArrowLeft, Mail, Phone, MapPin, Calendar, Building, Plus } from 'lucide-react';
-import { getBranchColor, getCustomerStatusColor, getProjectStatusColor } from '@/lib/colors';
+import { getBranchColor, getCustomerStatusColor, getProjectStatusColor, getDepartmentColor, getCommunicationTypeColor } from '@/lib/colors';
 import { AddCommunicationModal } from '@/components/customers/AddCommunicationModal';
+import ClientDocuments from '@/components/client/ClientDocuments';
 
 export default function CustomerDetailsPage() {
   const params = useParams();
@@ -165,7 +166,7 @@ export default function CustomerDetailsPage() {
                 
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm font-medium text-gray-700 dark:text-foreground">Department:</span>
-                  <Badge variant="outline" className="text-xs font-medium">
+                  <Badge variant="outline" className={getDepartmentColor(customer.department)}>
                     {customer.department}
                   </Badge>
                 </div>
@@ -231,7 +232,7 @@ export default function CustomerDetailsPage() {
                           <span className="text-sm text-gray-500 dark:text-muted-foreground">Branch:</span>
                           <Badge 
                             variant="outline"
-                            className={`${getBranchColor(project.branch).bg} ${getBranchColor(project.branch).text} ${getBranchColor(project.branch).border}`}
+                            className={getBranchColor(project.branch)}
                           >
                             {project.branch}
                           </Badge>
@@ -273,7 +274,7 @@ export default function CustomerDetailsPage() {
                   <div key={index} className="border rounded-lg p-4">
                     <div className="flex items-start justify-between mb-2">
                       <div className="flex items-center gap-2">
-                        <Badge variant="outline" className="text-xs font-medium">
+                        <Badge variant="outline" className={getCommunicationTypeColor(communication.type)}>
                           {communication.type.charAt(0).toUpperCase() + communication.type.slice(1)}
                         </Badge>
                         <span className="text-sm text-gray-500 dark:text-muted-foreground">
@@ -298,6 +299,18 @@ export default function CustomerDetailsPage() {
                 <p className="text-sm mt-2">Click "Add Communication" to start tracking interactions.</p>
               </div>
             )}
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Client Documents */}
+      <div className="mt-8">
+        <Card>
+          <CardContent className="p-6">
+            <ClientDocuments 
+              clientId={customer.id} 
+              clientName={customer.name} 
+            />
           </CardContent>
         </Card>
       </div>

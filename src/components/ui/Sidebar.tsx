@@ -29,7 +29,7 @@ const navigation = [
   { 
     name: 'Users', 
     href: '/users', 
-    icon: '��',
+    icon: '👤',
     permissions: [PERMISSIONS.USERS_READ]
   },
   { 
@@ -73,8 +73,11 @@ const navigation = [
   },
 ];
 
-export function Sidebar() {
-  const [collapsed, setCollapsed] = useState(false);
+interface SidebarProps {
+  onClose?: () => void;
+}
+
+export function Sidebar({ onClose }: SidebarProps) {
   const pathname = usePathname();
   const { user } = useAuth();
 
@@ -108,8 +111,15 @@ export function Sidebar() {
     }
   };
 
+  const handleLinkClick = () => {
+    // Close sidebar on mobile when link is clicked
+    if (onClose) {
+      onClose();
+    }
+  };
+
   return (
-    <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-sidebar shadow-lg transform transition-transform duration-300 ease-in-out lg:translate-x-0 ${collapsed ? '-translate-x-full' : 'translate-x-0'}`}>
+    <div className="h-full w-64 bg-white dark:bg-sidebar shadow-lg flex flex-col">
       <div className="flex h-full flex-col">
         {/* Logo */}
         <div className="flex h-16 items-center justify-between px-6 border-b border-gray-200 dark:border-sidebar-border">
@@ -118,13 +128,18 @@ export function Sidebar() {
               <h1 className="text-xl font-bold text-primary">HHI CRM</h1>
             </div>
           </div>
-          <button
-            onClick={() => setCollapsed(!collapsed)}
-            className="lg:hidden p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 dark:text-muted-foreground dark:hover:bg-muted"
-          >
-            <span className="sr-only">Close sidebar</span>
-            ✕
-          </button>
+          {onClose && (
+            <button
+              onClick={onClose}
+              className="lg:hidden p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 dark:text-muted-foreground dark:hover:bg-muted transition-colors"
+              aria-label="Close sidebar"
+            >
+              <span className="sr-only">Close sidebar</span>
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          )}
         </div>
 
         {/* Navigation */}
@@ -140,6 +155,7 @@ export function Sidebar() {
               >
                 <Link
                   href={item.href}
+                  onClick={handleLinkClick}
                   className={`group flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors ${
                     isActive
                       ? 'bg-primary text-primary-foreground'

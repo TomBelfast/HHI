@@ -660,7 +660,7 @@ export default function ReportsPage() {
                           const branchColor = getBranchColor(value);
                           return (
                             <td key={header} className="px-4 py-2 border-b">
-                              <Badge variant="outline" className={`${branchColor.bg} ${branchColor.text} ${branchColor.border}`}>
+                              <Badge variant="outline" className={branchColor}>
                                 {value}
                               </Badge>
                             </td>

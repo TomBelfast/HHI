@@ -56,7 +56,7 @@ export function ProjectCard({ project, customer }: ProjectCardProps) {
           
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <Badge variant="outline" className={`${getBranchColor(project.branch).bg} ${getBranchColor(project.branch).text} ${getBranchColor(project.branch).border}`}>
+              <Badge variant="outline" className={getBranchColor(project.branch)}>
   {project.branch}
 </Badge>
               <span className="text-xs font-medium text-gray-900">

@@ -255,7 +255,7 @@ export default function UsersPage() {
     ) : '-',
     specialization: user.specialization || '-',
     branch: user.branch ? (
-      <Badge variant="outline" className={`${getBranchColor(user.branch).bg} ${getBranchColor(user.branch).text} ${getBranchColor(user.branch).border}`}>
+      <Badge variant="outline" className={getBranchColor(user.branch)}>
   {user.branch}
 </Badge>
     ) : '-',

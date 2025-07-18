@@ -59,7 +59,7 @@ export default function BranchesPage() {
                     </CardTitle>
                     <Badge 
                       variant="outline"
-                      className={`${getBranchColor(branch.name).bg} ${getBranchColor(branch.name).text} ${getBranchColor(branch.name).border}`}
+                      className={getBranchColor(branch.name)}
                     >
                       {branch.departments.length} depts
                     </Badge>

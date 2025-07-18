@@ -74,7 +74,7 @@ export default function CustomersPage() {
       render: (value: string) => {
         const branchColor = getBranchColor(value);
         return (
-          <Badge variant="outline" className={`${branchColor.bg} ${branchColor.text} ${branchColor.border}`}>
+          <Badge variant="outline" className={branchColor}>
             {value}
           </Badge>
         );
