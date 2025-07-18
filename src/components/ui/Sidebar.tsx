@@ -65,6 +65,13 @@ const navigation = [
     permissions: [PERMISSIONS.ANALYTICS_READ]
   },
   { 
+    name: 'ROI Analysis', 
+    href: '/roi-analysis', 
+    icon: '💰',
+    permissions: [PERMISSIONS.ANALYTICS_READ],
+    userTypes: ['admin']
+  },
+  { 
     name: 'Settings', 
     href: '/settings', 
     icon: '⚙️',
