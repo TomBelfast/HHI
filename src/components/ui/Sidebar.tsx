@@ -67,9 +67,8 @@ const navigation = [
   { 
     name: 'ROI Analysis', 
     href: '/roi-analysis', 
-    icon: '💰',
-    permissions: [PERMISSIONS.ANALYTICS_READ],
-    userTypes: ['admin']
+    icon: '��',
+    permissions: [] // Tymczasowo dostępne dla wszystkich
   },
   { 
     name: 'Settings', 
@@ -154,25 +153,33 @@ export function Sidebar({ onClose }: SidebarProps) {
           {navigation.map((item) => {
             const isActive = pathname === item.href;
             
+            // Check if user has required permissions and user type
+            const hasPermissions = item.permissions.length === 0 || 
+              item.permissions.some(permission => user?.permissions?.includes(permission));
+            
+            const hasUserType = !item.userTypes || 
+              (user && item.userTypes.includes(user.userType as any));
+            
+            const shouldShow = hasPermissions && hasUserType;
+            
+            if (!shouldShow) {
+              return null;
+            }
+            
             return (
-              <PermissionGate
+              <Link
                 key={item.name}
-                permissions={item.permissions}
-                userType={item.userTypes as any}
+                href={item.href}
+                onClick={handleLinkClick}
+                className={`group flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors ${
+                  isActive
+                    ? 'bg-primary text-primary-foreground'
+                    : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-sidebar-foreground dark:hover:bg-sidebar-accent dark:hover:text-sidebar-accent-foreground'
+                }`}
               >
-                <Link
-                  href={item.href}
-                  onClick={handleLinkClick}
-                  className={`group flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors ${
-                    isActive
-                      ? 'bg-primary text-primary-foreground'
-                      : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-sidebar-foreground dark:hover:bg-sidebar-accent dark:hover:text-sidebar-accent-foreground'
-                  }`}
-                >
-                  <span className="mr-3 text-lg">{item.icon}</span>
-                  {item.name}
-                </Link>
-              </PermissionGate>
+                <span className="mr-3 text-lg">{item.icon}</span>
+                {item.name}
+              </Link>
             );
           })}
         </nav>
