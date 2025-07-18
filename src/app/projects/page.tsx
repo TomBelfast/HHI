@@ -8,7 +8,7 @@ import { DataTable } from '@/components/ui/DataTable';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Badge } from '@/components/ui/Badge';
-import { apiService, FilterOptions, SortOptions } from '@/lib/api';
+import { apiService } from '@/lib/api';
 import { Project, Customer } from '@/lib/mock-data';
 import { PERMISSIONS } from '@/lib/auth';
 import { getBranchColor, getProjectStatusColor, getDepartmentColor } from '@/lib/colors';

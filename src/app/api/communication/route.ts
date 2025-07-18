@@ -71,7 +71,6 @@ export async function POST(request: NextRequest) {
       templateId, 
       customerId, 
       customerName, 
-      projectId, 
       email, 
       phone, 
       data 

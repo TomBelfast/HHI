@@ -69,7 +69,7 @@ export default function CommunicationPage() {
   const [emailTemplates, setEmailTemplates] = useState<EmailTemplate[]>([]);
   const [smsTemplates, setSMSTemplates] = useState<SMSTemplate[]>([]);
   const [whatsappTemplates, setWhatsAppTemplates] = useState<WhatsAppTemplate[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+
   const [copiedTemplate, setCopiedTemplate] = useState<string | null>(null);
 
   useEffect(() => {
@@ -77,7 +77,6 @@ export default function CommunicationPage() {
   }, []);
 
   const fetchTemplates = async () => {
-    setIsLoading(true);
     try {
       const response = await fetch('/api/communication');
       if (response.ok) {
@@ -88,8 +87,6 @@ export default function CommunicationPage() {
       }
     } catch (error) {
       console.error('Error fetching templates:', error);
-    } finally {
-      setIsLoading(false);
     }
   };
 

@@ -4,15 +4,16 @@ import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
-import { PermissionGate } from '@/components/auth/PermissionGate';
+
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
-import { Textarea } from '@/components/ui/Textarea';
+
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/Select';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
 import { apiService } from '@/lib/api';
 import { PERMISSIONS, AuthService } from '@/lib/auth';
+import { User } from '@/lib/mock-data';
 
 interface UserFormData {
   name: string;
@@ -46,7 +47,7 @@ export default function EditUserPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
 
   // Available branches
   const branches = ['Belfast', 'Newtownabbey', 'Lisburn', 'Bangor', 'Coleraine'];
@@ -249,7 +250,7 @@ export default function EditUserPage() {
             <CardHeader>
               <CardTitle>User Information</CardTitle>
               <CardDescription>
-                Update the user's details and settings
+                Update the user&apos;s details and settings
               </CardDescription>
             </CardHeader>
             <CardContent>

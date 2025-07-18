@@ -6,8 +6,8 @@ import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { MessageCircle, Send, Clock, Check, CheckCheck, Paperclip, Smile } from 'lucide-react';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Send, Clock, Check, CheckCheck, Paperclip, Smile } from 'lucide-react';
 
 // Mock data for WhatsApp simulation
 const mockCustomers = [
@@ -90,7 +90,7 @@ const mockConversations = {
 export default function WhatsAppIntegrationPage() {
   const [selectedCustomer, setSelectedCustomer] = useState<number | null>(1);
   const [newMessage, setNewMessage] = useState('');
-  const [selectedTemplate, setSelectedTemplate] = useState<string>('');
+
   const [showTemplates, setShowTemplates] = useState(false);
 
   const getStatusIcon = (status: string) => {
@@ -117,7 +117,6 @@ export default function WhatsAppIntegrationPage() {
     const template = mockMessageTemplates.find(t => t.id.toString() === templateId);
     if (template) {
       setNewMessage(template.content);
-      setSelectedTemplate(templateId);
     }
   };
 

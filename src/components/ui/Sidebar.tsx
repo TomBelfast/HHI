@@ -93,30 +93,6 @@ export function Sidebar({ onClose }: SidebarProps) {
   console.log('Sidebar - User permissions:', user?.permissions);
   console.log('Sidebar - Is authenticated:', !!user);
 
-  const getInitials = (name: string) => {
-    return name
-      .split(' ')
-      .map(word => word.charAt(0))
-      .join('')
-      .toUpperCase()
-      .slice(0, 2);
-  };
-
-  const getRoleDisplayName = (userType: string) => {
-    switch (userType) {
-      case 'admin':
-        return 'Administrator';
-      case 'branch_manager':
-        return 'Branch Manager';
-      case 'branch_worker':
-        return 'Branch Worker';
-      case 'subcontractor':
-        return 'Subcontractor';
-      default:
-        return userType;
-    }
-  };
-
   const handleLinkClick = () => {
     // Close sidebar on mobile when link is clicked
     if (onClose) {
@@ -158,7 +134,7 @@ export function Sidebar({ onClose }: SidebarProps) {
               item.permissions.some(permission => user?.permissions?.includes(permission));
             
             const hasUserType = !item.userTypes || 
-              (user && item.userTypes.includes(user.userType as any));
+              (user && item.userTypes.includes(user.userType as string));
             
             const shouldShow = hasPermissions && hasUserType;
             
@@ -190,7 +166,7 @@ export function Sidebar({ onClose }: SidebarProps) {
             <div className="flex-shrink-0">
               <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center">
                 <span className="text-sm font-medium text-primary-foreground">
-                  {user ? getInitials(user.name) : 'U'}
+                  {user ? user.name.charAt(0) + user.name.split(' ')[1]?.charAt(0) : 'U'}
                 </span>
               </div>
             </div>
@@ -199,7 +175,7 @@ export function Sidebar({ onClose }: SidebarProps) {
                 {user?.name || 'User'}
               </p>
               <p className="text-xs text-gray-500 dark:text-muted-foreground">
-                {user ? getRoleDisplayName(user.userType) : 'Unknown Role'}
+                {user ? user.userType : 'Unknown Role'}
               </p>
             </div>
           </div>

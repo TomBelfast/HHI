@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Customer, Project } from '@/lib/mock-data';
 import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
+
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { ArrowLeft, Mail, Phone, MapPin, Calendar, Building, Plus } from 'lucide-react';
@@ -63,7 +63,7 @@ export default function CustomerDetailsPage() {
     }).format(amount);
   };
 
-  const handleAddCommunication = (communication: any) => {
+  const handleAddCommunication = (communication: NonNullable<Customer['communicationHistory']>[0]) => {
     if (customer) {
       const updatedCustomer = {
         ...customer,
@@ -296,7 +296,7 @@ export default function CustomerDetailsPage() {
             ) : (
               <div className="text-center py-8 text-gray-500">
                 <p>No communication history found.</p>
-                <p className="text-sm mt-2">Click "Add Communication" to start tracking interactions.</p>
+                <p className="text-sm mt-2">Click &quot;Add Communication&quot; to start tracking interactions.</p>
               </div>
             )}
           </CardContent>

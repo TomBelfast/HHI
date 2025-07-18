@@ -4,11 +4,11 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
-import { PermissionGate } from '@/components/auth/PermissionGate';
+
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
-import { Textarea } from '@/components/ui/Textarea';
+
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/Select';
 import { Card } from '@/components/ui/Card';
 import { apiService } from '@/lib/api';

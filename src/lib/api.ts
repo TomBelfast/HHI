@@ -78,30 +78,30 @@ export class ApiService {
       if (filters.search) {
         const searchLower = filters.search.toLowerCase();
         const hasMatch = searchFields.some(field => {
-          const value = (item as any)[field];
+          const value = (item as unknown as { [key: string]: unknown })[field];
           return value && value.toString().toLowerCase().includes(searchLower);
         });
         if (!hasMatch) return false;
       }
 
       // Branch filter
-      if (filters.branch && (item as any).branch !== filters.branch) {
+      if (filters.branch && (item as unknown as { branch?: string })?.branch !== filters.branch) {
         return false;
       }
 
       // Status filter
-      if (filters.status && (item as any).status !== filters.status) {
+      if (filters.status && (item as unknown as { status?: string })?.status !== filters.status) {
         return false;
       }
 
       // Category filter
-      if (filters.category && (item as any).category !== filters.category) {
+      if (filters.category && (item as unknown as { category?: string })?.category !== filters.category) {
         return false;
       }
 
       // Date range filter
       if (filters.dateFrom || filters.dateTo) {
-        const itemDate = new Date((item as any).createdDate || (item as any).registrationDate);
+        const itemDate = new Date((item as unknown as { createdDate?: string; registrationDate?: string })?.createdDate || (item as unknown as { registrationDate?: string })?.registrationDate);
         if (filters.dateFrom && itemDate < new Date(filters.dateFrom)) {
           return false;
         }
@@ -119,8 +119,8 @@ export class ApiService {
     if (!sortOptions) return data;
 
     return [...data].sort((a, b) => {
-      const aValue = (a as any)[sortOptions.field];
-      const bValue = (b as any)[sortOptions.field];
+      const aValue = (a as unknown as { [key: string]: unknown })[sortOptions.field];
+      const bValue = (b as unknown as { [key: string]: unknown })[sortOptions.field];
 
       if (aValue === bValue) return 0;
       
@@ -445,14 +445,14 @@ export class ApiService {
       !['Installation Completed', 'Repair Completed'].includes(p.status)
     );
 
-    const totalRevenue = mockProjects.reduce((sum, p) => sum + p.value, 0);
+    const totalRevenue = mockProjects.reduce((sum, p) => sum + (p.value || 0), 0);
 
     const recentProjects = mockProjects
       .sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime())
       .slice(0, 5);
 
     const topCustomers = mockCustomers
-      .sort((a, b) => b.totalValue - a.totalValue)
+      .sort((a, b) => (b.totalValue || 0) - (a.totalValue || 0))
       .slice(0, 5);
 
     return {

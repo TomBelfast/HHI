@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import React from 'react';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { Button } from '@/components/ui/Button';
@@ -39,15 +38,112 @@ interface ReportData {
   title: string;
   type: 'financial' | 'project' | 'customer' | 'employee' | 'branch' | 'custom';
   generatedAt: string;
-  data: any;
+  data: Record<string, unknown> | unknown[];
+}
+
+interface MonthlyBreakdownItem {
+  month: string;
+  revenue: string;
+  projects: number;
+}
+
+interface StatusBreakdownItem {
+  status: string;
+  count: number;
+  percentage: number;
+}
+
+interface CategoryBreakdownItem {
+  category: string;
+  count: number;
+  percentage: number;
+  totalValue?: string;
+  averageValue?: string;
+}
+
+interface BranchBreakdownItem {
+  branch: string;
+  count: number;
+  percentage: number;
+}
+
+interface RatingDistributionItem {
+  rating: string;
+  count: number;
+  percentage: number;
+}
+
+interface TopRatedCustomer {
+  name: string;
+  rating: number;
+  totalValue: string;
+  branch: string;
+}
+
+interface TopPerformer {
+  name: string;
+  rating: number;
+  projectsCompleted: number;
+  averageTime: string;
+  branch: string;
+}
+
+interface BranchManager {
+  name: string;
+  branch: string;
+  rating: number;
+  projectsCompleted: number;
+}
+
+interface BranchComparisonItem {
+  branch: string;
+  projects: number;
+  customers: number;
+  employees: number;
+  revenue: string;
+  averageProjectValue: string;
+}
+
+interface QuarterlyPerformanceItem {
+  quarter: string;
+  revenue: string;
+  projects: number;
+  averageConversion: string;
+}
+
+interface DepartmentAnalyticsItem {
+  department: string;
+  totalProjects: number;
+  totalRevenue: string;
+  completedProjects: number;
+  activeProjects: number;
+  totalCustomers: number;
+  averageProjectValue: string;
+  completionRate: string;
+  averageCustomerRating: string;
+}
+
+interface TimelineStatsItem {
+  projectId: string;
+  title: string;
+  duration: string;
+  timelineEvents: number;
+  status: string;
+}
+
+interface ChartContext {
+  dataset: {
+    label: string;
+  };
+  parsed: {
+    y: number;
+  };
 }
 
 export default function ReportsPage() {
   const [generatedReports, setGeneratedReports] = useState<ReportData[]>([]);
   const [isGenerating, setIsGenerating] = useState<string | null>(null);
   const [selectedReport, setSelectedReport] = useState<ReportData | null>(null);
-
-
 
   const getBranchChartColor = (branchName: string) => {
     const branchChartColors: Record<string, string> = {
@@ -67,7 +163,7 @@ export default function ReportsPage() {
     // Symulacja generowania raportu
     await new Promise(resolve => setTimeout(resolve, 1500));
     
-    let reportData: any = {};
+    let reportData: Record<string, unknown> = {};
     
     switch (reportType) {
       case 'monthly-revenue':
@@ -133,7 +229,7 @@ export default function ReportsPage() {
   };
 
   // Funkcje generowania raportów
-  const generateMonthlyRevenueReport = () => {
+  const generateMonthlyRevenueReport = (): Record<string, unknown> => {
     const totalRevenue = mockProjects.reduce((sum, project) => sum + project.value, 0);
     const completedProjects = mockProjects.filter(p => p.status === 'Installation Completed');
     const completedRevenue = completedProjects.reduce((sum, project) => sum + project.value, 0);
@@ -153,7 +249,7 @@ export default function ReportsPage() {
     };
   };
 
-  const generateProjectStatusReport = () => {
+  const generateProjectStatusReport = (): Record<string, unknown> => {
     const statusCounts = mockProjects.reduce((acc, project) => {
       acc[project.status] = (acc[project.status] || 0) + 1;
       return acc;
@@ -180,7 +276,7 @@ export default function ReportsPage() {
     };
   };
 
-  const generateCustomerAnalyticsReport = () => {
+  const generateCustomerAnalyticsReport = (): Record<string, unknown> => {
     const totalCustomers = mockCustomers.length;
     const activeCustomers = mockCustomers.filter(c => c.status === 'active').length;
     
@@ -213,7 +309,7 @@ export default function ReportsPage() {
     };
   };
 
-  const generateEmployeePerformanceReport = () => {
+  const generateEmployeePerformanceReport = (): Record<string, unknown> => {
     const employees = mockUsers.filter(u => u.userType !== 'subcontractor');
     const subcontractors = mockUsers.filter(u => u.userType === 'subcontractor');
     
@@ -241,7 +337,7 @@ export default function ReportsPage() {
     };
   };
 
-  const generateBranchComparisonReport = () => {
+  const generateBranchComparisonReport = (): BranchComparisonItem[] => {
     const branches = ['Belfast', 'Newtownabbey', 'Lisburn', 'Bangor', 'Coleraine'];
     
     return branches.map(branch => {
@@ -262,7 +358,7 @@ export default function ReportsPage() {
     });
   };
 
-  const generateQuarterlyPerformanceReport = () => {
+  const generateQuarterlyPerformanceReport = (): QuarterlyPerformanceItem[] => {
     const quarters = [
       { name: 'Q1 2024', months: ['Jan', 'Feb', 'Mar'] },
       { name: 'Q2 2024', months: ['Apr', 'May', 'Jun'] },
@@ -286,7 +382,7 @@ export default function ReportsPage() {
     });
   };
 
-  const generateProjectProfitabilityReport = () => {
+  const generateProjectProfitabilityReport = (): Record<string, unknown> => {
     const completedProjects = mockProjects.filter(p => p.status === 'Installation Completed');
     const categoryProfitability = completedProjects.reduce((acc, project) => {
       if (!acc[project.category]) {
@@ -309,7 +405,7 @@ export default function ReportsPage() {
     };
   };
 
-  const generateTimelineAnalysisReport = () => {
+  const generateTimelineAnalysisReport = (): Record<string, unknown> => {
     const projectsWithTimeline = mockProjects.filter(p => p.timeline && p.timeline.length > 0);
     
     const timelineStats = projectsWithTimeline.map(project => {
@@ -343,7 +439,7 @@ export default function ReportsPage() {
     };
   };
 
-  const generateCustomerSatisfactionReport = () => {
+  const generateCustomerSatisfactionReport = (): Record<string, unknown> => {
     const customersWithRating = mockCustomers.filter(c => c.rating > 0);
     const averageRating = customersWithRating.reduce((sum, c) => sum + c.rating, 0) / customersWithRating.length;
     
@@ -373,7 +469,7 @@ export default function ReportsPage() {
     };
   };
 
-  const generateEmployeeRankingsReport = () => {
+  const generateEmployeeRankingsReport = (): Record<string, unknown> => {
     const employees = mockUsers.filter(u => u.userType !== 'subcontractor' && u.rating);
     
     return {
@@ -406,7 +502,7 @@ export default function ReportsPage() {
     };
   };
 
-  const generateBranchKPIsReport = () => {
+  const generateBranchKPIsReport = (): Record<string, unknown>[] => {
     const branches = ['Belfast', 'Newtownabbey', 'Lisburn', 'Bangor', 'Coleraine'];
     
     return branches.map(branch => {
@@ -435,7 +531,7 @@ export default function ReportsPage() {
     });
   };
 
-  const generateDepartmentAnalyticsReport = () => {
+  const generateDepartmentAnalyticsReport = (): DepartmentAnalyticsItem[] => {
     const departments = [
       'Bathrooms Department',
       'Kitchens Department', 
@@ -485,7 +581,7 @@ export default function ReportsPage() {
   const renderReportContent = (report: ReportData) => {
     if (!report) return null;
 
-    const renderSummaryCards = (data: any) => {
+    const renderSummaryCards = (data: Record<string, unknown>) => {
       const summaryItems: React.ReactElement[] = [];
       
       // Dodaj kluczowe metryki jako karty
@@ -509,27 +605,31 @@ export default function ReportsPage() {
       ) : null;
     };
 
-    const renderChart = (data: any, title: string) => {
+    const renderChart = (data: unknown[], title: string) => {
       if (Array.isArray(data) && data.length > 0) {
-        const labels = data.map((item: any) => Object.values(item)[0]);
-        const values = data.map((item: any) => {
-          const val = Object.values(item).find(v => typeof v === 'number');
+        const labels = data.map((item: unknown) => {
+          const itemData = item as Record<string, unknown>;
+          return Object.values(itemData)[0];
+        });
+        const values = data.map((item: unknown) => {
+          const itemData = item as Record<string, unknown>;
+          const val = Object.values(itemData).find(v => typeof v === 'number');
           return val || 0;
         });
         
         // Check if this is a branch-related chart
         const isBranchChart = title.toLowerCase().includes('branch') || 
-                             (data.length > 0 && Object.keys(data[0])[0].toLowerCase().includes('branch'));
+                             (data.length > 0 && Object.keys(data[0] as Record<string, unknown>)[0].toLowerCase().includes('branch'));
         
         let backgroundColor, borderColor;
         
         if (isBranchChart) {
           // Use branch-specific colors
-          backgroundColor = labels.map((label: any) => {
+          backgroundColor = labels.map((label: unknown) => {
             const color = getBranchChartColor(String(label));
             return color + '80'; // Add 50% opacity
           });
-          borderColor = labels.map((label: any) => getBranchChartColor(String(label)));
+          borderColor = labels.map((label: unknown) => getBranchChartColor(String(label)));
         } else {
           // Use default colors
           backgroundColor = [
@@ -585,8 +685,8 @@ export default function ReportsPage() {
             },
             tooltip: {
               callbacks: {
-                label: function(context: any) {
-                  return `${context.dataset.label}: ${context.parsed.y}`;
+                label: function(context: { dataset: { label?: string }; parsed: { y: number } }) {
+                  return `${context.dataset.label || ''}: ${context.parsed.y}`;
                 }
               }
             },
@@ -600,7 +700,7 @@ export default function ReportsPage() {
                 weight: 'bold' as const,
                 size: 12
               },
-              formatter: function(value: any) {
+              formatter: function(value: number) {
                 return value;
               }
             }
@@ -631,9 +731,9 @@ export default function ReportsPage() {
       return null;
     };
 
-    const renderTable = (data: any, title: string) => {
+    const renderTable = (data: unknown[], title: string) => {
       if (Array.isArray(data) && data.length > 0) {
-        const headers = Object.keys(data[0]);
+        const headers = Object.keys(data[0] as Record<string, unknown>);
         
         return (
           <div className="mb-6">
@@ -650,34 +750,37 @@ export default function ReportsPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {data.map((row: any, index: number) => (
-                    <tr key={index} className="hover:bg-gray-50 dark:hover:bg-gray-800">
-                      {headers.map((header) => {
-                        const value = row[header];
-                        const isBranch = header.toLowerCase().includes('branch');
-                        
-                        if (isBranch && typeof value === 'string') {
-                          const branchColor = getBranchColor(value);
+                  {data.map((row: unknown, index: number) => {
+                    const rowData = row as Record<string, unknown>;
+                    return (
+                      <tr key={index} className="hover:bg-gray-50 dark:hover:bg-gray-800">
+                        {headers.map((header) => {
+                          const value = rowData[header];
+                          const isBranch = header.toLowerCase().includes('branch');
+                          
+                          if (isBranch && typeof value === 'string') {
+                            const branchColor = getBranchColor(value);
+                            return (
+                              <td key={header} className="px-4 py-2 border-b">
+                                <Badge variant="outline" className={branchColor}>
+                                  {value}
+                                </Badge>
+                              </td>
+                            );
+                          }
+                          
                           return (
                             <td key={header} className="px-4 py-2 border-b">
-                              <Badge variant="outline" className={branchColor}>
-                                {value}
-                              </Badge>
+                              {typeof value === 'object' 
+                                ? JSON.stringify(value, null, 2)
+                                : String(value)
+                              }
                             </td>
                           );
-                        }
-                        
-                        return (
-                          <td key={header} className="px-4 py-2 border-b">
-                            {typeof value === 'object' 
-                              ? JSON.stringify(value, null, 2)
-                              : String(value)
-                            }
-                          </td>
-                        );
-                      })}
-                    </tr>
-                  ))}
+                        })}
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
@@ -687,7 +790,7 @@ export default function ReportsPage() {
       return null;
     };
 
-    const renderKeyValueList = (data: any, title: string) => {
+    const renderKeyValueList = (data: Record<string, unknown>, title: string) => {
       if (typeof data === 'object' && !Array.isArray(data)) {
         // Filtruj tylko proste wartości (nie obiekty/tablice)
         const simpleEntries = Object.entries(data).filter(([key, value]) => 
@@ -725,8 +828,8 @@ export default function ReportsPage() {
             {renderSummaryCards(report.data)}
             
             {/* Monthly Revenue Chart */}
-            {report.data.monthlyBreakdown && renderChart(
-              report.data.monthlyBreakdown.map((item: any) => ({ 
+            {(report.data.monthlyBreakdown as MonthlyBreakdownItem[]) && renderChart(
+              (report.data.monthlyBreakdown as MonthlyBreakdownItem[]).map((item: MonthlyBreakdownItem) => ({ 
                 Month: item.month, 
                 Revenue: parseInt(item.revenue.replace(/[£,]/g, '')) 
               })), 
@@ -734,16 +837,16 @@ export default function ReportsPage() {
             )}
             
             {/* Monthly Projects Chart */}
-            {report.data.monthlyBreakdown && renderChart(
-              report.data.monthlyBreakdown.map((item: any) => ({ 
+            {(report.data.monthlyBreakdown as MonthlyBreakdownItem[]) && renderChart(
+              (report.data.monthlyBreakdown as MonthlyBreakdownItem[]).map((item: MonthlyBreakdownItem) => ({ 
                 Month: item.month, 
                 Projects: item.projects
               })), 
               'Monthly Projects Count'
             )}
             
-            {report.data.monthlyBreakdown && renderTable(
-              report.data.monthlyBreakdown.map((item: any) => ({
+            {(report.data.monthlyBreakdown as MonthlyBreakdownItem[]) && renderTable(
+              (report.data.monthlyBreakdown as MonthlyBreakdownItem[]).map((item: MonthlyBreakdownItem) => ({
                 Month: item.month,
                 Revenue: item.revenue,
                 Projects: item.projects
@@ -760,8 +863,8 @@ export default function ReportsPage() {
             {renderSummaryCards(report.data)}
             
             {/* Project Status Chart */}
-            {report.data.statusBreakdown && renderChart(
-              report.data.statusBreakdown.map((item: any) => ({ 
+            {(report.data.statusBreakdown as StatusBreakdownItem[]) && renderChart(
+              (report.data.statusBreakdown as StatusBreakdownItem[]).map((item: StatusBreakdownItem) => ({ 
                 Status: item.status, 
                 Count: item.count 
               })), 
@@ -769,8 +872,8 @@ export default function ReportsPage() {
             )}
             
             {/* Project Categories Chart */}
-            {report.data.categoryBreakdown && renderChart(
-              report.data.categoryBreakdown.map((item: any) => ({ 
+            {(report.data.categoryBreakdown as CategoryBreakdownItem[]) && renderChart(
+              (report.data.categoryBreakdown as CategoryBreakdownItem[]).map((item: CategoryBreakdownItem) => ({ 
                 Category: item.category, 
                 Count: item.count 
               })), 
@@ -778,16 +881,16 @@ export default function ReportsPage() {
             )}
             
             {/* Project Value by Category Chart */}
-            {report.data.categoryBreakdown && report.data.categoryBreakdown[0]?.totalValue && renderChart(
-              report.data.categoryBreakdown.map((item: any) => ({ 
+            {(report.data.categoryBreakdown as CategoryBreakdownItem[]) && (report.data.categoryBreakdown as CategoryBreakdownItem[])[0]?.totalValue && renderChart(
+              (report.data.categoryBreakdown as CategoryBreakdownItem[]).map((item: CategoryBreakdownItem) => ({ 
                 Category: item.category, 
-                Value: parseInt(item.totalValue.replace(/[£,]/g, ''))
+                Value: parseInt((item.totalValue || '').replace(/[£,]/g, ''))
               })), 
               'Project Value by Category'
             )}
             
-            {report.data.categoryBreakdown && renderTable(
-              report.data.categoryBreakdown.map((item: any) => ({
+            {(report.data.categoryBreakdown as CategoryBreakdownItem[]) && renderTable(
+              (report.data.categoryBreakdown as CategoryBreakdownItem[]).map((item: CategoryBreakdownItem) => ({
                 Category: item.category,
                 Count: item.count,
                 Percentage: `${item.percentage}%`
@@ -796,8 +899,8 @@ export default function ReportsPage() {
             )}
             
             {/* Special rendering for Project Profitability Report */}
-            {report.data.categoryBreakdown && report.data.categoryBreakdown[0]?.totalValue && renderTable(
-              report.data.categoryBreakdown.map((item: any) => ({
+            {(report.data.categoryBreakdown as CategoryBreakdownItem[]) && (report.data.categoryBreakdown as CategoryBreakdownItem[])[0]?.totalValue && renderTable(
+              (report.data.categoryBreakdown as CategoryBreakdownItem[]).map((item: CategoryBreakdownItem) => ({
                 Category: item.category,
                 TotalValue: item.totalValue,
                 Count: item.count,
@@ -815,8 +918,8 @@ export default function ReportsPage() {
             {renderSummaryCards(report.data)}
             
             {/* Customers by Branch Chart */}
-            {report.data.branchBreakdown && renderChart(
-              report.data.branchBreakdown.map((item: any) => ({ 
+            {(report.data.branchBreakdown as BranchBreakdownItem[]) && renderChart(
+              (report.data.branchBreakdown as BranchBreakdownItem[]).map((item: BranchBreakdownItem) => ({ 
                 Branch: item.branch, 
                 Customers: item.count 
               })), 
@@ -824,16 +927,16 @@ export default function ReportsPage() {
             )}
             
             {/* Customer Rating Distribution Chart */}
-            {report.data.ratingDistribution && renderChart(
-              report.data.ratingDistribution.map((item: any) => ({ 
+            {(report.data.ratingDistribution as RatingDistributionItem[]) && renderChart(
+              (report.data.ratingDistribution as RatingDistributionItem[]).map((item: RatingDistributionItem) => ({ 
                 Rating: item.rating, 
                 Count: item.count 
               })), 
               'Customer Rating Distribution'
             )}
             
-            {report.data.branchBreakdown && renderTable(
-              report.data.branchBreakdown.map((item: any) => ({
+            {(report.data.branchBreakdown as BranchBreakdownItem[]) && renderTable(
+              (report.data.branchBreakdown as BranchBreakdownItem[]).map((item: BranchBreakdownItem) => ({
                 Branch: item.branch,
                 Count: item.count,
                 Percentage: `${item.percentage}%`
@@ -841,8 +944,8 @@ export default function ReportsPage() {
               'Branch Details'
             )}
             
-            {report.data.ratingDistribution && renderTable(
-              report.data.ratingDistribution.map((item: any) => ({
+            {(report.data.ratingDistribution as RatingDistributionItem[]) && renderTable(
+              (report.data.ratingDistribution as RatingDistributionItem[]).map((item: RatingDistributionItem) => ({
                 Rating: item.rating,
                 Count: item.count,
                 Percentage: `${item.percentage}%`
@@ -850,8 +953,8 @@ export default function ReportsPage() {
               'Rating Details'
             )}
             
-            {report.data.topRatedCustomers && renderTable(
-              report.data.topRatedCustomers.map((item: any) => ({
+            {(report.data.topRatedCustomers as TopRatedCustomer[]) && renderTable(
+              (report.data.topRatedCustomers as TopRatedCustomer[]).map((item: TopRatedCustomer) => ({
                 Name: item.name,
                 Rating: `${item.rating} ⭐`,
                 Value: item.totalValue,
@@ -867,8 +970,8 @@ export default function ReportsPage() {
         return (
           <div className="space-y-6">
             {renderSummaryCards(report.data)}
-            {report.data.topPerformers && renderTable(
-              report.data.topPerformers.map((item: any) => ({
+            {(report.data.topPerformers as TopPerformer[]) && renderTable(
+              (report.data.topPerformers as TopPerformer[]).map((item: TopPerformer) => ({
                 Name: item.name,
                 Rating: `${item.rating} ⭐`,
                 Projects: item.projectsCompleted,
@@ -877,8 +980,8 @@ export default function ReportsPage() {
               })), 
               'Top Performers'
             )}
-            {report.data.topByRating && renderTable(
-              report.data.topByRating.map((item: any) => ({
+            {(report.data.topByRating as TopPerformer[]) && renderTable(
+              (report.data.topByRating as TopPerformer[]).map((item: TopPerformer) => ({
                 Name: item.name,
                 Rating: `${item.rating} ⭐`,
                 Projects: item.projectsCompleted,
@@ -886,8 +989,8 @@ export default function ReportsPage() {
               })), 
               'Top by Rating'
             )}
-            {report.data.topByProjects && renderTable(
-              report.data.topByProjects.map((item: any) => ({
+            {(report.data.topByProjects as TopPerformer[]) && renderTable(
+              (report.data.topByProjects as TopPerformer[]).map((item: TopPerformer) => ({
                 Name: item.name,
                 Projects: item.projectsCompleted,
                 Rating: `${item.rating} ⭐`,
@@ -895,8 +998,8 @@ export default function ReportsPage() {
               })), 
               'Top by Projects'
             )}
-            {report.data.branchManagers && renderTable(
-              report.data.branchManagers.map((item: any) => ({
+            {(report.data.branchManagers as BranchManager[]) && renderTable(
+              (report.data.branchManagers as BranchManager[]).map((item: BranchManager) => ({
                 Name: item.name,
                 Branch: item.branch,
                 Rating: `${item.rating} ⭐`,
@@ -914,12 +1017,12 @@ export default function ReportsPage() {
             {renderSummaryCards(report.data)}
             
             {/* Check if this is a department report or branch report */}
-            {Array.isArray(report.data) && report.data.length > 0 && report.data[0].department ? (
+            {Array.isArray(report.data) && report.data.length > 0 && (report.data[0] as DepartmentAnalyticsItem).department ? (
               // Department Analytics
               <>
                 {/* Projects by Department Chart */}
                 {renderChart(
-                  report.data.map((item: any) => ({ 
+                  (report.data as DepartmentAnalyticsItem[]).map((item: DepartmentAnalyticsItem) => ({ 
                     Department: item.department.replace(' Department', ''), 
                     Projects: item.totalProjects 
                   })), 
@@ -928,14 +1031,14 @@ export default function ReportsPage() {
                 
                 {/* Revenue by Department Chart */}
                 {renderChart(
-                  report.data.map((item: any) => ({ 
+                  (report.data as DepartmentAnalyticsItem[]).map((item: DepartmentAnalyticsItem) => ({ 
                     Department: item.department.replace(' Department', ''), 
                     Revenue: parseInt(item.totalRevenue.replace(/[£,]/g, ''))
                   })), 
                   'Revenue by Department'
                 )}
                 
-                {renderTable(report.data.map((item: any) => ({
+                {renderTable((report.data as DepartmentAnalyticsItem[]).map((item: DepartmentAnalyticsItem) => ({
                   Department: item.department,
                   TotalProjects: item.totalProjects,
                   TotalRevenue: item.totalRevenue,
@@ -952,16 +1055,16 @@ export default function ReportsPage() {
               <>
                 {/* Projects by Branch Chart */}
                 {renderChart(
-                  report.data.map((item: any) => ({ 
+                  (report.data as BranchComparisonItem[]).map((item: BranchComparisonItem) => ({ 
                     Branch: item.branch, 
-                    Projects: item.projects || item.totalProjects || 0
+                    Projects: item.projects || 0
                   })), 
                   'Projects by Branch'
                 )}
                 
                 {/* Revenue by Branch Chart */}
                 {renderChart(
-                  report.data.map((item: any) => ({ 
+                  (report.data as BranchComparisonItem[]).map((item: BranchComparisonItem) => ({ 
                     Branch: item.branch, 
                     Revenue: parseInt((item.revenue || '£0').replace(/[£,]/g, ''))
                   })), 
@@ -970,16 +1073,16 @@ export default function ReportsPage() {
                 
                 {/* Customers by Branch Chart */}
                 {renderChart(
-                  report.data.map((item: any) => ({ 
+                  (report.data as BranchComparisonItem[]).map((item: BranchComparisonItem) => ({ 
                     Branch: item.branch, 
                     Customers: item.customers || 0
                   })), 
                   'Customers by Branch'
                 )}
                 
-                {renderTable(report.data.map((item: any) => ({
+                {renderTable((report.data as BranchComparisonItem[]).map((item: BranchComparisonItem) => ({
                   Branch: item.branch,
-                  Projects: item.projects || item.totalProjects || 0,
+                  Projects: item.projects || 0,
                   Customers: item.customers || 0,
                   Employees: item.employees || 0,
                   Revenue: item.revenue || '£0',

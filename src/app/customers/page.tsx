@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
@@ -25,13 +25,7 @@ export default function CustomersPage() {
 
   const branches = ['Belfast', 'Newtownabbey', 'Lisburn', 'Bangor', 'Coleraine'];
 
-
-
-  useEffect(() => {
-    loadCustomers();
-  }, [searchQuery, branchFilter, sortField, sortDirection]);
-
-  const loadCustomers = async () => {
+  const loadCustomers = useCallback(async () => {
     try {
       setLoading(true);
       const filters: FilterOptions = {
@@ -51,13 +45,17 @@ export default function CustomersPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [searchQuery, branchFilter, sortField, sortDirection]);
+
+  useEffect(() => {
+    loadCustomers();
+  }, [loadCustomers]);
 
   const columns = [
     { 
       key: 'name', 
       label: 'Name',
-      render: (value: string, row: any) => (
+      render: (value: string, row: Customer) => (
         <button
           onClick={() => router.push(`/customers/${row.id}`)}
           className="text-left text-blue-600 hover:text-blue-800 hover:underline font-medium"
@@ -113,14 +111,7 @@ export default function CustomersPage() {
     { key: 'registrationDate', label: 'Registration Date' }
   ];
 
-  const handleSort = (field: string) => {
-    if (sortField === field) {
-      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
-    } else {
-      setSortField(field);
-      setSortDirection('asc');
-    }
-  };
+
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('pl-PL');

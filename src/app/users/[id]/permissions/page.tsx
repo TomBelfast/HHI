@@ -4,9 +4,9 @@ import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
-import { PermissionGate } from '@/components/auth/PermissionGate';
+
 import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
+
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { apiService } from '@/lib/api';
@@ -174,10 +174,7 @@ export default function UserPermissionsPage() {
     }
   };
 
-  const getPermissionCategory = (permission: string) => {
-    const perm = availablePermissions.find(p => p.key === permission);
-    return perm?.category || 'Other';
-  };
+
 
   if (loading) {
     return (

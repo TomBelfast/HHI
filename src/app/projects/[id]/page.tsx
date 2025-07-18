@@ -1,10 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
+
 import { Badge } from '@/components/ui/Badge';
 import { Card } from '@/components/ui/Card';
 import { apiService } from '@/lib/api';
@@ -38,13 +38,7 @@ export default function ProjectDetailPage() {
     'Awaiting Review'
   ];
 
-
-
-  useEffect(() => {
-    loadProjectData();
-  }, [projectId]);
-
-  const loadProjectData = async () => {
+  const loadProjectData = useCallback(async () => {
     try {
       setLoading(true);
       const [projectRes, customersRes, usersRes] = await Promise.all([
@@ -65,7 +59,11 @@ export default function ProjectDetailPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [projectId]);
+
+  useEffect(() => {
+    loadProjectData();
+  }, [loadProjectData]);
 
   const updateProjectStatus = async () => {
     if (!newStatus || !project) return;

@@ -18,7 +18,7 @@ export function PermissionGate({
   fallback = null,
   userType
 }: PermissionGateProps) {
-  const { hasPermission, hasAnyPermission, hasAllPermissions, user } = usePermissions();
+  const { hasAnyPermission, hasAllPermissions, user } = usePermissions();
 
   // Check if user is authenticated
   if (!user) {

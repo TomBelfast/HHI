@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
-import { PermissionGate } from '@/components/auth/PermissionGate';
+
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Badge } from '@/components/ui/Badge';
@@ -22,10 +22,7 @@ interface User {
   status: 'active' | 'inactive' | 'suspended';
 }
 
-interface UserPermissions {
-  userId: string;
-  permissions: string[];
-}
+
 
 export default function UserPermissionsPage() {
   const router = useRouter();
@@ -177,10 +174,7 @@ export default function UserPermissionsPage() {
     }
   };
 
-  const getPermissionCategory = (permission: string) => {
-    const perm = availablePermissions.find(p => p.key === permission);
-    return perm?.category || 'Other';
-  };
+
 
   const filteredUsers = users.filter(user => {
     const matchesSearch = user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||

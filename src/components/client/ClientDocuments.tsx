@@ -50,7 +50,7 @@ interface ClientDocumentsProps {
   clientName: string;
 }
 
-export default function ClientDocuments({ clientId, clientName }: ClientDocumentsProps) {
+export default function ClientDocuments({ clientName }: ClientDocumentsProps) {
   const [selectedDocument, setSelectedDocument] = useState<ClientDocument | null>(null);
 
   // Sample data for Mr. James Murphy

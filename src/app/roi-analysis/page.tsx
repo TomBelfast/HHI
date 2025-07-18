@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
@@ -14,14 +14,11 @@ import {
   CheckCircle, 
   AlertTriangle,
   BarChart3,
-  PieChart,
   LineChart,
   Target,
   ArrowUpRight,
   ArrowDownRight,
-  Calculator,
-  ChartBar,
-  TrendingDown
+  Calculator
 } from 'lucide-react';
 
 interface ROIData {
