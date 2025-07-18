@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "./card"
+import { Card, CardContent, CardHeader, CardTitle } from "./Card"
 import { cn } from "@/lib/utils"
 import { TrendingUp, TrendingDown } from "lucide-react"
 

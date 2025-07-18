@@ -356,16 +356,16 @@ To proceed, please confirm your acceptance.`,
 
       if (response.ok) {
         const data = await response.json();
-        return data.value.map((msg: any) => ({
-          id: msg.id,
-          subject: msg.subject,
-          body: msg.body.content,
-          from: msg.from.emailAddress.address,
-          to: msg.toRecipients.map((r: any) => r.emailAddress.address),
-          sentDateTime: new Date(msg.sentDateTime),
-          receivedDateTime: new Date(msg.receivedDateTime),
-          hasAttachments: msg.hasAttachments,
-          threadId: msg.conversationId,
+        return data.value.map((msg: Record<string, unknown>) => ({
+          id: msg.id as string,
+          subject: msg.subject as string,
+          body: (msg.body as Record<string, unknown>).content as string,
+          from: ((msg.from as Record<string, unknown>).emailAddress as Record<string, unknown>).address as string,
+          to: ((msg.toRecipients as Record<string, unknown>[]).map((r: Record<string, unknown>) => (r.emailAddress as Record<string, unknown>).address as string)),
+          sentDateTime: new Date(msg.sentDateTime as string),
+          receivedDateTime: new Date(msg.receivedDateTime as string),
+          hasAttachments: msg.hasAttachments as boolean,
+          threadId: msg.conversationId as string,
           customerId: customerId
         }));
       } else {
@@ -390,16 +390,16 @@ To proceed, please confirm your acceptance.`,
 
       if (response.ok) {
         const data = await response.json();
-        return data.value.map((msg: any) => ({
-          id: msg.id,
-          subject: msg.subject,
-          body: msg.body.content,
-          from: msg.from.emailAddress.address,
-          to: msg.toRecipients.map((r: any) => r.emailAddress.address),
-          sentDateTime: new Date(msg.sentDateTime),
-          receivedDateTime: new Date(msg.receivedDateTime),
-          hasAttachments: msg.hasAttachments,
-          threadId: msg.conversationId
+        return data.value.map((msg: Record<string, unknown>) => ({
+          id: msg.id as string,
+          subject: msg.subject as string,
+          body: (msg.body as Record<string, unknown>).content as string,
+          from: ((msg.from as Record<string, unknown>).emailAddress as Record<string, unknown>).address as string,
+          to: ((msg.toRecipients as Record<string, unknown>[]).map((r: Record<string, unknown>) => (r.emailAddress as Record<string, unknown>).address as string)),
+          sentDateTime: new Date(msg.sentDateTime as string),
+          receivedDateTime: new Date(msg.receivedDateTime as string),
+          hasAttachments: msg.hasAttachments as boolean,
+          threadId: msg.conversationId as string
         }));
       } else {
         console.error('Failed to get email thread');

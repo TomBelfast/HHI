@@ -1,4 +1,4 @@
-import { User } from './mock-data';
+
 
 // Auth types
 export interface LoginCredentials {

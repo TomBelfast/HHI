@@ -441,7 +441,7 @@ class MicrosoftDriveService {
   }
 
   // Wykrywanie typu dokumentu
-  detectDocumentType(fileName: string, content?: string): DocumentType {
+  detectDocumentType(fileName: string, _content?: string): DocumentType {
     const lowerFileName = fileName.toLowerCase();
     
     if (lowerFileName.includes('contract') || lowerFileName.includes('umowa')) {

@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./Card"
 import { Badge } from "./Badge"
 import { cn } from "@/lib/utils"
 
@@ -23,14 +23,12 @@ const statusConfig = {
 }
 
 export function ProjectCard({
-  id,
   title,
   description,
   status,
   customer,
   totalCost,
   startDate,
-  endDate,
   className,
 }: ProjectCardProps) {
   const statusInfo = statusConfig[status]

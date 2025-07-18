@@ -101,12 +101,18 @@ export class ApiService {
 
       // Date range filter
       if (filters.dateFrom || filters.dateTo) {
-        const itemDate = new Date((item as unknown as { createdDate?: string; registrationDate?: string })?.createdDate || (item as unknown as { registrationDate?: string })?.registrationDate);
-        if (filters.dateFrom && itemDate < new Date(filters.dateFrom)) {
-          return false;
-        }
-        if (filters.dateTo && itemDate > new Date(filters.dateTo)) {
-          return false;
+        const createdDate = (item as unknown as { createdDate?: string; registrationDate?: string })?.createdDate;
+        const registrationDate = (item as unknown as { registrationDate?: string })?.registrationDate;
+        const dateString = createdDate || registrationDate;
+        
+        if (dateString) {
+          const itemDate = new Date(dateString);
+          if (filters.dateFrom && itemDate < new Date(filters.dateFrom)) {
+            return false;
+          }
+          if (filters.dateTo && itemDate > new Date(filters.dateTo)) {
+            return false;
+          }
         }
       }
 
@@ -124,7 +130,19 @@ export class ApiService {
 
       if (aValue === bValue) return 0;
       
-      const comparison = aValue < bValue ? -1 : 1;
+      // Handle different types for comparison
+      if (typeof aValue === 'string' && typeof bValue === 'string') {
+        const comparison = aValue.localeCompare(bValue);
+        return sortOptions.direction === 'desc' ? -comparison : comparison;
+      }
+      
+      if (typeof aValue === 'number' && typeof bValue === 'number') {
+        const comparison = aValue < bValue ? -1 : 1;
+        return sortOptions.direction === 'desc' ? -comparison : comparison;
+      }
+      
+      // Fallback for mixed types
+      const comparison = String(aValue) < String(bValue) ? -1 : 1;
       return sortOptions.direction === 'desc' ? -comparison : comparison;
     });
   }

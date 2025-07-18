@@ -12,7 +12,6 @@ import { apiService } from '@/lib/api';
 import { Project, Customer } from '@/lib/mock-data';
 import { PERMISSIONS } from '@/lib/auth';
 import { getBranchColor, getProjectStatusColor, getDepartmentColor } from '@/lib/colors';
-import Link from 'next/link';
 
 export default function ProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -62,14 +61,14 @@ export default function ProjectsPage() {
     { 
       key: 'status', 
       label: 'Status',
-      render: (value: string) => {
-        const statusColor = getProjectStatusColor(value);
+      render: (value: string | number | boolean | null | undefined) => {
+        const statusColor = getProjectStatusColor(String(value));
         return (
           <Badge 
             variant="outline"
             className={statusColor}
           >
-            {value.charAt(0).toUpperCase() + value.slice(1)}
+            {String(value).charAt(0).toUpperCase() + String(value).slice(1)}
           </Badge>
         );
       }
@@ -78,11 +77,11 @@ export default function ProjectsPage() {
     { 
       key: 'branch', 
       label: 'Branch',
-      render: (value: string) => {
-        const branchColor = getBranchColor(value);
+      render: (value: string | number | boolean | null | undefined) => {
+        const branchColor = getBranchColor(String(value));
         return (
           <Badge variant="outline" className={branchColor}>
-            {value}
+            {String(value)}
           </Badge>
         );
       }
@@ -90,11 +89,11 @@ export default function ProjectsPage() {
     { 
       key: 'department', 
       label: 'Department',
-      render: (value: string) => {
-        const departmentColor = getDepartmentColor(value);
+      render: (value: string | number | boolean | null | undefined) => {
+        const departmentColor = getDepartmentColor(String(value));
         return (
           <Badge variant="outline" className={departmentColor}>
-            {value}
+            {String(value)}
           </Badge>
         );
       }
@@ -132,19 +131,17 @@ export default function ProjectsPage() {
   });
 
   const enhancedData = sortedProjects.map(project => ({
-    ...project,
+    id: project.id,
+    customerId: project.customerId,
     customerName: getCustomerName(project.customerId),
-    status: project.status, // Explicitly include status
-    value: project.value, // Keep as number for DataTable formatting
-    createdDate: new Date(project.createdDate).toLocaleDateString('pl-PL'),
-    title: (
-      <Link 
-        href={`/projects/${project.id}`}
-        className="text-primary hover:text-primary/80 font-medium"
-      >
-        {project.title}
-      </Link>
-    )
+    title: project.title,
+    status: project.status,
+    value: project.value,
+    category: project.category,
+    branch: project.branch,
+    department: project.department,
+    assignedWorker: project.assignedWorker,
+    createdDate: new Date(project.createdDate).toLocaleDateString('pl-PL')
   }));
 
   const totalProjects = projects.length;

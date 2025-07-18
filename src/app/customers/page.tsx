@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { PermissionGate } from '@/components/auth/PermissionGate';
-import { DataTable } from '@/components/ui/DataTable';
+import { DataTable, TableRow } from '@/components/ui/DataTable';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Badge } from '@/components/ui/Badge';
@@ -55,12 +55,12 @@ export default function CustomersPage() {
     { 
       key: 'name', 
       label: 'Name',
-      render: (value: string, row: Customer) => (
+      render: (value: string | number | boolean | null | undefined, row?: TableRow) => (
         <button
-          onClick={() => router.push(`/customers/${row.id}`)}
+          onClick={() => router.push(`/customers/${row?.id}`)}
           className="text-left text-blue-600 hover:text-blue-800 hover:underline font-medium"
         >
-          {value}
+          {String(value)}
         </button>
       )
     },
@@ -69,11 +69,11 @@ export default function CustomersPage() {
     { 
       key: 'branch', 
       label: 'Branch',
-      render: (value: string) => {
-        const branchColor = getBranchColor(value);
+      render: (value: string | number | boolean | null | undefined) => {
+        const branchColor = getBranchColor(String(value));
         return (
           <Badge variant="outline" className={branchColor}>
-            {value}
+            {String(value)}
           </Badge>
         );
       }
@@ -81,11 +81,11 @@ export default function CustomersPage() {
     { 
       key: 'department', 
       label: 'Department',
-      render: (value: string) => {
-        const departmentColor = getDepartmentColor(value);
+      render: (value: string | number | boolean | null | undefined) => {
+        const departmentColor = getDepartmentColor(String(value));
         return (
           <Badge variant="outline" className={departmentColor}>
-            {value}
+            {String(value)}
           </Badge>
         );
       }
@@ -93,14 +93,14 @@ export default function CustomersPage() {
     { 
       key: 'status', 
       label: 'Status',
-      render: (value: string) => {
-        const statusColor = getCustomerStatusColor(value);
+      render: (value: string | number | boolean | null | undefined) => {
+        const statusColor = getCustomerStatusColor(String(value));
         return (
           <Badge 
             variant="outline"
             className={statusColor}
           >
-            {value.charAt(0).toUpperCase() + value.slice(1)}
+            {String(value).charAt(0).toUpperCase() + String(value).slice(1)}
           </Badge>
         );
       }
@@ -118,8 +118,18 @@ export default function CustomersPage() {
   };
 
   const enhancedData = customers.map(customer => ({
-    ...customer,
-    status: customer.status, // Keep original status for color mapping
+    id: customer.id,
+    name: customer.name,
+    email: customer.email,
+    phone: customer.phone,
+    address: customer.address,
+    postcode: customer.postcode,
+    branch: customer.branch,
+    department: customer.department,
+    status: customer.status,
+    totalProjects: customer.totalProjects,
+    totalValue: customer.totalValue,
+    rating: customer.rating,
     registrationDate: formatDate(customer.registrationDate)
   }));
 

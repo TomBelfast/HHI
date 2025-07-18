@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
@@ -56,11 +56,7 @@ export default function UserPermissionsPage() {
     { key: PERMISSIONS.PERMISSIONS_MANAGE_OWN_BRANCH, label: 'Manage Own Branch', category: 'Permissions' }
   ];
 
-  useEffect(() => {
-    loadUser();
-  }, [userId]);
-
-  const loadUser = async () => {
+  const loadUser = useCallback(async () => {
     try {
       setLoading(true);
       const response = await apiService.getUser(userId);
@@ -76,7 +72,11 @@ export default function UserPermissionsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [userId]);
+
+  useEffect(() => {
+    loadUser();
+  }, [loadUser]);
 
   const getDefaultPermissions = (userType: string): string[] => {
     const rolePermissions = {

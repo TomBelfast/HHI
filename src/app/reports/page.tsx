@@ -9,7 +9,6 @@ import { Badge } from '@/components/ui/Badge';
 import { PERMISSIONS } from '@/lib/auth';
 import { mockCustomers, mockProjects, mockUsers, mockAnalytics } from '@/lib/mock-data';
 import { getBranchColor } from '@/lib/colors';
-import * as Dialog from '@radix-ui/react-dialog';
 import { X } from 'lucide-react';
 import {
   Chart as ChartJS,
@@ -38,7 +37,7 @@ interface ReportData {
   title: string;
   type: 'financial' | 'project' | 'customer' | 'employee' | 'branch' | 'custom';
   generatedAt: string;
-  data: Record<string, unknown> | unknown[];
+  data: Record<string, unknown>;
 }
 
 interface MonthlyBreakdownItem {
@@ -123,22 +122,7 @@ interface DepartmentAnalyticsItem {
   averageCustomerRating: string;
 }
 
-interface TimelineStatsItem {
-  projectId: string;
-  title: string;
-  duration: string;
-  timelineEvents: number;
-  status: string;
-}
 
-interface ChartContext {
-  dataset: {
-    label: string;
-  };
-  parsed: {
-    y: number;
-  };
-}
 
 export default function ReportsPage() {
   const [generatedReports, setGeneratedReports] = useState<ReportData[]>([]);
@@ -179,10 +163,10 @@ export default function ReportsPage() {
         reportData = generateEmployeePerformanceReport();
         break;
       case 'branch-comparison':
-        reportData = generateBranchComparisonReport();
+        reportData = { data: generateBranchComparisonReport() };
         break;
       case 'quarterly-performance':
-        reportData = generateQuarterlyPerformanceReport();
+        reportData = { data: generateQuarterlyPerformanceReport() };
         break;
       case 'project-profitability':
         reportData = generateProjectProfitabilityReport();
@@ -197,10 +181,10 @@ export default function ReportsPage() {
         reportData = generateEmployeeRankingsReport();
         break;
       case 'branch-kpis':
-        reportData = generateBranchKPIsReport();
+        reportData = { data: generateBranchKPIsReport() };
         break;
       case 'department-analytics':
-        reportData = generateDepartmentAnalyticsReport();
+        reportData = { data: generateDepartmentAnalyticsReport() };
         break;
       default:
         reportData = { message: 'Report type not implemented' };
@@ -411,7 +395,6 @@ export default function ReportsPage() {
     const timelineStats = projectsWithTimeline.map(project => {
       const timeline = project.timeline!;
       const contactDate = timeline.find(t => t.type === 'phone_call')?.date;
-      const measurementDate = timeline.find(t => t.type === 'measurement')?.date;
       const completionDate = timeline.find(t => t.type === 'installation_completed')?.date;
       
       let duration = null;
@@ -793,7 +776,7 @@ export default function ReportsPage() {
     const renderKeyValueList = (data: Record<string, unknown>, title: string) => {
       if (typeof data === 'object' && !Array.isArray(data)) {
         // Filtruj tylko proste wartości (nie obiekty/tablice)
-        const simpleEntries = Object.entries(data).filter(([key, value]) => 
+        const simpleEntries = Object.entries(data).filter(([, value]) => 
           typeof value !== 'object' || value === null
         );
         
@@ -1055,7 +1038,7 @@ export default function ReportsPage() {
               <>
                 {/* Projects by Branch Chart */}
                 {renderChart(
-                  (report.data as BranchComparisonItem[]).map((item: BranchComparisonItem) => ({ 
+                  ((report.data as Record<string, unknown>).data as BranchComparisonItem[]).map((item: BranchComparisonItem) => ({ 
                     Branch: item.branch, 
                     Projects: item.projects || 0
                   })), 
@@ -1064,7 +1047,7 @@ export default function ReportsPage() {
                 
                 {/* Revenue by Branch Chart */}
                 {renderChart(
-                  (report.data as BranchComparisonItem[]).map((item: BranchComparisonItem) => ({ 
+                  ((report.data as Record<string, unknown>).data as BranchComparisonItem[]).map((item: BranchComparisonItem) => ({ 
                     Branch: item.branch, 
                     Revenue: parseInt((item.revenue || '£0').replace(/[£,]/g, ''))
                   })), 
@@ -1073,14 +1056,14 @@ export default function ReportsPage() {
                 
                 {/* Customers by Branch Chart */}
                 {renderChart(
-                  (report.data as BranchComparisonItem[]).map((item: BranchComparisonItem) => ({ 
+                  ((report.data as Record<string, unknown>).data as BranchComparisonItem[]).map((item: BranchComparisonItem) => ({ 
                     Branch: item.branch, 
                     Customers: item.customers || 0
                   })), 
                   'Customers by Branch'
                 )}
                 
-                {renderTable((report.data as BranchComparisonItem[]).map((item: BranchComparisonItem) => ({
+                {renderTable(((report.data as Record<string, unknown>).data as BranchComparisonItem[]).map((item: BranchComparisonItem) => ({
                   Branch: item.branch,
                   Projects: item.projects || 0,
                   Customers: item.customers || 0,

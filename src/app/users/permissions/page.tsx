@@ -1,33 +1,21 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
-
+import { useAuth } from '@/contexts/AuthContext';
+import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Badge } from '@/components/ui/Badge';
-import { Card } from '@/components/ui/Card';
 import { apiService } from '@/lib/api';
-import { PERMISSIONS, AuthService } from '@/lib/auth';
-
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  role: string;
-  userType: 'admin' | 'branch_manager' | 'branch_worker' | 'subcontractor';
-  branch?: string;
-  status: 'active' | 'inactive' | 'suspended';
-}
-
-
+import { PERMISSIONS } from '@/lib/auth';
+import { User } from '@/lib/mock-data';
 
 export default function UserPermissionsPage() {
   const router = useRouter();
-  const authService = AuthService.getInstance();
-  const currentUser = authService.getCurrentUser();
+  const { user: currentUser } = useAuth();
   
   const [users, setUsers] = useState<User[]>([]);
   const [userPermissions, setUserPermissions] = useState<Record<string, string[]>>({});
@@ -57,11 +45,7 @@ export default function UserPermissionsPage() {
     { key: PERMISSIONS.PERMISSIONS_MANAGE_OWN_BRANCH, label: 'Manage Own Branch', category: 'Permissions' }
   ];
 
-  useEffect(() => {
-    loadUsers();
-  }, []);
-
-  const loadUsers = async () => {
+  const loadUsers = useCallback(async () => {
     try {
       setLoading(true);
       const response = await apiService.getUsers();
@@ -95,7 +79,11 @@ export default function UserPermissionsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [currentUser?.userType, currentUser?.branch]);
+
+  useEffect(() => {
+    loadUsers();
+  }, [loadUsers]);
 
   const getDefaultPermissions = (userType: string): string[] => {
     const rolePermissions = {

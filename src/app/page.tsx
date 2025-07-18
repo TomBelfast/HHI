@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { MetricCard } from '@/components/ui/MetricCard';
 import { ProjectCard } from '@/components/ui/ProjectCard';
-import { DataTable } from '@/components/ui/DataTable';
+import { DataTable, TableRow } from '@/components/ui/DataTable';
 import { Badge } from '@/components/ui/Badge';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { apiService } from '@/lib/api';
@@ -107,12 +107,12 @@ export default function DashboardPage() {
     { 
       key: 'status', 
       label: 'Status',
-      render: (value: string) => (
+      render: (value: string | number | boolean | null | undefined) => (
         <Badge 
           variant="outline"
-          className={getProjectStatusColor(value)}
+          className={getProjectStatusColor(String(value))}
         >
-          {value.charAt(0).toUpperCase() + value.slice(1)}
+          {String(value).charAt(0).toUpperCase() + String(value).slice(1)}
         </Badge>
       )
     },
@@ -120,11 +120,11 @@ export default function DashboardPage() {
     { 
       key: 'branch', 
       label: 'Branch',
-      render: (value: string) => {
-        const branchColor = getBranchColor(value);
+      render: (value: string | number | boolean | null | undefined) => {
+        const branchColor = getBranchColor(String(value));
         return (
           <Badge variant="outline" className={branchColor}>
-            {value}
+            {String(value)}
           </Badge>
         );
       }
@@ -139,11 +139,11 @@ export default function DashboardPage() {
     { key: 'rating', label: 'Rating' }
   ];
 
-  const handleCustomerClick = (customer: Customer) => {
+  const handleCustomerClick = (customer: TableRow) => {
     router.push(`/customers/${customer.id}`);
   };
 
-  const handleProjectClick = (project: Project) => {
+  const handleProjectClick = (project: TableRow) => {
     router.push(`/projects/${project.id}`);
   };
 
@@ -209,7 +209,14 @@ export default function DashboardPage() {
                   Top Customers
                 </h3>
                 <DataTable
-                  data={dashboardData.topCustomers}
+                  data={dashboardData.topCustomers.map(customer => ({
+                    id: customer.id,
+                    name: customer.name,
+                    email: customer.email,
+                    totalProjects: customer.totalProjects,
+                    totalValue: customer.totalValue,
+                    rating: customer.rating
+                  }))}
                   columns={topCustomersColumns}
                   itemsPerPage={5}
                   showPagination={false}
@@ -226,7 +233,14 @@ export default function DashboardPage() {
                 All Projects
               </h3>
               <DataTable
-                data={dashboardData.recentProjects}
+                data={dashboardData.recentProjects.map(project => ({
+                  id: project.id,
+                  title: project.title,
+                  customerId: project.customerId,
+                  status: project.status,
+                  value: project.value,
+                  branch: project.branch
+                }))}
                 columns={recentProjectsColumns}
                 itemsPerPage={10}
                 showPagination={true}

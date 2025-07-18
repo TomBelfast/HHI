@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
@@ -56,23 +56,19 @@ export default function EditUserPage() {
   const getRoleOptions = (userType: string) => {
     switch (userType) {
       case 'admin':
-        return ['System Administrator'];
+        return ['Admin'];
       case 'branch_manager':
         return ['Branch Manager'];
       case 'branch_worker':
-        return ['Branch Worker', 'Senior Worker', 'Apprentice'];
+        return ['Branch Worker'];
       case 'subcontractor':
-        return ['Subcontractor', 'Specialist Contractor'];
+        return ['Subcontractor'];
       default:
         return [];
     }
   };
 
-  useEffect(() => {
-    loadUser();
-  }, [userId]);
-
-  const loadUser = async () => {
+  const loadUser = useCallback(async () => {
     try {
       setLoading(true);
       const response = await apiService.getUser(userId);
@@ -95,7 +91,11 @@ export default function EditUserPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [userId]);
+
+  useEffect(() => {
+    loadUser();
+  }, [loadUser]);
 
   const handleInputChange = (field: keyof UserFormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));

@@ -1,10 +1,8 @@
 'use client';
 
-import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
-import { PermissionGate } from '@/components/auth/PermissionGate';
 import { PERMISSIONS } from '@/lib/auth';
 
 const navigation = [

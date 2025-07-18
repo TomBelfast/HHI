@@ -1,7 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { authService, AuthUser, LoginCredentials, AuthState } from '@/lib/auth';
+import { authService, LoginCredentials, AuthState } from '@/lib/auth';
 
 interface AuthContextType extends AuthState {
   login: (credentials: LoginCredentials) => Promise<void>;
@@ -30,7 +30,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           isLoading: false,
           error: null
         });
-      } catch (error) {
+      } catch (_error) {
         setState({
           user: null,
           isAuthenticated: false,
@@ -55,13 +55,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         isLoading: false,
         error: null
       });
-    } catch (error) {
+    } catch (_error) {
       setState(prev => ({
         ...prev,
         isLoading: false,
-        error: error instanceof Error ? error.message : 'Login failed'
+        error: 'Login failed'
       }));
-      throw error;
+      throw _error;
     }
   };
 
@@ -77,7 +77,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         isLoading: false,
         error: null
       });
-    } catch (error) {
+    } catch (_error) {
       setState(prev => ({
         ...prev,
         isLoading: false,

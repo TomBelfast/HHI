@@ -8,7 +8,7 @@ import { PermissionGate } from '@/components/auth/PermissionGate';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Badge } from '@/components/ui/Badge';
-import { DataTable } from '@/components/ui/DataTable';
+import { DataTable, TableRow } from '@/components/ui/DataTable';
 import { apiService } from '@/lib/api';
 import { PERMISSIONS } from '@/lib/auth';
 import { getBranchColor, getUserStatusColor, getRoleColor } from '@/lib/colors';
@@ -213,107 +213,145 @@ export default function UsersPage() {
   const columns = [
     { key: 'name', label: 'Name' },
     { key: 'email', label: 'Email' },
-    { key: 'role', label: 'Role' },
+    { 
+      key: 'role', 
+      label: 'Role',
+      render: (value: string | number | boolean | null | undefined, row?: TableRow) => {
+        const user = sortedUsers.find(u => u.id === row?.id) as User;
+        return (
+          <div className="flex items-center">
+            <span className="mr-2">{getRoleIcon(user.role)}</span>
+            <Badge 
+              variant="outline"
+              className={getRoleColor(user.role)}
+            >
+              {user.role}
+            </Badge>
+          </div>
+        );
+      }
+    },
     { key: 'userType', label: 'User Type' },
-    { key: 'status', label: 'Status' },
-    { key: 'branch', label: 'Branch' },
+    { 
+      key: 'status', 
+      label: 'Status',
+      render: (value: string | number | boolean | null | undefined, row?: TableRow) => {
+        const user = sortedUsers.find(u => u.id === row?.id) as User;
+        return user.status ? (
+          <Badge 
+            variant="outline"
+            className={getUserStatusColor(user.status)}
+          >
+            {user.status.charAt(0).toUpperCase() + user.status.slice(1)}
+          </Badge>
+        ) : '-';
+      }
+    },
+    { 
+      key: 'branch', 
+      label: 'Branch',
+      render: (value: string | number | boolean | null | undefined, row?: TableRow) => {
+        const user = sortedUsers.find(u => u.id === row?.id) as User;
+        return user.branch ? (
+          <Badge variant="outline" className={getBranchColor(user.branch)}>
+            {user.branch}
+          </Badge>
+        ) : '-';
+      }
+    },
     { key: 'phone', label: 'Phone' },
     { key: 'specialization', label: 'Specialization' },
-    { key: 'rating', label: 'Rating' },
+    { 
+      key: 'rating', 
+      label: 'Rating',
+      render: (value: string | number | boolean | null | undefined, row?: TableRow) => {
+        const user = sortedUsers.find(u => u.id === row?.id) as User;
+        return user.rating ? (
+          <div className="flex items-center">
+            <span className="text-yellow-500 mr-1">⭐</span>
+            <span>{user.rating}</span>
+          </div>
+        ) : '-';
+      }
+    },
     { key: 'projectsCompleted', label: 'Projects' },
     { key: 'lastLogin', label: 'Last Login' },
-    { key: 'actions', label: 'Actions' }
+    { 
+      key: 'actions', 
+      label: 'Actions',
+      render: (value: string | number | boolean | null | undefined, row?: TableRow) => {
+        const user = sortedUsers.find(u => u.id === row?.id) as User;
+        return (
+          <div className="flex space-x-2">
+            <PermissionGate permissions={[PERMISSIONS.USERS_WRITE]}>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => router.push(`/users/${user.id}/edit`)}
+              >
+                Edit
+              </Button>
+            </PermissionGate>
+            <PermissionGate permissions={[PERMISSIONS.PERMISSIONS_READ]}>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => router.push(`/users/${user.id}/permissions`)}
+              >
+                Permissions
+              </Button>
+            </PermissionGate>
+            <PermissionGate permissions={[PERMISSIONS.USERS_WRITE]}>
+              {user.status === 'active' ? (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleDeactivateUser(user.id)}
+                  className="text-orange-600 border-orange-200 hover:bg-orange-50"
+                >
+                  Deactivate
+                </Button>
+              ) : (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleActivateUser(user.id)}
+                  className="text-green-600 border-green-200 hover:bg-green-50"
+                >
+                  Activate
+                </Button>
+              )}
+            </PermissionGate>
+            <PermissionGate permissions={[PERMISSIONS.USERS_WRITE]}>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handleDeleteUser(user.id)}
+                className="text-red-600 border-red-200 hover:bg-red-50"
+              >
+                Delete
+              </Button>
+            </PermissionGate>
+          </div>
+        );
+      }
+    }
   ];
 
   const enhancedData = sortedUsers.map(user => ({
-    ...user,
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    role: user.role,
     userType: user.userType ? user.userType.replace('_', ' ').charAt(0).toUpperCase() + user.userType.replace('_', ' ').slice(1) : '-',
-    status: user.status ? (
-      <Badge 
-        variant="outline"
-        className={getUserStatusColor(user.status)}
-      >
-        {user.status.charAt(0).toUpperCase() + user.status.slice(1)}
-      </Badge>
-    ) : '-',
-    role: (
-      <div className="flex items-center">
-        <span className="mr-2">{getRoleIcon(user.role)}</span>
-        <Badge 
-          variant="outline"
-          className={getRoleColor(user.role)}
-        >
-          {user.role}
-        </Badge>
-      </div>
-    ),
-    rating: user.rating ? (
-      <div className="flex items-center">
-        <span className="text-yellow-500 mr-1">⭐</span>
-        <span>{user.rating}</span>
-      </div>
-    ) : '-',
+    status: user.status || '-',
+    branch: user.branch || '-',
+    phone: user.phone,
     specialization: user.specialization || '-',
-    branch: user.branch ? (
-      <Badge variant="outline" className={getBranchColor(user.branch)}>
-  {user.branch}
-</Badge>
-    ) : '-',
+    rating: user.rating || '-',
     projectsCompleted: user.projectsCompleted || user.completedJobs || '-',
     lastLogin: user.lastLogin ? new Date(user.lastLogin).toLocaleDateString('pl-PL') : '-',
-    actions: (
-      <div className="flex space-x-2">
-        <PermissionGate permissions={[PERMISSIONS.USERS_WRITE]}>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => router.push(`/users/${user.id}/edit`)}
-          >
-            Edit
-          </Button>
-        </PermissionGate>
-        <PermissionGate permissions={[PERMISSIONS.PERMISSIONS_READ]}>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => router.push(`/users/${user.id}/permissions`)}
-          >
-            Permissions
-          </Button>
-        </PermissionGate>
-        <PermissionGate permissions={[PERMISSIONS.USERS_WRITE]}>
-          {user.status === 'active' ? (
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => handleDeactivateUser(user.id)}
-              className="text-orange-600 border-orange-200 hover:bg-orange-50"
-            >
-              Deactivate
-            </Button>
-          ) : (
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => handleActivateUser(user.id)}
-              className="text-green-600 border-green-200 hover:bg-green-50"
-            >
-              Activate
-            </Button>
-          )}
-        </PermissionGate>
-        <PermissionGate permissions={[PERMISSIONS.USERS_WRITE]}>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => handleDeleteUser(user.id)}
-            className="text-red-600 border-red-200 hover:bg-red-50"
-          >
-            Delete
-          </Button>
-        </PermissionGate>
-      </div>
-    )
+    actions: 'actions' // This will be rendered by the render function
   }));
 
   console.log('Enhanced data:', enhancedData);

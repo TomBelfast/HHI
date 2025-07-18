@@ -69,7 +69,7 @@ export default function DocumentAssignmentModal({
   document,
   onAssign
 }: DocumentAssignmentModalProps) {
-  const [customers, setCustomers] = useState<Customer[]>(mockCustomers);
+  const [customers] = useState<Customer[]>(mockCustomers);
   const [filteredCustomers, setFilteredCustomers] = useState<Customer[]>(mockCustomers);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
