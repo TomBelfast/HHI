@@ -1,7 +1,7 @@
 import * as React from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "./card"
-import { Input } from "./input"
-import { Button } from "./button"
+import { Card, CardContent, CardHeader, CardTitle } from "./Card"
+import { Input } from "./Input"
+import { Button } from "./Button"
 import { Badge } from "./Badge"
 import { cn } from "@/lib/utils"
 import { ChevronLeft, ChevronRight, Search } from "lucide-react"
@@ -32,7 +32,7 @@ export interface DataTableProps<T> {
   className?: string
 }
 
-export function DataTable<T extends Record<string, any>>({
+export function DataTable<T extends Record<string, unknown>>({
   data,
   columns,
   title,
@@ -72,7 +72,7 @@ export function DataTable<T extends Record<string, any>>({
                 <Input
                   placeholder="Search..."
                   value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
                   className="pl-8 w-64"
                 />
               </div>

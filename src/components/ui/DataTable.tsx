@@ -2,18 +2,23 @@
 
 import { useState } from 'react';
 
+interface TableRow {
+  [key: string]: string | number | boolean | null | undefined;
+  id?: string | number;
+}
+
 interface Column {
   key: string;
   label: string;
-  render?: (value: any, row?: any) => React.ReactNode;
+  render?: (value: string | number | boolean | null | undefined, row?: TableRow) => React.ReactNode;
 }
 
 interface DataTableProps {
-  data: any[];
+  data: TableRow[];
   columns: Column[];
   itemsPerPage?: number;
   showPagination?: boolean;
-  onRowClick?: (item: any) => void;
+  onRowClick?: (item: TableRow) => void;
 }
 
 export function DataTable({ data, columns, itemsPerPage = 10, showPagination = true, onRowClick }: DataTableProps) {
@@ -24,7 +29,7 @@ export function DataTable({ data, columns, itemsPerPage = 10, showPagination = t
   const endIndex = startIndex + itemsPerPage;
   const currentData = data.slice(startIndex, endIndex);
 
-  const formatValue = (value: any, key: string) => {
+  const formatValue = (value: string | number | boolean | null | undefined, key: string) => {
     if (key === 'value' || key === 'totalValue') {
       return `£${Number(value).toLocaleString()}`;
     }
@@ -33,9 +38,9 @@ export function DataTable({ data, columns, itemsPerPage = 10, showPagination = t
     }
     if (key === 'customerId') {
       const customer = data.find(item => item.id === value);
-      return customer?.name || value;
+      return customer?.name || String(value);
     }
-    return value;
+    return String(value);
   };
 
   const handlePageChange = (page: number) => {

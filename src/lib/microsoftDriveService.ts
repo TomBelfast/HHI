@@ -31,7 +31,7 @@ export interface Permission {
 export interface DocumentMetadata {
   version: string;
   description?: string;
-  customFields?: Record<string, any>;
+  customFields?: Record<string, unknown>;
 }
 
 export interface DocumentFilters {
@@ -495,12 +495,12 @@ class MicrosoftDriveService {
 
       if (response.ok) {
         const data = await response.json();
-        return data.value.map((version: any) => ({
-          version: version.id,
-          modifiedBy: version.lastModifiedBy?.user?.displayName || 'Unknown',
-          modifiedAt: new Date(version.lastModifiedDateTime),
-          size: version.size,
-          changeDescription: version.description
+        return data.value.map((version: Record<string, unknown>) => ({
+          version: String(version.id),
+          modifiedBy: ((version.lastModifiedBy as Record<string, unknown>)?.user as Record<string, unknown>)?.displayName as string || 'Unknown',
+          modifiedAt: new Date(String(version.lastModifiedDateTime)),
+          size: Number(version.size),
+          changeDescription: String(version.description)
         }));
       } else {
         console.error('Failed to get document history');
@@ -607,24 +607,24 @@ class MicrosoftDriveService {
   }
 
   // Helper methods
-  private transformMicrosoftItems(items: any[]): Document[] {
+  private transformMicrosoftItems(items: Record<string, unknown>[]): Document[] {
     return items.map(item => ({
-      id: item.id,
-      oneDriveId: item.id,
-      name: item.name,
-      type: this.detectDocumentType(item.name),
-      currentFolder: item.parentReference?.path || '/',
-      createdBy: item.createdBy?.user?.displayName || 'Unknown',
-      createdAt: new Date(item.createdDateTime),
-      lastModified: new Date(item.lastModifiedDateTime),
-      size: item.size,
-      mimeType: item.file?.mimeType || 'application/octet-stream',
+      id: String(item.id),
+      oneDriveId: String(item.id),
+      name: String(item.name),
+      type: this.detectDocumentType(String(item.name)),
+      currentFolder: (item.parentReference as Record<string, unknown>)?.path as string || '/',
+      createdBy: ((item.createdBy as Record<string, unknown>)?.user as Record<string, unknown>)?.displayName as string || 'Unknown',
+      createdAt: new Date(String(item.createdDateTime)),
+      lastModified: new Date(String(item.lastModifiedDateTime)),
+      size: Number(item.size),
+      mimeType: ((item.file as Record<string, unknown>)?.mimeType as string) || 'application/octet-stream',
       permissions: [], // Would need separate API call
-      status: 'active',
+      status: 'active' as const,
       tags: [],
       metadata: {
         version: '1.0',
-        description: item.description || ''
+        description: String(item.description || '')
       }
     }));
   }
@@ -658,7 +658,7 @@ class MicrosoftDriveService {
     return filtered;
   }
 
-  private generateAvailableSlots(startDate: Date, endDate: Date, existingEvents: any[]): TimeSlot[] {
+  private generateAvailableSlots(startDate: Date, endDate: Date, existingEvents: Record<string, unknown>[]): TimeSlot[] {
     const slots: TimeSlot[] = [];
     const slotDuration = 60; // 60 minutes
     const bufferTime = 15; // 15 minutes buffer
@@ -668,8 +668,9 @@ class MicrosoftDriveService {
       
       // Check if slot conflicts with existing events
       const hasConflict = existingEvents.some(event => {
-        const eventStart = new Date(event.start.dateTime);
-        const eventEnd = new Date(event.end.dateTime);
+        const eventData = event as Record<string, unknown>;
+        const eventStart = new Date(String((eventData.start as Record<string, unknown>)?.dateTime));
+        const eventEnd = new Date(String((eventData.end as Record<string, unknown>)?.dateTime));
         return current < eventEnd && slotEnd > eventStart;
       });
 

@@ -23,7 +23,7 @@ export interface EmailData {
   invoiceNumber?: string;
   department?: string;
   contactDate?: string;
-  customFields?: Record<string, any>;
+  customFields?: Record<string, unknown>;
 }
 
 export interface Attachment {
@@ -433,7 +433,7 @@ To proceed, please confirm your acceptance.`,
   }
 
   // Wysyłanie SMS (mock - w rzeczywistości integracja z dostawcą SMS)
-  async sendSMS(to: string, templateId: string, data: Record<string, any>): Promise<string> {
+  async sendSMS(to: string, templateId: string, data: Record<string, unknown>): Promise<string> {
     try {
       const template = this.mockSMSTemplates.find(t => t.id === templateId);
       if (!template) {
@@ -458,7 +458,7 @@ To proceed, please confirm your acceptance.`,
   }
 
   // Wysyłanie WhatsApp (mock - w rzeczywistości integracja z WhatsApp Business API)
-  async sendWhatsApp(to: string, templateId: string, data: Record<string, any>): Promise<string> {
+  async sendWhatsApp(to: string, templateId: string, data: Record<string, unknown>): Promise<string> {
     try {
       const template = this.mockWhatsAppTemplates.find(t => t.id === templateId);
       if (!template) {
